@@ -1,0 +1,72 @@
+body {
+    font-family:Verdana, Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight:200;
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+}
+#frmIngreso {
+    width: 35em;
+    margin: 1em auto;
+    padding:0 2em 2em 2em ;
+    border:1px solid #bbb;
+    color: #000333;
+    background:#ffd;
+    font: 0.9em verdana, sans-serif;  
+}
+#sesion-iniciada {
+    float: right;
+    width: 350px;
+    text-align: right;
+    background-color: #e2e2e2;
+    border: 1px solid black;
+}
+#tabla-principal {
+    border: 1px solid black;
+    margin:auto;
+}
+#tabla-principal tr:nth-child(even) {
+    background-color: #e2e2e2;
+}
+#tabla-principal td {
+    text-align:center; 
+    vertical-align:middle;
+}
+#tabla-opciones-general {
+    margin: 0 auto;
+    /* text-align: left; */
+}
+#tabla-nuevo-usuario {
+    width: 500px;
+    border: 1px solid black;
+    border-collapse: separate;
+    border-spacing: 0.5em;
+}
+#tabla-edicion-usuario {
+    border-collapse: separate;
+    border-spacing: 0.2em;
+}
+#configurar-usuario {
+    position: fixed;
+    border: 1px solid black;
+}
+/* links */
+.nuevo-usuario a:link {
+    //background-color: #00FF00;
+    color: #006699;
+    text-decoration: none;
+}
+.nuevo-usuario a:visited {
+    color: #006699;
+}
+.nuevo-usuario a:active {
+    color:#bbb;
+    text-decoration: none;
+}
+.nuevo-usuario a:hover {
+    background-color: #ffffff;
+}
+.nuevo-usuario a {
+    text-decoration: none;
+}
