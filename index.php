@@ -27,7 +27,6 @@ if($login->getLoginSession())
 {
     if(isset($_GET['confirmado_borrar_informe']))
     {
-        //print_r($_SERVER)."<br>";
         $id_informe=$_GET['id'];
         echo "borro el informe con id ".$id_informe."<br>";
     }
@@ -87,7 +86,7 @@ if($login->getLoginSession())
             }
         }
         // es usuario admin y presento todos los informes ordenados por fecha
-        opciones_admin();
+        nuevo_usuario();
         listado_usuarios_ftp(true);
         // todos los informes
         listado_informes();
@@ -102,7 +101,8 @@ if($login->getLoginSession())
         // vuelvo a mostrar el div
         ?>
         <script LANGUAGE="JavaScript">
-            mostrar_ocultar('nuevo_usuario',true);
+            //alert("pase por aca");
+            mostrar_ocultar('nuevo_usuario');
         </script>
         <?php
     }
@@ -318,8 +318,38 @@ function fecha_vencida($dato)
         return false;
     }
 }
-function opciones_admin()
+function nuevo_usuario()
 {
+    if(isset($_POST['comprobar']))
+    {
+        if(isset($_POST['usuario']))
+        {
+            $usuario=  CCGetFromPost("usuario");
+        }
+        if(isset($_POST['password']))
+        {
+            $password=  CCGetFromPost("password");
+        }
+        if(isset($_POST['servidor']))
+        {
+            $servidor=  CCGetFromPost("servidor");
+        }
+        if(isset($_POST['directorio']))
+        {
+            $directorio=  CCGetFromPost("directorio");
+        }
+        if(isset($_POST['mails']))
+        {
+            $mails=  CCGetFromPost("mails");
+        }
+    }else
+    {
+        $usuario="";
+        $password="";
+        $servidor="";
+        $directorio="";
+        $mails="";
+    }
     // agregar nuevo informe
     echo "
         <br><br><br><br><br>
@@ -336,31 +366,31 @@ function opciones_admin()
                                     <td>Usuario FTP:</td>
                                 </tr>
                                 <tr>
-                                    <td><input type=\"text\" name=\"usuario\" size=\"70\" maxlength=\"255\"></td>
+                                    <td><input type=\"text\" name=\"usuario\" value=\"".$usuario."\" size=\"70\" maxlength=\"255\"></td>
                                 </tr>
                                 <tr>
                                     <td>Password FTP:</td>
                                 </tr>
                                 <tr>
-                                    <td><input type=\"text\" name=\"password\" size=\"70\" maxlength=\"255\"></td>
+                                    <td><input type=\"password\" name=\"password\" value=\"".$password."\" size=\"70\" maxlength=\"255\"></td>
                                 </tr>
                                 <tr>
                                     <td>Servidor FTP:</td>
                                 </tr>
                                 <tr>
-                                    <td><input type=\"text\" name=\"servidor\" size=\"70\" maxlength=\"1000\"></td>
+                                    <td><input type=\"text\" name=\"servidor\" value=\"".$servidor."\" size=\"70\" maxlength=\"1000\"></td>
                                 </tr>
                                 <tr>
                                     <td>Directorio remoto:</td>
                                 </tr>
                                 <tr>
-                                    <td><input type=\"text\" name=\"directorio\" size=\"70\" maxlength=\"1000\"></td>
+                                    <td><input type=\"text\" name=\"directorio\" value=\"".$directorio."\" size=\"70\" maxlength=\"1000\"></td>
                                 </tr>
                                 <tr>
                                     <td>Mails: (separados por coma)</td>
                                 </tr>
                                 <tr>
-                                    <td><input type=\"text\" name=\"mails\" size=\"70\" maxlength=\"1000\"></td>
+                                    <td><input type=\"text\" name=\"mails\" value=\"".$mails."\" size=\"70\" maxlength=\"1000\"></td>
                                 </tr>
                                 <tr><td>&nbsp;</td></tr>
                                 <tr>
@@ -525,7 +555,7 @@ function actualizar_usuario()
         mensaje("ERROR! Problema al actualizar usuario");
         return false;
     }
-    mensaje("Se actualizó usuario");
+    mensaje(utf8_encode("Se actualizó usuario"));
     return true;
 }
 function listado_informes($id_usuario=0)
