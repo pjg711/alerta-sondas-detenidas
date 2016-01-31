@@ -21,6 +21,8 @@ class PAGINA
         . "         <!-- bootstrap -->"
         . "         <link rel=\"stylesheet\" type=\"text/css\" href=\"./lib/bootstrap/dist/css/bootstrap.css\"/>"
         . "         <script src=\"./lib/jquery/jquery.js\"></script>"
+        . "         <!-- font awesome -->"
+        . "         <link rel=\"stylesheet\" href=\"./lib/font-awesome-4.5.0/css/font-awesome.min.css\">"
         . "     </head>"
         . "     <body>";
     }

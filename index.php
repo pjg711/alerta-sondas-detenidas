@@ -29,6 +29,10 @@ if($login->getLoginSession())
     {
         $id_informe=$_GET['id'];
         echo "borro el informe con id ".$id_informe."<br>";
+        if(borrar_informe($id_informe))
+        {
+            mensaje("Se borró el informe");
+        }
     }
     if(isset($_GET['cambiar_conf']))
     {
@@ -70,20 +74,44 @@ if($login->getLoginSession())
         if(isset($_POST['alta_usuario']))
         {
             //inserto usuario nuevo
-            insertar_usuario();
+            if(insertar_usuario())
+            {
+                mensaje("Se guardó el nuevo usuario.");
+            }else
+            {
+                mensaje("ERROR! No se pudo guardar el usuario.");
+            }
         }
         if(isset($_POST['comprobar']))
         {
             //comprobar la conexion al sitio ftp
-            comprobar_conexion();
+            if(comprobar_conexion())
+            {
+                mensaje("Conexion al servidor con exito.");
+            }else
+            {
+                mensaje("ERROR! Revise los datos de la conexion al servidor.");
+            }
         }
         /* usuarios */
         if(isset($_POST['guardar_edicion_usuario']))
         {
             if(actualizar_usuario())
             {
+                mensaje("Se actualizó el usuario");
+            }else
+            {
+                mensaje("ERROR! Problema al actualizar usuario");
+            }
+        }
+        if(isset($_GET['confirmado_borrar_usuario']))
+        {
+            $id_usuario=  CCGetFromGet("id");
+            if(borrar_usuario($id_usuario))
+            {
                 
             }
+            mensaje("borro usuario");
         }
         // es usuario admin y presento todos los informes ordenados por fecha
         nuevo_usuario();
@@ -158,19 +186,32 @@ function presento_informes($informes)
         <h1>Listado de informes realizados</h1>
         <table class=\"table table-striped table-hover table-bordered table-condensed\">
             <tr>
-                <th>&nbsp;</th>
-                <th>Fecha</th>
+                <th>&nbsp;</th>";
+    if($_SESSION['es_admin'])
+    {
+        echo "  <th>Usuario</th>";
+    }
+    echo "      <th>Fecha</th>
                 <th>Informe</th>
                 <th>&nbsp;</th>
             </tr>";    
     foreach($informes as $informe)
     {
         echo "<tr>
-                <td align=\"right\"><a href=\"#\" onclick=\"borrar_informe(\"".$informe['id']."\",\"¿Está seguro que quiere borrar el informe?\")\"><img src='./img/b_drop.png'>&nbsp;</a></td>
-                <td>";
-        echo $informe['fecha'].
-                "</td>
-                 <td>
+                <td align=\"right\">
+                    <a href=\"#\" onclick=\"mostrar_informe(\"".$informe['id']."\")\" title=\"Ver informe\">
+                        <i class=\"fa fa-eye\"></i>
+                    </a>&nbsp;&nbsp;
+                    <a href=\"#\" onclick=\"borrar_informe(\"".$informe['id']."\")\">
+                        <i class=\"fa fa-trash\"></i>
+                    </a>
+                </td>";
+        if($_SESSION['es_admin'])
+        {
+            echo $informe['usuario'];
+        }
+        echo "  <td>".$informe['fecha']."</td>
+                <td>
                     <div id=\"ver_informe_".$informe['id']."\" style=\"display:block\">
                         <a href=\"#\" onclick=\"mostrar_informe(\"".$informe['id']."\")\">Ver informe</a>
                     </div>
@@ -419,7 +460,7 @@ function listado_usuarios_ftp($es_admin=false)
             <h1>Listado de usuarios</h1>
             <table class=\"table table-striped table-hover table-bordered table-condensed\">
                 <tr>    
-                    <th colspan=\"2\">&nbsp;</th>
+                    <th>&nbsp;</th>
                     <th>Usuario FTP</th>
                     <th>Servidor FTP</th>
                     <th>Directorio remoto</th>
@@ -430,9 +471,13 @@ function listado_usuarios_ftp($es_admin=false)
         {
             echo "
                 <tr>
-                    <td colspan=\"2\" align=\"right\">
-                        <a href=\"#\" onclick=\"borrar_usuario('".$usuario['id']."')\"><img src='./img/b_drop.png'></a>&nbsp;
-                        <a href=\"#\" onclick=\"mostrar_ocultar('usuario_".trim($usuario['id'])."')\"><img src='./img/b_edit.png'></a>
+                    <td align=\"center\">
+                        <a href=\"#\" onclick=\"borrar_usuario('".$usuario['id']."')\">
+                            <i class=\"fa fa-trash\"></i>
+                        </a>&nbsp;
+                        <a href=\"#\" onclick=\"mostrar_ocultar('usuario_".trim($usuario['id'])."')\">
+                            <i class=\"fa fa-pencil\"></i>
+                        </a>
                     </td>
                     <td>".$usuario['usuario']."</td>
                     <td>".$usuario['servidor']."</td>
@@ -552,11 +597,18 @@ function actualizar_usuario()
     $obj_BD=new BD();
     if(!$obj_BD->sql_select($sql, $consulta))
     {
-        mensaje("ERROR! Problema al actualizar usuario");
         return false;
     }
-    mensaje(utf8_encode("Se actualizó usuario"));
     return true;
+}
+function borrar_usuario($id_usuario=0)
+{
+    if($id_usuario==0) return false;
+    $sql="DELETE FROM `usuario` WHERE `id`=".$id_usuario;
+    if($obj_BD=new BD($sql, $consulta))
+    {
+        mensaje("Se borró el usuario");
+    }
 }
 function listado_informes($id_usuario=0)
 {
@@ -600,9 +652,11 @@ function insertar_usuario()
             VALUES (1,".$fecha_alta.",'".$usuario_ftp."','".$password_ftp."','".$servidor_ftp."','".$directorio_remoto."',0,'ftp','".$mails."'";
     if(!$obj_BD->sql_select($sql, $consulta))
     {
-        echo "ERROR! No se pudo guardar el usuario<br>";
+        unset($obj_BD);
+        return false;
     }
     unset($obj_BD);
+    return true;
 }
 function comprobar_conexion()
 {
@@ -610,10 +664,11 @@ function comprobar_conexion()
     $password=  CCGetFromPost('password');
     $servidor=  CCGetFromPost('servidor');
     $directorio_remoto= CCGetFromPost('directorio');
-    if($obj_ftp=new FTP($servidor,$usuario,$password,$directorio_remoto))
+    if(!$obj_ftp=new FTP($servidor,$usuario,$password,$directorio_remoto))
     {
-        mensaje("Conexion al servidor con exito");
+        return false;
     }
+    return true;
 }
 function CCGetFromPost($parameter_name, $default_value = "") 
 {
@@ -638,7 +693,7 @@ function CCStrip($value)
 function mensaje($texto)
 {
     echo "<script type=\"text/javascript\">";
-    echo "alert(\"".utf8_decode($texto)."\");";
+    echo "alert(\"".utf8_encode($texto)."\");";
     echo "</script>";
 }
 ?>
