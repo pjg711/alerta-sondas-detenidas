@@ -13,10 +13,17 @@ class Login
 	{
 		?>
         <br>
+        <h1>Sistema de alerta de sondas detenidas</h1>
         <form id="frmIngreso" name="frmIngreso" method="post" action="<?=$action;?>">
             <input type="hidden" name="usar_imap" value="1">
-            <br><br>
+            <br>
             <table class="tabla_ingreso">
+                <tr>
+                	<td colspan="2" align="center">
+                        <img src="./img/alerta.png">
+                    </td>
+                </tr>
+                <tr><td colspan="2">&nbsp;</td></tr>
                 <tr>
                     <td align="right">Usuario:&nbsp;</td>
                     <td align="left"><input name="usuario" type="text" id="usuario" size="25" maxlength="70"/></td>
@@ -29,7 +36,10 @@ class Login
                 <tr><td colspan="2">&nbsp;</td></tr>
                 <tr>
                     <td colspan="2" align="center">
-                        <input type="submit" name="ingreso" value="Ingresar"/>
+                        <!-- <input type="submit" name="ingreso" value="Ingresar"/> -->
+                        <button type="submit">
+                            <i class="fa fa-sign-in"></i>&nbsp;Ingresar
+                        </button>
                     </td>
                 </tr>
             </table>

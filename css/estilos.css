@@ -9,7 +9,7 @@ body {
 #frmIngreso {
     width: 35em;
     margin: 1em auto;
-    padding:0 2em 2em 2em ;
+    padding:0 0 2em 5em ;
     border:1px solid #bbb;
     color: #000333;
     background:#ffd;
@@ -51,6 +51,10 @@ body {
     position: fixed;
     border: 1px solid black;
 }
+#tabla-informe {
+    margin:0 auto;
+    width: 500px;
+}
 /* links */
 .nuevo-usuario a:link {
     //background-color: #00FF00;
@@ -70,3 +74,17 @@ body {
 .nuevo-usuario a {
     text-decoration: none;
 }
+/* */
+a.link-tabla:link {
+    text-decoration: none;
+}
+a.link-tabla:visited {
+    text-decoration: none;
+}
+a.link-tabla:active {
+    text-decoration: none;
+}
+a.link-tabla {
+    text-decoration: none;
+}
+

@@ -6,6 +6,7 @@ require_once("lib/class_base-datos.php");
 require_once("lib/class_login.php");
 require_once("lib/class_ftp.php");
 require_once("lib/class_pagina.php");
+require_once("lib/PHPMailer/_lib/class.phpmailer.php");
 //
 include("config.php");
 //
@@ -28,10 +29,13 @@ if($login->getLoginSession())
     if(isset($_GET['confirmado_borrar_informe']))
     {
         $id_informe=$_GET['id'];
-        echo "borro el informe con id ".$id_informe."<br>";
+        //echo "borro el informe con id ".$id_informe."<br>";
         if(borrar_informe($id_informe))
         {
             mensaje("Se borró el informe");
+        }else
+        {
+            mensaje("ERROR! No se pudo borrar el informe");
         }
     }
     if(isset($_GET['cambiar_conf']))
@@ -109,9 +113,11 @@ if($login->getLoginSession())
             $id_usuario=  CCGetFromGet("id");
             if(borrar_usuario($id_usuario))
             {
-                
+                mensaje("El usuario fue borrado");
+            }else
+            {
+                mensaje("ERROR! No se pudo borrar el usuario");
             }
-            mensaje("borro usuario");
         }
         // es usuario admin y presento todos los informes ordenados por fecha
         nuevo_usuario();
@@ -192,40 +198,43 @@ function presento_informes($informes)
         echo "  <th>Usuario</th>";
     }
     echo "      <th>Fecha</th>
-                <th>Informe</th>
                 <th>&nbsp;</th>
             </tr>";    
     foreach($informes as $informe)
     {
         echo "<tr>
                 <td align=\"right\">
-                    <a href=\"#\" onclick=\"mostrar_informe(\"".$informe['id']."\")\" title=\"Ver informe\">
+                    <a class=\"link-tabla\" href=\"#\" onclick=\"mostrar_ocultar('informe_".$informe['id_informe']."')\" title=\"Ver informe\">
                         <i class=\"fa fa-eye\"></i>
                     </a>&nbsp;&nbsp;
-                    <a href=\"#\" onclick=\"borrar_informe(\"".$informe['id']."\")\">
+                    <a class=\"link-tabla\" href=\"#\" onclick=\"borrar_informe('".$informe['id_informe']."')\" title=\"Borrar informe\">
                         <i class=\"fa fa-trash\"></i>
-                    </a>
+                    </a>&nbsp;&nbsp;
                 </td>";
         if($_SESSION['es_admin'])
         {
-            echo $informe['usuario'];
+            echo "
+                <td>".$informe['usuario']."</td>";
         }
-        echo "  <td>".$informe['fecha']."</td>
-                <td>
-                    <div id=\"ver_informe_".$informe['id']."\" style=\"display:block\">
-                        <a href=\"#\" onclick=\"mostrar_informe(\"".$informe['id']."\")\">Ver informe</a>
-                    </div>
-                    <div id=\"mostrar_informe_".$informe['id']."\" style=\"display:none\">
-                        <a href=\"#\" onclick=\"mostrar_informe(\"".$informe['id']."\")\">Cerrar informe</a>";
-                        if($texto_informe=presento_informe(trim($informe['informe'])))
-                        {
-                            echo $texto_informe;
-                        }
+        echo "  <td>".$informe['fecha']."</td>";
+        echo "</tr>";
+        echo "<tr>";
+        if($_SESSION['es_admin'])
+        {
+            echo "<td colspan=\"3\">";
+        }else
+        {
+            echo "<td colspan=\"2\">";
+        }
+        echo "      <div id=\"informe_".$informe['id_informe']."\" style=\"display:none\">";
+        if($texto_informe=presento_informe(trim($informe['informe'])))
+        {
+            echo        $texto_informe;
+        }
         echo "      </div>
                 </td>
-             </tr>";
+            </tr>";
     }
-
 }
 function presento_informe($xml_informe)
 {
@@ -243,9 +252,9 @@ function presento_informe($xml_informe)
         "<table id='tabla-informe'>
             <tr>
                 <th>nombre</th>
-                <th>nro. archivos</th>
-                <th>ultima fecha</th>
-                <th>m&aacute;s informaci&oacute;n</th>
+                <th align=\"center\">nro. archivos</th>
+                <th align=\"center\">ultima fecha</th>
+                <th align=\"center\"><i class=\"fa fa-info-circle\"></i></th>
             </tr>";
     foreach($s as $sonda)
     {
@@ -257,16 +266,16 @@ function presento_informe($xml_informe)
             $cadena.="<tr bgcolor=\"#A6D490\">";
         }
         $cadena.="  <td>".$sonda->nombre."</td>
-                    <td>".$sonda->nro_archivos."</td>
-                    <td>".proceso_fecha($sonda->ultima_fecha)."</td>";
+                    <td align=\"center\">".$sonda->nro_archivos."</td>
+                    <td align=\"center\">".proceso_fecha($sonda->ultima_fecha)."</td>";
         if(!is_null($sonda->mas_info))
         {
             $cadena.=
                 "<td>
                     <div style=\"display:block\">
-                        <a href=\"#\" onclick=\"mostrar_archivo(\"".$sonda->nombre."\")\">Detalles</a>
+                        <a href=\"#\" onclick=\"mostrar_archivo(\"".$sonda->nombre."\")\" title=\"M&aacute;s informaci&oacute;n\"><i class=\"fa fa-info\"></i></a>
                     </div>
-                    <div style='display:none'>".
+                    <div id=\"\" style='display:none'>".
                         $sonda->mas_info.
                 "       pongo archivo aqui
                     </div>
@@ -309,8 +318,7 @@ function analizo_sondas($sondas)
             }
         }
     }
-    $cadena.="
-        <?xml version=\"1.0\" encoding=\"UTF-8\"?>
+    $cadena.="<?xml version=\"1.0\" encoding=\"UTF-8\"?>
         <sondas>
             <cantidad_sondas>".count($q_sondas_cantidad)."</cantidad_sondas>";
     $sonda_fuera=0;
@@ -358,6 +366,19 @@ function fecha_vencida($dato)
         }
         return false;
     }
+}
+function borrar_informe($id_informe=0)
+{
+    if($id_informe==0) return false;
+    $obj_BD=new BD();
+    $sql="DELETE FROM `informes` WHERE `id`=".$id_informe;
+    echo "sql--->".$sql."<br>";
+    if($obj_BD->sql_select($sql, $consulta))
+    {
+        echo "pase por aca<br>";
+        return true;
+    }
+    return false;
 }
 function nuevo_usuario()
 {
@@ -452,8 +473,6 @@ function listado_usuarios_ftp($es_admin=false)
 {
     $obj_BD=new BD();
     $enum_tipos_usuarios=$obj_BD->getEnumOptions('usuarios', 'tipo_usuario');
-    //print_r($datos_enum);
-    //exit;
     if($usuarios=cargar_usuarios())
     {
         echo "
@@ -472,10 +491,10 @@ function listado_usuarios_ftp($es_admin=false)
             echo "
                 <tr>
                     <td align=\"center\">
-                        <a href=\"#\" onclick=\"borrar_usuario('".$usuario['id']."')\">
+                        <a class=\"link-tabla\" href=\"#\" onclick=\"borrar_usuario('".$usuario['id']."')\">
                             <i class=\"fa fa-trash\"></i>
                         </a>&nbsp;
-                        <a href=\"#\" onclick=\"mostrar_ocultar('usuario_".trim($usuario['id'])."')\">
+                        <a class=\"link-tabla\" href=\"#\" onclick=\"mostrar_ocultar('usuario_".trim($usuario['id'])."')\">
                             <i class=\"fa fa-pencil\"></i>
                         </a>
                     </td>
@@ -563,7 +582,6 @@ function listado_usuarios_ftp($es_admin=false)
 function cargar_usuarios()
 {
     $sql="SELECT * FROM `usuarios` ORDER BY `fecha_alta` ASC";
-    //echo $sql."<br>";
     $obj_BD=new BD();
     $usuarios=array();
     if(!$obj_BD->sql_select($sql, $consulta))
@@ -604,20 +622,41 @@ function actualizar_usuario()
 function borrar_usuario($id_usuario=0)
 {
     if($id_usuario==0) return false;
+    $obj_BD=new BD();
     $sql="DELETE FROM `usuario` WHERE `id`=".$id_usuario;
-    if($obj_BD=new BD($sql, $consulta))
+    if(!$obj_BD->sql_select($sql, $consulta))
     {
-        mensaje("Se borró el usuario");
+        return false;
     }
+    return true;
 }
 function listado_informes($id_usuario=0)
 {
     if($id_usuario==0)
     {
-        $sql="SELECT * FROM `informes` ORDER BY `fecha` DESC";
+        $sql="  SELECT  informes.`id` AS id_informe,
+                        informes.`informe` AS informe,
+                        informes.`fecha` AS fecha,
+                        usuarios.`id` AS id_usuario,
+                        usuarios.`activo` AS activo,
+                        usuarios.`fecha_alta` AS fecha_alta,
+                        usuarios.`usuario` AS usuario,
+                        usuarios.`password` AS password,
+                        usuarios.`servidor` AS servidor,
+                        usuarios.`directorio_remoto` AS directorio_remoto,
+                        usuarios.`es_admin` AS es_admin,
+                        usuarios.`tipo_usuario` AS tipo_usuario,
+                        usuarios.`mails` AS mails
+                FROM    `informes` AS informes, 
+                        `usuarios` AS usuarios
+                WHERE   informes.`id_usuario`=usuarios.`id`
+                ORDER BY `fecha` DESC";
     }else
     {
-        $sql="SELECT * FROM `informes` WHERE `id_usuario`=".$id_usuario." ORDER BY `fecha` DESC";
+        $sql="  SELECT  * 
+                FROM `informes` 
+                WHERE `id_usuario`=".$id_usuario."
+                ORDER BY `fecha` DESC";
     }
     // muestro tabla con informes para el usuario logeado
     $obj_BD=new BD();

@@ -1,3 +1,4 @@
+/*
 function mostrar_informe(key){
     alert("key-->"+key);
     obj_ver = document.getElementById('ver_informe_'+key);
@@ -5,6 +6,7 @@ function mostrar_informe(key){
     obj_ver.style.display = (obj_ver.style.display == 'block') ? 'none' : 'block';
     obj.style.display = (obj.style.display == 'block') ? 'none' : 'block';
 }
+*/
 function borrar_informe(id){
     var respuesta = window.confirm('¿Está seguro que quiere borrar el informe?');
     if(respuesta){

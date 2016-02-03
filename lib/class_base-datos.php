@@ -8,7 +8,7 @@ define('PASSWORD','alertasondas932');
 //
 class BD
 {
-    function __construct($id=NULL)
+    function __construct()
     {
         global $db_link;
         if(!($db_link = new PDO('mysql:host='.SERVIDOR.';dbname='.BASE_DATOS.';charset=utf8',USUARIO,PASSWORD)))
