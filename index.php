@@ -198,7 +198,6 @@ function presento_informes($informes)
         echo "  <th>Usuario</th>";
     }
     echo "      <th>Fecha</th>
-                <th>&nbsp;</th>
             </tr>";    
     foreach($informes as $informe)
     {
@@ -238,9 +237,10 @@ function presento_informes($informes)
 }
 function presento_informe($xml_informe)
 {
-    //echo "xml_informe--->".htmlentities($xml_informe)."<br>";
+    //echo htmlentities($xml_informe)."<br><br>";
+    $xml_informe2= html_entity_decode($xml_informe);
     $dom = new DOMDocument;
-    $dom->loadXML($xml_informe);
+    $dom->loadXML($xml_informe2);
     if(!$dom)
     {
         echo 'Error en el xml';
@@ -248,8 +248,7 @@ function presento_informe($xml_informe)
     }
     $s = simplexml_import_dom($dom);
     if($s->cantidad_sondas==0) return false;
-    $cadena=
-        "<table id='tabla-informe'>
+    $cadena="<table id='tabla-informe'>
             <tr>
                 <th>nombre</th>
                 <th align=\"center\">nro. archivos</th>
@@ -258,30 +257,32 @@ function presento_informe($xml_informe)
             </tr>";
     foreach($s as $sonda)
     {
-        if($sonda->fuera_fecha=='Si')
+        if(count($sonda)<>0)
         {
-            $cadena.="<tr bgcolor=\"#D49590\">";
-        }else
-        {
-            $cadena.="<tr bgcolor=\"#A6D490\">";
+            if($sonda->fuera_fecha=='Si')
+            {
+                $cadena.="<tr bgcolor=\"#D49590\">";
+            }else
+            {
+                $cadena.="<tr bgcolor=\"#A6D490\">";
+            }
+            $cadena.="  <td>".$sonda->nombre."</td>
+                        <td align=\"center\">".$sonda->nro_archivos."</td>
+                        <td align=\"center\">".proceso_fecha($sonda->ultima_fecha)."</td>";
+            if(!is_null($sonda->mas_info))
+            {
+                $cadena.=
+                    "<td>
+                        <div style=\"display:block\">
+                            <a href=\"#\" onclick=\"mostrar_ocultar('sonda_".$sonda->nombre."')\" title=\"M&aacute;s informaci&oacute;n\"><i class=\"fa fa-info\"></i></a>
+                        </div>
+                        <div id=\"sonda_".$sonda->nombre."\" style='display:none'>".
+                            $sonda->mas_info."prueba
+                        </div>
+                    </td>";
+            }
+            $cadena.="</tr>";
         }
-        $cadena.="  <td>".$sonda->nombre."</td>
-                    <td align=\"center\">".$sonda->nro_archivos."</td>
-                    <td align=\"center\">".proceso_fecha($sonda->ultima_fecha)."</td>";
-        if(!is_null($sonda->mas_info))
-        {
-            $cadena.=
-                "<td>
-                    <div style=\"display:block\">
-                        <a href=\"#\" onclick=\"mostrar_archivo(\"".$sonda->nombre."\")\" title=\"M&aacute;s informaci&oacute;n\"><i class=\"fa fa-info\"></i></a>
-                    </div>
-                    <div id=\"\" style='display:none'>".
-                        $sonda->mas_info.
-                "       pongo archivo aqui
-                    </div>
-                </td>";
-        }
-        $cadena.="</tr>";
     }
     $cadena.="</table>";
     unset($dom);
@@ -302,49 +303,53 @@ function analizo_sondas($sondas)
         return false;
     }
     $cadena="";
+    $q_sondas_cantidad=array();
     foreach($sondas as $key => $sonda)
     {
-        if(substr($key,-4)==".esp")
+        if(isset($sonda["type"]))
         {
-            $partes=explode("-",$key);
-            if(count($partes)==4)
-            {   
-                // es sonda
-                $agrego=array("archivo"=>$key,"sonda"=>$partes[0],"fecha"=>$partes[2]);
-                $sonda=array_merge($sonda,$agrego);
-                $q_sondas[$partes[0]][]=$sonda;
-                if(!isset($q_sondas_cantidad[$partes[0]])) $q_sondas_cantidad[$partes[0]]=0;
-                $q_sondas_cantidad[$partes[0]]++;
+            if($sonda["type"]=="file")
+            {
+                if(substr($key,-4)==".esp")
+                {
+                    $partes=explode("-",$key);
+                    if(count($partes)==4)
+                    {   
+                        // es sonda
+                        $agrego=array("archivo"=>$key,"sonda"=>$partes[0],"fecha"=>$partes[2]);
+                        $sonda=array_merge($sonda,$agrego);
+                        //$partes[0] contiene el nombre de la sonda
+                        $linea_archivo="nombre_estacion--->".$partes[0]."\n";
+                        $q_sondas[$partes[0]][]=$sonda;
+                        if(!isset($q_sondas_cantidad[$partes[0]])) $q_sondas_cantidad[$partes[0]]=0;
+                        $q_sondas_cantidad[$partes[0]]++;
+                    }
+                }
             }
         }
     }
-    $cadena.="<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-        <sondas>
-            <cantidad_sondas>".count($q_sondas_cantidad)."</cantidad_sondas>";
+    $cadena.="<?xml version=\"1.0\" encoding=\"UTF-8\"?><sondas><cantidad_sondas>".count($q_sondas_cantidad)."</cantidad_sondas>";
     $sonda_fuera=0;
     foreach($q_sondas_cantidad as $key => $cantidad)
     {
+        //echo "key--->".$key."\n";
         $cadena.="<sonda>";
         // fuera de fecha?
         if(fecha_vencida($q_sondas[$key][count($q_sondas[$key])-1]))
         {
             $sonda_fuera++;
-            $cadena.="  <fuera_fecha>Si</fuera_fecha>";
+            $cadena.="<fuera_fecha>Si</fuera_fecha>";
         }else
         {
-            $cadena.="  <fuera_fecha>No</fuera_fecha>";
+            $cadena.="<fuera_fecha>No</fuera_fecha>";
         }
-        $cadena.="      <nombre>".$key."</nombre>
-                        <nro_archivos>".$cantidad."</nro_archivos>
-                        <ultima_fecha>".$q_sondas[$key][count($q_sondas[$key])-1]['fecha']."</ultima_fecha>
-                        <mas_info>";
-        $cadena.=print_r($q_sondas[$key][count($q_sondas[$key])-1]);
-        $cadena.="      </mas_info>";
+        $cadena.="<nombre>".$key."</nombre>";
+        $cadena.="<nro_archivos>".$cantidad."</nro_archivos>";
+        $cadena.="<ultima_fecha>".$q_sondas[$key][count($q_sondas[$key])-1]['fecha']."</ultima_fecha>";
+        $cadena.="<mas_info>".print_r($q_sondas[$key][count($q_sondas[$key])-1])."</mas_info>";
         $cadena.="</sonda>";
     }
-    $cadena.="
-            <cantidad_sondas_fuera_fecha>".$sonda_fuera."</cantidad_sondas_fuera_fecha>
-        </sondas>";
+    $cadena.="<cantidad_sondas_fuera_fecha>".$sonda_fuera."</cantidad_sondas_fuera_fecha></sondas></xml>";
     return trim($cadena);
 }
 function fecha_vencida($dato)
@@ -415,9 +420,7 @@ function nuevo_usuario()
     // agregar nuevo informe
     echo "
         <br><br><br><br><br>
-        <div class=\"nuevo-usuario\">
-            <a href=\"#\" onclick=\"mostrar_ocultar('nuevo_usuario')\"><img src=\"./img/nuevo_informe.png\">&nbsp;Nuevo usuario FTP</a>
-        </div>
+        <a class=\"nuevo-usuario\" href=\"#\" onclick=\"mostrar_ocultar('nuevo_usuario')\"><img src=\"./img/nuevo_informe.png\">&nbsp;Nuevo usuario FTP</a>
         <table id='tabla-opciones-general'>
             <tr>
                 <td>
@@ -632,9 +635,7 @@ function borrar_usuario($id_usuario=0)
 }
 function listado_informes($id_usuario=0)
 {
-    if($id_usuario==0)
-    {
-        $sql="  SELECT  informes.`id` AS id_informe,
+    $sql_select="  SELECT  informes.`id` AS id_informe,
                         informes.`informe` AS informe,
                         informes.`fecha` AS fecha,
                         usuarios.`id` AS id_usuario,
@@ -646,18 +647,23 @@ function listado_informes($id_usuario=0)
                         usuarios.`directorio_remoto` AS directorio_remoto,
                         usuarios.`es_admin` AS es_admin,
                         usuarios.`tipo_usuario` AS tipo_usuario,
-                        usuarios.`mails` AS mails
+                        usuarios.`mails` AS mails";
+    if($id_usuario==0)
+    {
+        $sql_demas="
                 FROM    `informes` AS informes, 
                         `usuarios` AS usuarios
                 WHERE   informes.`id_usuario`=usuarios.`id`
                 ORDER BY `fecha` DESC";
     }else
     {
-        $sql="  SELECT  * 
-                FROM `informes` 
-                WHERE `id_usuario`=".$id_usuario."
+        $sql_demas="
+                FROM    `informes` AS informes,
+                        `usuarios` AS usuarios
+                WHERE   informes.`id_usuario`=".$id_usuario."
                 ORDER BY `fecha` DESC";
     }
+    $sql="$sql_select $sql_demas";
     // muestro tabla con informes para el usuario logeado
     $obj_BD=new BD();
     $informes=array();

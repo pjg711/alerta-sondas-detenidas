@@ -1,5 +1,4 @@
 <?php
-
 class Login 
 {
     private $es_admin=0;
@@ -13,11 +12,11 @@ class Login
 	{
 		?>
         <br>
-        <h1>Sistema de alerta de sondas detenidas</h1>
+        <h1><?=TITULO;?></h1>
         <form id="frmIngreso" name="frmIngreso" method="post" action="<?=$action;?>">
             <input type="hidden" name="usar_imap" value="1">
             <br>
-            <table class="tabla_ingreso">
+            <table id="tabla-ingreso">
                 <tr>
                 	<td colspan="2" align="center">
                         <img src="./img/alerta.png">
@@ -87,12 +86,12 @@ class Login
                     </tr>";
             echo "  <tr>
                         <td align=\"right\">
-                            <a href=\"#\" onclick=\"mostrar_ocultar('configurar-usuario')\">Configurar usuario</a>
+                            <a class=\"sesion-iniciada\" href=\"#\" onclick=\"mostrar_ocultar('configurar-usuario')\"><i class=\"fa fa-user-md\"></i>&nbsp;Configurar usuario</a>
                         </td>
                     </tr>";
             echo "  <tr>
                         <td align=\"right\">
-                            <a href=\"index.php?cerrar_sesion\">Cerrar sesion</a>
+                            <a class=\"sesion-iniciada\" href=\"index.php?cerrar_sesion\"><i class=\"fa fa-sign-out\"></i>&nbsp;Cerrar sesion</a>
                         </td>
                     </tr>
                 </table>

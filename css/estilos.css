@@ -13,7 +13,7 @@ body {
     border:1px solid #bbb;
     color: #000333;
     background:#ffd;
-    font: 0.9em verdana, sans-serif;  
+    font: 0.9em verdana, sans-serif;
 }
 #sesion-iniciada {
     float: right;
@@ -21,17 +21,12 @@ body {
     text-align: right;
     background-color: #e2e2e2;
     border: 1px solid black;
+    padding: 15px;
 }
-#tabla-principal {
-    border: 1px solid black;
-    margin:auto;
-}
-#tabla-principal tr:nth-child(even) {
-    background-color: #e2e2e2;
-}
-#tabla-principal td {
-    text-align:center; 
-    vertical-align:middle;
+#sesion-iniciada table {
+    font: 0.9em verdana, sans-serif;
+    border-collapse: separate;
+    border-spacing: 0.2em;
 }
 #tabla-opciones-general {
     margin: 0 auto;
@@ -55,26 +50,29 @@ body {
     margin:0 auto;
     width: 500px;
 }
-/* links */
-.nuevo-usuario a:link {
+#tabla-ingreso {
+    font: 1.1em verdana, sans-serif;
+}
+/* formato link nuevo usuario */
+a.nuevo-usuario:link {
     //background-color: #00FF00;
     color: #006699;
     text-decoration: none;
 }
-.nuevo-usuario a:visited {
+a.nuevo-usuario:visited {
     color: #006699;
 }
-.nuevo-usuario a:active {
+a.nuevo-usuario:active {
     color:#bbb;
     text-decoration: none;
 }
-.nuevo-usuario a:hover {
+a.nuevo-usuario:hover {
     background-color: #ffffff;
 }
-.nuevo-usuario a {
+a.nuevo-usuario {
     text-decoration: none;
 }
-/* */
+/* formato link en las tablas */
 a.link-tabla:link {
     text-decoration: none;
 }
@@ -85,6 +83,20 @@ a.link-tabla:active {
     text-decoration: none;
 }
 a.link-tabla {
+    text-decoration: none;
+}
+/* links en sesion iniciada */
+/* formato link en las tablas */
+a.sesion-iniciada:link {
+    text-decoration: none;
+}
+a.sesion-iniciada:visited {
+    text-decoration: none;
+}
+a.sesion-iniciada:active {
+    text-decoration: none;
+}
+a.sesion-iniciada {
     text-decoration: none;
 }
 
