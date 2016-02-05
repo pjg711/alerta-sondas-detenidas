@@ -1,0 +1,82 @@
+Logger ID: Sonda34
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.6.2
+Build: May 29 2014 14:00:00
+Serial: ECAC4E170000
+Probe Voltage: 13065mV
+Last Response: 054 Server Error: "FTP_OPEN_FAILED 221 Goodbye." [Connect Server]
+Connection Details:
+Log started: 15-10-06 19:02:59
+19:02:59 Initialize Modem
+19:02:59 001 Initializing Interface: [Connect Modem]
+19:02:59  Waiting Network
+19:03:07 +WIND: 3
+19:03:09 +WIND: 1
+19:03:12 +WIND: 7
+19:03:14 +WIND: 4
+19:03:14 Matched '+WIND: 4'
+19:03:14 AT+CREG=2
+19:03:14 OK
+19:03:14 Matched 'OK'
+19:03:14 +CREG: 1,"07DF","0A35"
+19:03:14 Matched '+CREG: 1*'
+19:03:14 AT&D2
+19:03:14 OK
+19:03:14 Matched 'OK'
+19:03:14 AT+CSQ
+19:03:14 +CSQ: 19,99
+19:03:15 OK
+19:03:15 Matched 'OK'
+19:03:15 AT+CCED=0,1
+19:03:15 +CCED: 722,07,07df,0a35,55,169,34,,,255,,,4
+19:03:15 OK
+19:03:15 Matched 'OK'
+19:03:15 AT+ADC?
+19:03:15 +ADC: 3914,4845,4843,4843
+19:03:15 OK
+19:03:15 Matched 'OK'
+19:03:15 Connect
+19:03:16 ATS0=0
+19:03:16 OK
+19:03:16 Matched 'OK'
+19:03:16 ATD*99***1#
+19:03:16 CONNECT 9600
+19:03:16 Matched 'CONNECT*'
+19:03:16 Connected
+19:03:16 001 Initializing Interface: [Connect Init]
+19:03:16  Initialise TCP/IP Stack
+19:03:17 001 Initializing Interface: [Start PPP]
+19:03:17  Connecting
+19:03:22 001 Initializing Interface: [PPP Connected]
+19:03:22  Connected 10.35.21.64
+19:03:22 002 Initializing FTP: [Connect Server]
+19:03:22  Open Connection to 190.228.29.71
+19:03:23  220 POWER FTP
+19:03:24  331 Password required for monsanto.seedmech.com.ar
+19:03:25  230 User monsanto.seedmech.com.ar logged in
+19:03:25 002 Initializing FTP: [SET Binary Mode]
+19:03:25  200 Type set to I
+19:03:26 004 Uploading to Server: [Upload File]
+19:03:26  227 Entering Passive Mode (190,228,29,71,213,161)
+19:03:55 054 Server Error: 
+19:03:55  Timeout
+19:04:25  Timeout
+19:04:26  FTP_CMD_FAILED STOR Sonda34-1B96F31D-151006-181000.esp
+19:04:28 005 Disconnecting from Server: [Disconnect FTP Server]
+19:04:28  221 Goodbye.
+19:04:30 002 Initializing FTP: [Connect Server]
+19:04:30  Open Connection to 190.228.29.71
+19:04:53 054 Server Error: 
+19:04:53  FTP_OPEN_FAILED 221 Goodbye.
+19:04:53 054 Server Error: FTP_OPEN_FAILED - '221 Goodbye.
+19:04:53 '
+19:04:54 Disconnect
+19:04:54 +CREG: 1,"07DF","165F"
+19:04:54 ATH
+19:04:54 OK
+19:04:54 Matched 'OK'
+19:04:54 OK
+19:04:54 Matched 'OK'
+20:00:01 001 Initializing Interface
+20:00:01 001 Initializing Interface: [Idle]
+20:00:01  Process URL

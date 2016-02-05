@@ -1,0 +1,57 @@
+Logger ID: Sonda23
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: F6681C160000
+Probe Voltage: 12457mV
+Last Response: 053 Connection Failure: "Failed to open PPP connection" [Start PPP]
+Connection Details:
+Log started: 15-10-13 04:00:00
+04:00:00 Initialize Modem
+04:00:00 001 Initializing Interface: [Connect Modem]
+04:00:00  Waiting Network
+04:00:04 +WIND: 3
+04:00:07 +WIND: 1
+04:00:09 +WIND: 7
+04:00:22 +WIND: 4
+04:00:22 Matched '+WIND: 4'
+04:00:22 AT&D2
+04:00:22 OK
+04:00:22 Matched 'OK'
+04:00:22 AT+CSQ
+04:00:22 +CSQ: 9,0
+04:00:22 OK
+04:00:22 Matched 'OK'
+04:00:23 Connect
+04:00:23 ATS0=0
+04:00:23 OK
+04:00:23 Matched 'OK'
+04:00:23 ATD*99***1#
+04:00:23 CONNECT 9600
+04:00:23 Matched 'CONNECT*'
+04:00:23 Connected
+04:00:23 001 Initializing Interface: [Connect Init]
+04:00:23  Initialise TCP/IP Stack
+04:00:24 001 Initializing Interface: [Start PPP]
+04:00:24  Connecting
+04:00:31 001 Initializing Interface: [PPP Connected]
+04:00:31  Connected 181.4.55.104
+04:00:31 002 Initializing FTP: [Connect Server]
+04:00:31  Open Connection to 190.228.29.71
+04:00:34  220 POWER FTP
+04:00:35  331 Password required for monsanto.seedmech.com.ar
+04:01:17 054 Server Error: 
+04:01:17  Timeout
+04:02:02  Timeout
+04:02:02 054 Server Error: SOCKET_TIMED_OUT - ''
+04:02:02 Disconnect
+04:02:02 OK
+04:02:02 Matched 'OK'
+04:02:03 ATH
+04:02:03 OK
+04:02:03 Matched 'OK'
+04:02:03 AT+CFUN=0
+04:02:04 OK
+04:02:04 Matched 'OK'
+04:02:04 001 Initializing Interface: [Disconnect Modem]
+04:02:04  Waiting to retry

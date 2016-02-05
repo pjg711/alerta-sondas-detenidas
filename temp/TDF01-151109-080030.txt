@@ -1,0 +1,65 @@
+Logger ID: TDF01
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: E6ED1B160000
+Probe Voltage: 13757mV
+Last Response: 054 Server Error: "Timeout" [Connect Server]
+Connection Details:
+Log started: 15-11-09 06:00:40
+06:00:40 Initialize Modem
+06:00:40 001 Initializing Interface: [Connect Modem]
+06:00:40  Waiting Network
+06:00:47 +WIND: 3
+06:00:50 +STIN: 0
+06:00:50 +WIND: 1
+06:00:54 +WIND: 7
+06:00:56 +WIND: 4
+06:00:56 Matched '+WIND: 4'
+06:00:56 AT&D2
+06:00:56 OK
+06:00:56 Matched 'OK'
+06:00:56 AT+CSQ
+06:00:56 +CSQ: 9,99
+06:00:56 OK
+06:00:56 Matched 'OK'
+06:00:57 Connect
+06:00:57 ATS0=0
+06:00:57 OK
+06:00:57 Matched 'OK'
+06:00:57 ATD*99***1#
+06:00:57 CONNECT 9600
+06:00:57 Matched 'CONNECT*'
+06:00:57 Connected
+06:00:58 001 Initializing Interface: [Connect Init]
+06:00:58  Initialise TCP/IP Stack
+06:00:58 001 Initializing Interface: [Start PPP]
+06:00:58  Connecting
+06:01:03 001 Initializing Interface: [PPP Connected]
+06:01:03  Connected 10.86.248.156
+06:01:03 002 Initializing FTP: [Connect Server]
+06:01:03  Open Connection to 190.228.29.71
+06:01:48 054 Server Error: 
+06:01:48  Timeout
+06:02:09 054 Server Error: TCP_OPEN_FAILED - '221 Goodbye.
+06:02:09 '
+06:02:09 002 Initializing FTP: 
+06:02:09  Open Connection to 190.228.29.71
+06:02:54 054 Server Error: 
+06:02:54  Timeout
+06:03:16 054 Server Error: TCP_OPEN_FAILED - '221 Goodbye.
+06:03:16 '
+06:03:16 Disconnect
+06:03:16 +STIN: 98
+06:03:16 OK
+06:03:16 Matched 'OK'
+06:03:16 +STIN: 99
+06:03:16 ATH
+06:03:16 OK
+06:03:16 Matched 'OK'
+06:03:16 AT+CFUN=0
+06:03:19 OK
+06:03:19 Matched 'OK'
+08:00:00 001 Initializing Interface
+08:00:00 001 Initializing Interface: [Idle]
+08:00:00  Process URL

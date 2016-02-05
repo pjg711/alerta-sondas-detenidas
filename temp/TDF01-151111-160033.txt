@@ -1,0 +1,13 @@
+Logger ID: TDF01
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: E6ED1B160000
+Probe Voltage: 13443mV
+Last Response: 053 Connection Failure: "`Process`URL@rzppzrs`JM@z`sMMJqrzpp..." [Connect Modem]
+Connection Details:
+Log started: 15-11-11 14:01:17
+14:01:17 Initialize ModemM
+qtzpqzqw`ppq`Initializing`Interfacez`[Connect`Modem]MJqtzpqzqw``Waiting`NetworkMJqtzpqzqw`Error`timeoutMJqtzpqzqw`pus`Connection`Failurez`MJqtzpqzqw```Process`URLMJqtzpqzqx`DisconnectMJqtzpqzrs`Error`timeoutMJ16:00:00 001 Initializing Interface
+16:00:00 001 Initializing Interface: [Idle]
+16:00:00  Process URL

@@ -1,0 +1,78 @@
+Logger ID: TDF02
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.6.5
+Build: Jun 12 2015 17:01:21
+Serial ID: 97B4EE130000
+Serial Number: <blank>
+Probe Voltage: 12625mV
+Last Response: 054 Server Error: "Timeout" [Connect Server]
+Connection Details:
+Log started: 15-11-09 22:02:59
+22:02:59 Initialize Modem [12520mV]
+22:02:59 001 Initializing Interface: [Connect Modem]
+22:02:59  Waiting Network
+22:03:06 +WIND: 3
+22:03:09 +WIND: 1
+22:03:14 +WIND: 4
+22:03:14 Matched '+WIND: 4'
+22:03:14 AT+CREG=2
+22:03:14 OK
+22:03:14 Matched 'OK'
+22:03:14 +CREG: 2
+22:03:15 +WIND: 7
+22:03:15 +CREG: 1,"07DF","165F"
+22:03:15 Matched '+CREG: 1*'
+22:03:15 AT&D2
+22:03:15 OK
+22:03:15 Matched 'OK'
+22:03:16 AT+CSQ
+22:03:16 +CSQ: 17,99
+22:03:16 OK
+22:03:16 Matched 'OK'
+22:03:16 AT+CCED=0,1
+22:03:16 +CCED: 722,07,07df,165f,53,178,30,,,255,,,4
+22:03:16 OK
+22:03:16 Matched 'OK'
+22:03:16 AT+ADC?
+22:03:16 +ADC: 3950,122,4805,896
+22:03:17 OK
+22:03:17 Matched 'OK'
+22:03:17 Connect [12415mV]
+22:03:17 ATS0=0
+22:03:17 OK
+22:03:17 Matched 'OK'
+22:03:17 ATD*99***1#
+22:03:17 CONNECT 9600
+22:03:17 Matched 'CONNECT*'
+22:03:17 Connected [12373mV]
+22:03:18 001 Initializing Interface: [Connect Init]
+22:03:18  Initialise TCP/IP Stack
+22:03:18 001 Initializing Interface: [Start PPP]
+22:03:18  Connecting
+22:03:25 001 Initializing Interface: [PPP Connected]
+22:03:25  Connected 10.116.47.7
+22:03:25 002 Initializing FTP: [Connect Server]
+22:03:25  Open Connection to 190.228.29.71
+22:04:10 054 Server Error: 
+22:04:10  Timeout
+22:04:31 054 Server Error: TCP_OPEN_FAILED - '227 Entering Passive Mode (190,228,29,71,198,32)
+22:04:31 '
+22:04:31 002 Initializing FTP: 
+22:04:31  Open Connection to 190.228.29.71
+22:05:17 054 Server Error: 
+22:05:17  Timeout
+22:05:38 054 Server Error: TCP_OPEN_FAILED - '227 Entering Passive Mode (190,228,29,71,198,32)
+22:05:38 '
+22:05:38 Disconnect
+22:05:38 OK
+22:05:38 Matched 'OK'
+22:05:38 ATH
+22:05:38 OK
+22:05:38 Matched 'OK'
+22:05:38 AT+CFUN=0
+22:05:42 OK
+22:05:42 Matched 'OK'
+22:05:42 Power down [12478mV]
+00:00:01 001 Initializing Interface
+00:00:01 001 Initializing Interface: [Idle]
+00:00:01  Process URL

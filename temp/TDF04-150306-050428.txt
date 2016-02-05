@@ -1,0 +1,44 @@
+Logger ID: TDF04
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: 53821B160000
+Probe Voltage: 12625mV
+Last Response: 053 Connection Failure: "Error matched '+WIND: 0'" [Connect Modem]
+Connection Details:
+Log started: 15-03-06 05:04:28
+05:04:28 Initialize Modem
+05:04:31 +WIND: 3
+05:04:32 +STIN: 0
+05:04:32 +WIND: 1
+05:04:35 +WIND: 7
+05:04:39 +WIND: 4
+05:04:39 Matched '+WIND: 4'
+05:04:39 AT&D2
+05:04:39 OK
+05:04:39 Matched 'OK'
+05:04:39 AT+CSQ
+05:04:40 +CSQ: 10,99
+05:04:40 OK
+05:04:40 Matched 'OK'
+05:04:40 Connect
+05:04:40 ATS0=0
+05:04:40 OK
+05:04:40 Matched 'OK'
+05:04:40 ATD*99***1#
+05:04:40 CONNECT 9600
+05:04:40 Matched 'CONNECT*'
+05:04:41 Connected
+05:04:41 001 Initializing Interface: [Connect Init]
+05:04:41  Initialise TCP/IP Stack
+05:04:41 001 Initializing Interface: [Start PPP]
+05:04:41  Connecting
+05:04:47 001 Initializing Interface: [PPP Connected]
+05:04:47  Connected 10.17.17.85
+05:04:48 002 Initializing FTP: [Connect Server]
+05:04:48  Open Connection to 190.228.29.71
+05:04:49  220 POWER FTP
+05:04:50  331 Password required for monsanto.seedmech.com.ar
+05:04:50  230 User monsanto.seedmech.com.ar logged in
+05:04:51 002 Initializing FTP: [SET Binary Mode]
+05:04:51  200 Type set to I

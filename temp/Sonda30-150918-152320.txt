@@ -1,0 +1,44 @@
+Logger ID: Sonda30
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: 32D11B160000
+Probe Voltage: 12457mV
+Last Response: 053 Connection Failure: "Failed to open PPP connection" [Start PPP]
+Connection Details:
+Log started: 15-09-18 15:23:20
+15:23:20 Initialize Modem
+15:23:23 +WIND: 3
+15:23:24 +STIN: 0
+15:23:24 +WIND: 1
+15:23:28 +WIND: 4
+15:23:28 Matched '+WIND: 4'
+15:23:28 AT&D2
+15:23:28 OK
+15:23:28 Matched 'OK'
+15:23:28 +WIND: 7
+15:23:28 AT+CSQ
+15:23:29 +CSQ: 11,5
+15:23:29 OK
+15:23:29 Matched 'OK'
+15:23:29 Connect
+15:23:29 ATS0=0
+15:23:29 OK
+15:23:29 Matched 'OK'
+15:23:29 ATD*99***1#
+15:23:29 CONNECT 9600
+15:23:29 Matched 'CONNECT*'
+15:23:30 Connected
+15:23:30 001 Initializing Interface: [Connect Init]
+15:23:30  Initialise TCP/IP Stack
+15:23:30 001 Initializing Interface: [Start PPP]
+15:23:30  Connecting
+15:23:41 001 Initializing Interface: [PPP Connected]
+15:23:41  Connected 10.101.164.70
+15:23:42 002 Initializing FTP: [Connect Server]
+15:23:42  Open Connection to 190.228.29.71
+15:23:45  220 POWER FTP
+15:23:47  331 Password required for monsanto.seedmech.com.ar
+15:23:49  230 User monsanto.seedmech.com.ar logged in
+15:23:50 002 Initializing FTP: [SET Binary Mode]
+15:23:50  200 Type set to I

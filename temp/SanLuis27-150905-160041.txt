@@ -1,0 +1,54 @@
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.2.3
+Serial: 3341A1140000
+Probe Voltage: 13799mV
+Last Response: 054 Server Error: "Timeout" [Connect Server]
+Connection Details:
+001 Initializing Interface: [Connect Modem]
+ Waiting Network
+Initialize Modem
++WIND: 3
++WIND: 1
++WIND: 4
+Matched '+WIND: 4'
+AT&D2
+OK
+Matched 'OK'
+AT+CSQ
++CSQ: 25,0
+OK
+Matched 'OK'
+Connect
+ATS0=0
+OK
+Matched 'OK'
+ATD*99***1#
+CONNECT 9600
+Matched 'CONNECT*'
+Connected
+001 Initializing Interface: [Connect Init]
+ Initialise TCP/IP Stack
+001 Initializing Interface: [Start PPP]
+ Connecting
+001 Initializing Interface: [PPP Connected]
+ Connected 10.103.204.74
+002 Initializing FTP: [Connect Server]
+ Open Connection to 190.228.29.71
+054 Server Error: 
+ Timeout
+002 Initializing FTP: 
+ Open Connection to 190.228.29.71
+054 Server Error: 
+ Timeout
+Disconnect
+OK
+Matched 'OK'
+ATH
+OK
+Matched 'OK'
+AT+CFUN=0
+OK
+Matched 'OK'
+001 Initializing Interface
+001 Initializing Interface: [Idle]
+ Process URL

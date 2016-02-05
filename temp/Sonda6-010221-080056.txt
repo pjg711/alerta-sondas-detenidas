@@ -1,0 +1,39 @@
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.2.3
+Serial: BB50A1140000
+Probe Voltage: 12289mV
+Last Response: 054 Server Error: "FTP_OPEN_FAILED" [Connect Server]
+Connection Details:
+001 Initializing Interface: [Connect Modem]
+ Waiting Network
+Initialize Modem
++WIND: 3
++WIND: 1
++WIND: 7
++WIND: 4
+Matched '+WIND: 4'
+AT&D2
+OK
+Matched 'OK'
+AT+CSQ
++CSQ: 9,99
+OK
+Matched 'OK'
+Connect
+ATS0=0
+OK
+Matched 'OK'
+Error timeout
+053 Connection Failure: 
+ Error timeout
+Disconnect
+OK
+Matched 'OK'
+ATH
+OK
+Matched 'OK'
+AT+CFUN=0
+OK
+Matched 'OK'
+001 Initializing Interface: [Disconnect Modem]
+ Waiting to retry

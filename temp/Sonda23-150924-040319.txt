@@ -1,0 +1,68 @@
+Logger ID: Sonda23
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: F6681C160000
+Probe Voltage: 12499mV
+Last Response: 053 Connection Failure: "Failed to open PPP connection" [Start PPP]
+Connection Details:
+Log started: 15-09-24 04:00:00
+04:00:00 Initialize Modem
+04:00:00 001 Initializing Interface: [Connect Modem]
+04:00:00  Waiting Network
+04:00:04 +WIND: 3
+04:00:07 +WIND: 1
+04:00:14 +WIND: 7
+04:00:23 +WIND: 4
+04:00:23 Matched '+WIND: 4'
+04:00:24 AT&D2
+04:00:24 OK
+04:00:24 Matched 'OK'
+04:00:24 AT+CSQ
+04:00:24 +CSQ: 9,3
+04:00:24 OK
+04:00:24 Matched 'OK'
+04:00:24 Connect
+04:00:24 ATS0=0
+04:00:24 OK
+04:00:24 Matched 'OK'
+04:00:24 ATD*99***1#
+04:00:25 CONNECT 9600
+04:00:25 Matched 'CONNECT*'
+04:00:25 Connected
+04:00:25 001 Initializing Interface: [Connect Init]
+04:00:25  Initialise TCP/IP Stack
+04:00:25 001 Initializing Interface: [Start PPP]
+04:00:25  Connecting
+04:00:35 001 Initializing Interface: [PPP Connected]
+04:00:35  Connected 186.126.67.166
+04:00:35 002 Initializing FTP: [Connect Server]
+04:00:35  Open Connection to 190.228.29.71
+04:01:12 054 Server Error: 
+04:01:12  FTP_OPEN_FAILED ,Þm›ò1æ/ÅµlMöùü®~ï·'ÞûÜ½uÕw«oó¹ïÿ´S//±9?7¼ºüïOr›SÑ²vïÂïýÇõ{zÿÆºîËHììsÏñÛÖ-
+04:01:12 054 Server Error: FTP_OPEN_FAILED - ',Þm›ò1æ/ÅµlMöùü®~ï·'ÞûÜ½uÕw«oó¹ïÿ´S//±9?7¼ºüïOr›SÑ²vïÂïýÇõ{zÿÆºîËHììsÏñÛÖ-ê¿Ûÿ§Ïíg=³ý?Ÿý-ßú/Üß÷·ZÏýcŸêëÿÿþïÿ¹ûÞôªŠ_=÷§Cï_¼»Ûþ—Âî¹û;ýüÚùÆVÑä»Mþîw>ÿLxò·z”ÿOûŸÿ~þõÔÿ¿uÝé¹5k¾ãüJßÿïýxà}Ýþã¿å¿ïÿûüÒíÍt™óÿ¾ë~ºÒöÿ9§}ï/÷|¼=ù¾ïù•ß‹ï_þîmSI¯_;ñçÏÁÿõðvØÿï÷¸k=ýÍvÚæUý¦{«{³ÏÞ¿Yg¸ÿÝLtß;Ùz¨ÏŸõ¹ÿûÆPÎ÷j´ÿ¯>öïü;÷~þî»Úü›õŒöác{y÷ØÍ¦¾ï½qÿmêÿÎÝeå÷ûþîA}·úÏÎþ^|²þ_üH`_ê¿’úïßþÿý÷ß÷ýÿ”ýÿ÷ºžï;U¼¬ß÷¿}m~–ºþ/ËÿÝüçû¿Xÿ¯zù¯ówüùþÿüýßõþ£Ì«4Ã×ÕÝ~Oëòæ·ù½ÿÊ^ºoí9z}ææ7Ö§Î¢·½­Ùºmy¯ÝÿoöþYîÏùÞW¡tye÷ÿþõKý©Ï6íÕvûûÕ×Ûïÿþ¿=¼vº‡)žÿóú»êí¶býiæÏ9»G×õ19÷Ö³û÷ßØí÷×Ü¹âûîßÍúêýôóí­¨ëç¥»·\¼åcÞûËõÿ{ýþsG›ÿÐ›ß¿pî½~Æ¾¾}¿¿÷ÿhßÿé½ú¼ŽÂîÏU\÷íì?¿7ë]ÝwücY÷¦«Ë{>+÷´ýÿùÞ‹vl3÷ÿ÷ßŸýÞï{nÿÿÿ÷ýu«ßù™ß4®üÕÊ/úÿo]Õ±Ïß«??ÇýkoìúåÊ…úßºÛbw;ªþÛB2Cvû•óÿÍÒõ1ýcÙõv€lùïûý¢ùÿ^¹ÿùÙèÖ¶gß‡~óÿ©õv¦çöÛ)~5—|¾ûOõù!Ú*ÓžõçëOÎõs÷òîõ{ÿR¾õéÿŸ·µœõûñÞ×øsúð=ü:­§»úòQ~çõoíf{ì¦ŸvþÝôçþêúíïëpû.ÿ¥)õ­ÞnŽË<½}ÝýO'òÿ¶ÿ»ë¯wó·õ?ÎùÞò©?ÝOßå÷þÙß^z­èîÏÓn³·îþš›·úÿ,{ù[\îüÁ·¨±Î›ç²ÝCË=‡dîÙýÿµ'?×Õv]˜ªÌØòÿßõ5ïü·¸«ÎvïôÿVŽü¤íoüßŸßoÛÏ¿ý’ëlv×oÞ§]ÿ+öoÓz¯ïyþ€O¯ýguÛðŸÖº—ñ®gÀ~1C^åd6õÿ÷¯›åËþ¯Ñ7»[î¿_jèv]ýÚ=ûG|ßCÚùî-úVëÝ‡{w}·÷ßôÌÿw7ÿÿþ®0¾ñÿÁ‹ï³ûmž¢ýïíÆo?ùo|æ_^eíßÏë÷„2n?o”¬1›·­ø¼G6þ•wð_töhËh*ÚéZ²æt|7ýúM‹¾ÓyÛ»oÿgåé6ÿ'¿ûþ,ÅóÎcµ}ÖÜ¥Zæ_O¾¾ýû%ŸÜ×r,¡ÐÈ}÷®¿xv©¸µ¿~ù7tGèÿ6d×¾êV]Â}ýd-[
+04:01:12 ¶Iïÿ£ûû9É£4ÂÇÿkÛh=¾šº¿MF»?£Õ'
+04:01:12 002 Initializing FTP: 
+04:01:12  Open Connection to 190.228.29.71
+04:01:14  220 POWER FTP
+04:01:15  331 Password required for monsanto.seedmech.com.ar
+04:01:16  230 User monsanto.seedmech.com.ar logged in
+04:01:17 002 Initializing FTP: [SET Binary Mode]
+04:01:17  200 Type set to I
+04:01:17 003 Transferring
+04:01:17 004 Uploading to Server
+04:01:25 004 Uploading to Server: [Upload File]
+04:01:25  227 Entering Passive Mode (190,228,29,71,153,56).
+04:01:25 054 Server Error: 
+04:01:25  FTP_CMD_FAILED PORT 186,126,67,166,234,132
+04:01:26 Disconnect
+04:01:26 OK
+04:01:26 Matched 'OK'
+04:01:27 ATH
+04:01:27 OK
+04:01:27 Matched 'OK'
+04:01:27 AT+CFUN=0
+04:01:30 OK
+04:01:30 Matched 'OK'
+04:01:30 001 Initializing Interface: [Disconnect Modem]
+04:01:30  Waiting to retry

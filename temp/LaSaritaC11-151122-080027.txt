@@ -1,0 +1,65 @@
+Logger ID: LaSaritaC11
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: 69871B160000
+Probe Voltage: 13736mV
+Last Response: 054 Server Error: "FTP_OPEN_FAILED 221 Goodbye." [Connect Server]
+Connection Details:
+Log started: 15-11-22 04:02:32
+04:02:32 Initialize Modem
+04:02:32 001 Initializing Interface: [Connect Modem]
+04:02:32  Waiting Network
+04:02:40 +WIND: 3
+04:02:41 +STIN: 0
+04:02:41 +WIND: 1
+04:02:44 +WIND: 7
+04:02:45 +WIND: 4
+04:02:45 Matched '+WIND: 4'
+04:02:45 AT&D2
+04:02:45 OK
+04:02:45 Matched 'OK'
+04:02:45 AT+CSQ
+04:02:45 +CSQ: 10,99
+04:02:45 OK
+04:02:45 Matched 'OK'
+04:02:46 Connect
+04:02:46 ATS0=0
+04:02:46 OK
+04:02:46 Matched 'OK'
+04:02:46 ATD*99***1#
+04:02:46 CONNECT 9600
+04:02:46 Matched 'CONNECT*'
+04:02:46 Connected
+04:02:46 001 Initializing Interface: [Connect Init]
+04:02:46  Initialise TCP/IP Stack
+04:02:47 001 Initializing Interface: [Start PPP]
+04:02:47  Connecting
+04:02:51 001 Initializing Interface: [PPP Connected]
+04:02:51  Connected 10.157.197.122
+04:02:52 002 Initializing FTP: [Connect Server]
+04:02:52  Open Connection to 190.228.29.71
+04:03:37 054 Server Error: 
+04:03:37  Timeout
+04:03:45 054 Server Error: FTP_OPEN_FAILED - '221 Goodbye.
+04:03:45 '
+04:03:45 002 Initializing FTP: 
+04:03:45  Open Connection to 190.228.29.71
+04:04:10 054 Server Error: 
+04:04:10  FTP_OPEN_FAILED 221 Goodbye.
+04:04:11 054 Server Error: FTP_OPEN_FAILED - '221 Goodbye.
+04:04:11 '
+04:04:11 Disconnect
+04:04:11 +STIN: 98
+04:04:11 OK
+04:04:11 Matched 'OK'
+04:04:11 +STIN: 99
+04:04:11 ATH
+04:04:11 OK
+04:04:11 Matched 'OK'
+04:04:11 AT+CFUN=0
+04:04:14 OK
+04:04:14 Matched 'OK'
+08:00:00 001 Initializing Interface
+08:00:00 001 Initializing Interface: [Idle]
+08:00:00  Process URL

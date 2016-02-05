@@ -1,0 +1,75 @@
+Logger ID: TDF01
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: E6ED1B160000
+Probe Voltage: 13527mV
+Last Response: 054 Server Error: "FTP_CMD_FAILED PORT 10,147,138,236,208,130" [Upload File]
+Connection Details:
+Log started: 15-10-15 16:01:55
+16:01:55 Initialize Modem
+16:01:55 001 Initializing Interface: [Connect Modem]
+16:01:55  Waiting Network
+16:02:02 +WIND: 3
+16:02:05 +STIN: 0
+16:02:05 +WIND: 1
+16:02:08 +WIND: 7
+16:02:10 +WIND: 4
+16:02:10 Matched '+WIND: 4'
+16:02:10 AT&D2
+16:02:10 OK
+16:02:10 Matched 'OK'
+16:02:11 AT+CSQ
+16:02:11 +CSQ: 9,99
+16:02:11 OK
+16:02:11 Matched 'OK'
+16:02:11 Connect
+16:02:11 ATS0=0
+16:02:11 OK
+16:02:11 Matched 'OK'
+16:02:11 ATD*99***1#
+16:02:11 CONNECT 9600
+16:02:11 Matched 'CONNECT*'
+16:02:12 Connected
+16:02:12 001 Initializing Interface: [Connect Init]
+16:02:12  Initialise TCP/IP Stack
+16:02:12 001 Initializing Interface: [Start PPP]
+16:02:12  Connecting
+16:02:17 001 Initializing Interface: [PPP Connected]
+16:02:17  Connected 10.147.138.236
+16:02:17 002 Initializing FTP: [Connect Server]
+16:02:17  Open Connection to 190.228.29.71
+16:02:29  220 POWER FTP
+16:02:40  331 Password required for monsanto.seedmech.com.ar
+16:02:40  230 User monsanto.seedmech.com.ar logged in
+16:02:41 002 Initializing FTP: [SET Binary Mode]
+16:02:41  200 Type set to I
+16:02:41 003 Transferring
+16:02:42 004 Uploading to Server
+16:02:54 054 Server Error: [Upload File]
+16:02:54  FTP_CMD_FAILED PORT 10,147,138,236,208,127
+16:03:38 002 Initializing FTP: [Connect Server]
+16:03:38  Open Connection to 190.228.29.71
+16:03:39  220 POWER FTP
+16:03:40  331 Password required for monsanto.seedmech.com.ar
+16:03:41  230 User monsanto.seedmech.com.ar logged in
+16:03:41 002 Initializing FTP: [SET Binary Mode]
+16:03:41  200 Type set to I
+16:03:54 054 Server Error: [Upload File]
+16:03:54  FTP_CMD_FAILED PORT 10,147,138,236,208,130
+16:03:56 054 Server Error: [Disconnect FTP Server]
+16:03:56  500 UIT not understood
+16:04:04 Disconnect
+16:04:04 +STIN: 98
+16:04:04 OK
+16:04:04 Matched 'OK'
+16:04:04 +STIN: 99
+16:04:04 ATH
+16:04:04 OK
+16:04:04 Matched 'OK'
+16:04:04 AT+CFUN=0
+16:04:07 OK
+16:04:07 Matched 'OK'
+18:00:00 001 Initializing Interface
+18:00:00 001 Initializing Interface: [Idle]
+18:00:00  Process URL

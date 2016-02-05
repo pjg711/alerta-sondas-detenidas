@@ -1,0 +1,65 @@
+Logger ID: Sonda23
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: F6681C160000
+Probe Voltage: 13044mV
+Last Response: 054 Server Error: "SOCKET_TIMED_OUT" [SET Binary Mode]
+Connection Details:
+Log started: 15-10-15 16:03:46
+16:03:46 Initialize Modem
+16:03:46 001 Initializing Interface: [Connect Modem]
+16:03:46  Waiting Network
+16:03:53 +WIND: 3
+16:03:56 +WIND: 1
+16:04:00 +WIND: 7
+16:04:12 +WIND: 4
+16:04:12 Matched '+WIND: 4'
+16:04:12 AT&D2
+16:04:12 OK
+16:04:12 Matched 'OK'
+16:04:12 AT+CSQ
+16:04:12 +CSQ: 10,0
+16:04:12 OK
+16:04:12 Matched 'OK'
+16:04:13 Connect
+16:04:13 ATS0=0
+16:04:13 OK
+16:04:13 Matched 'OK'
+16:04:13 ATD*99***1#
+16:04:13 CONNECT 9600
+16:04:13 Matched 'CONNECT*'
+16:04:13 Connected
+16:04:14 001 Initializing Interface: [Connect Init]
+16:04:14  Initialise TCP/IP Stack
+16:04:14 001 Initializing Interface: [Start PPP]
+16:04:14  Connecting
+16:04:23 001 Initializing Interface: [PPP Connected]
+16:04:23  Connected 186.152.131.69
+16:04:23 002 Initializing FTP: [Connect Server]
+16:04:23  Open Connection to 190.228.29.71
+16:04:35 054 Server Error: 
+16:04:35  FTP_OPEN_FAILED
+16:04:35 054 Server Error: FTP_OPEN_FAILED - ''
+16:04:36 002 Initializing FTP: 
+16:04:36  Open Connection to 190.228.29.71
+16:04:39  220 POWER FTP
+16:04:40  331 Password required for monsanto.seedmech.com.ar
+16:04:54  230 User monsanto.seedmech.com.ar logged in
+16:05:01 054 Server Error: [SET Binary Mode]
+16:05:01  SOCKET_TIMED_OUT
+16:05:01 054 Server Error: SOCKET_TIMED_OUT - ''
+16:05:02 005 Disconnecting from Server: [Disconnect FTP Server]
+16:05:02  221 Goodbye.
+16:05:05 Disconnect
+16:05:05 OK
+16:05:05 Matched 'OK'
+16:05:05 ATH
+16:05:05 OK
+16:05:05 Matched 'OK'
+16:05:05 AT+CFUN=0
+16:05:08 OK
+16:05:08 Matched 'OK'
+20:00:00 001 Initializing Interface
+20:00:00 001 Initializing Interface: [Idle]
+20:00:00  Process URL

@@ -1,0 +1,60 @@
+Logger ID: Norte1
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.6.5
+Build: Jun 12 2015 17:01:21
+Serial ID: B5BA62180000
+Serial Number: <blank>
+Probe Voltage: 12310mV
+Last Response: 057 Supply Voltage Too Low
+Connection Details:
+Log started: 15-12-01 15:41:40
+15:41:40 Initialize Modem [12415mV]
+15:41:42 þ
+15:41:43 +WIND: 3
+15:41:43 +STIN: 0
+15:41:44 +WIND: 1
+15:41:47 +WIND: 4
+15:41:47 Matched '+WIND: 4'
+15:41:47 AT+CREG=2
+15:41:48 OK
+15:41:48 Matched 'OK'
+15:41:48 +CREG: 2
+15:41:48 +WIND: 7
+15:41:48 +CREG: 1,"0961","5329"
+15:41:48 Matched '+CREG: 1*'
+15:41:48 AT&D2
+15:41:48 OK
+15:41:48 Matched 'OK'
+15:41:49 AT+CSQ
+15:41:49 +CSQ: 13,99
+15:41:49 OK
+15:41:49 Matched 'OK'
+15:41:49 AT+CCED=0,1
+15:41:49 +CCED: 722,07,0961,5329,10,1536,22,,,255,,,4
+15:41:49 OK
+15:41:49 Matched 'OK'
+15:41:49 AT+ADC?
+15:41:49 +ADC: 4028,100,13,844
+15:41:50 OK
+15:41:50 Matched 'OK'
+15:41:50 Connect [12415mV]
+15:41:50 ATS0=0
+15:41:50 OK
+15:41:50 Matched 'OK'
+15:41:50 ATD*99***1#
+15:41:50 CONNECT 9600
+15:41:50 Matched 'CONNECT*'
+15:41:51 Connected [12457mV]
+15:41:51 001 Initializing Interface: [Connect Init]
+15:41:51  Initialise TCP/IP Stack
+15:41:51 001 Initializing Interface: [Start PPP]
+15:41:51  Connecting
+15:41:56 001 Initializing Interface: [PPP Connected]
+15:41:56  Connected 10.236.137.254
+15:41:56 002 Initializing FTP: [Connect Server]
+15:41:56  Open Connection to 190.228.29.71
+15:41:57  220 POWER FTP
+15:41:58  331 Password required for monsanto.seedmech.com.ar
+15:41:59  230 User monsanto.seedmech.com.ar logged in
+15:41:59 002 Initializing FTP: [SET Binary Mode]
+15:41:59  200 Type set to I

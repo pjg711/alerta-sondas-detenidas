@@ -1,0 +1,62 @@
+Logger ID: Sonda23
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: F6681C160000
+Probe Voltage: 13673mV
+Last Response: 054 Server Error: "FTP_OPEN_FAILED 221 Goodbye." [Connect Server]
+Connection Details:
+Log started: 15-10-25 08:01:56
+08:01:56 Initialize Modem
+08:01:56 001 Initializing Interface: [Connect Modem]
+08:01:56  Waiting Network
+08:02:04 +WIND: 3
+08:02:07 +WIND: 1
+08:02:12 +WIND: 7
+08:02:23 +WIND: 4
+08:02:23 Matched '+WIND: 4'
+08:02:23 AT&D2
+08:02:23 OK
+08:02:23 Matched 'OK'
+08:02:24 AT+CSQ
+08:02:24 +CSQ: 10,0
+08:02:24 OK
+08:02:24 Matched 'OK'
+08:02:24 Connect
+08:02:24 ATS0=0
+08:02:24 OK
+08:02:24 Matched 'OK'
+08:02:24 ATD*99***1#
+08:02:24 CONNECT 9600
+08:02:24 Matched 'CONNECT*'
+08:02:25 Connected
+08:02:25 001 Initializing Interface: [Connect Init]
+08:02:25  Initialise TCP/IP Stack
+08:02:25 001 Initializing Interface: [Start PPP]
+08:02:25  Connecting
+08:02:32 001 Initializing Interface: [PPP Connected]
+08:02:32  Connected 181.4.144.169
+08:02:32 002 Initializing FTP: [Connect Server]
+08:02:32  Open Connection to 190.228.29.71
+08:03:09 054 Server Error: 
+08:03:09  FTP_OPEN_FAILED 221 Goodbye.
+08:03:10 054 Server Error: FTP_OPEN_FAILED - '221 Goodbye.
+08:03:10 '
+08:03:10 002 Initializing FTP: 
+08:03:10  Open Connection to 190.228.29.71
+08:03:41 054 Server Error: 
+08:03:41  FTP_OPEN_FAILED 221 Goodbye.
+08:03:41 054 Server Error: FTP_OPEN_FAILED - '221 Goodbye.
+08:03:41 '
+08:03:41 Disconnect
+08:03:41 OK
+08:03:41 Matched 'OK'
+08:03:42 ATH
+08:03:42 OK
+08:03:42 Matched 'OK'
+08:03:42 AT+CFUN=0
+08:03:45 OK
+08:03:45 Matched 'OK'
+12:00:00 001 Initializing Interface
+12:00:00 001 Initializing Interface: [Idle]
+12:00:00  Process URL

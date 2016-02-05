@@ -1,0 +1,59 @@
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.2.3
+Serial: BB50A1140000
+Probe Voltage: 12331mV
+Last Response: 054 Server Error: "FTP_OPEN_FAILED 331 Password required fo..." [Connect Server]
+Connection Details:
+001 Initializing Interface: [Connect Modem]
+ Waiting Network
+Initialize Modem
++WIND: 3
++WIND: 1
++WIND: 7
++WIND: 4
+Matched '+WIND: 4'
+AT&D2
+OK
+Matched 'OK'
+AT+CSQ
++CSQ: 7,99
+OK
+Matched 'OK'
+Connect
+ATS0=0
+OK
+Matched 'OK'
+ATD*99***1#
+CONNECT 9600
+Matched 'CONNECT*'
+Connected
+001 Initializing Interface: [Connect Init]
+ Initialise TCP/IP Stack
+001 Initializing Interface: [Start PPP]
+ Connecting
+001 Initializing Interface: [PPP Connected]
+ Connected 181.2.198.145
+002 Initializing FTP: [Connect Server]
+ Open Connection to 190.228.29.71
+ 220 POWER FTP
+ 331 Password required for monsanto.seedmech.com.ar
+054 Server Error: 
+ FTP_OPEN_FAILED 230 User monsanto.seedmech.com.ar logged in
+002 Initializing FTP: 
+ Open Connection to 190.228.29.71
+ 220 POWER FTP
+ 331 Password required for monsanto.seedmech.com.ar
+054 Server Error: 
+ FTP_OPEN_FAILED 331 Password required for monsanto.seedmech.com.ar
+Disconnect
+OK
+Matched 'OK'
+ATH
+OK
+Matched 'OK'
+AT+CFUN=0
+OK
+Matched 'OK'
+001 Initializing Interface
+001 Initializing Interface: [Idle]
+ Process URL

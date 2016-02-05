@@ -1,0 +1,49 @@
+Logger ID: Sonda23
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: F6681C160000
+Probe Voltage: 12520mV
+Last Response: 054 Server Error: "Timeout" [Connect Server]
+Connection Details:
+Log started: 15-12-27 20:00:00
+20:00:00 Initialize Modem
+20:00:00 001 Initializing Interface: [Connect Modem]
+20:00:00  Waiting Network
+20:00:04 +WIND: 3
+20:00:06 +WIND: 1
+20:00:10 +WIND: 7
+20:00:22 +WIND: 4
+20:00:22 Matched '+WIND: 4'
+20:00:22 AT&D2
+20:00:22 OK
+20:00:22 Matched 'OK'
+20:00:22 AT+CSQ
+20:00:23 +CSQ: 10,0
+20:00:23 OK
+20:00:23 Matched 'OK'
+20:00:23 Connect
+20:00:23 ATS0=0
+20:00:23 OK
+20:00:23 Matched 'OK'
+20:00:23 ATD*99***1#
+20:00:23 CONNECT 9600
+20:00:23 Matched 'CONNECT*'
+20:00:24 Connected
+20:00:24 001 Initializing Interface: [Connect Init]
+20:00:24  Initialise TCP/IP Stack
+20:00:24 001 Initializing Interface: [Start PPP]
+20:00:24  Connecting
+20:01:39 054 Server Error: 
+20:01:39  Timeout
+20:01:39 Disconnect
+20:01:39 OK
+20:01:39 Matched 'OK'
+20:01:40 ATH
+20:01:40 OK
+20:01:40 Matched 'OK'
+20:01:40 AT+CFUN=0
+20:01:42 OK
+20:01:42 Matched 'OK'
+20:01:42 001 Initializing Interface: [Disconnect Modem]
+20:01:42  Waiting to retry

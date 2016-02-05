@@ -1,0 +1,10 @@
+Logger ID: TDF02
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.6.5
+Build: Jun 12 2015 17:01:21
+Serial ID: 97B4EE130000
+Serial Number: <blank>
+Probe Voltage: 13254mV
+Last Response: 057 Supply Voltage Too Low
+Connection Details:
+Log started: 15-11-02 16:04:00

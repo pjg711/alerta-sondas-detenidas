@@ -1,0 +1,77 @@
+Logger ID: Sonda30
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: 32D11B160000
+Probe Voltage: 12415mV
+Last Response: 053 Connection Failure: "Failed to open PPP connection" [Start PPP]
+Connection Details:
+Log started: 15-12-07 04:00:00
+04:00:00 Initialize Modem
+04:00:00 001 Initializing Interface: [Connect Modem]
+04:00:00  Waiting Network
+04:00:04 +WIND: 3
+04:00:06 +WIND: 1
+04:00:09 +WIND: 7
+04:00:11 +WIND: 4
+04:00:11 Matched '+WIND: 4'
+04:00:11 AT&D2
+04:00:11 OK
+04:00:11 Matched 'OK'
+04:00:11 AT+CSQ
+04:00:11 +CSQ: 9,99
+04:00:11 OK
+04:00:11 Matched 'OK'
+04:00:12 Connect
+04:00:12 ATS0=0
+04:00:12 OK
+04:00:12 Matched 'OK'
+04:00:12 ATD*99***1#
+04:00:12 CONNECT 9600
+04:00:12 Matched 'CONNECT*'
+04:00:12 Connected
+04:00:12 001 Initializing Interface: [Connect Init]
+04:00:12  Initialise TCP/IP Stack
+04:00:13 001 Initializing Interface: [Start PPP]
+04:00:13  Connecting
+04:00:21 001 Initializing Interface: [PPP Connected]
+04:00:21  Connected 186.126.181.240
+04:00:21 002 Initializing FTP: [Connect Server]
+04:00:21  Open Connection to 190.228.29.71
+04:00:24  220 POWER FTP
+04:00:25  331 Password required for monsanto.seedmech.com.ar
+04:00:26  230 User monsanto.seedmech.com.ar logged in
+04:00:27 002 Initializing FTP: [SET Binary Mode]
+04:00:27  200 Type set to I
+04:00:27 003 Transferring
+04:00:29 004 Uploading to Server
+04:00:31 004 Uploading to Server: [Upload File]
+04:00:31  227 Entering Passive Mode (190,228,29,71,213,93).
+04:01:14 054 Server Error: 
+04:01:14  Timeout
+04:01:59  Timeout
+04:01:59  FTP_CMD_FAILED STOR Sonda30-C016DECB-151206-162000.esp
+04:02:13 002 Initializing FTP: [Connect Server]
+04:02:13  Open Connection to 190.228.29.71
+04:02:23  220 POWER FTP
+04:02:24  331 Password required for monsanto.seedmech.com.ar
+04:02:25  230 User monsanto.seedmech.com.ar logged in
+04:02:26 002 Initializing FTP: [SET Binary Mode]
+04:02:26  200 Type set to I
+04:02:26 004 Uploading to Server: [Upload File]
+04:02:26  227 Entering Passive Mode (190,228,29,71,187,185).
+04:03:11 054 Server Error: 
+04:03:11  Timeout
+04:03:29 005 Disconnecting from Server: [Disconnect FTP Server]
+04:03:29  221 Goodbye.
+04:03:30 Disconnect
+04:03:30 OK
+04:03:30 Matched 'OK'
+04:03:30 ATH
+04:03:30 OK
+04:03:30 Matched 'OK'
+04:03:30 AT+CFUN=0
+04:03:33 OK
+04:03:33 Matched 'OK'
+04:03:33 001 Initializing Interface: [Disconnect Modem]
+04:03:33  Waiting to retry

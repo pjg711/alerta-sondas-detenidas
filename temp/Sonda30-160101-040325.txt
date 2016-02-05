@@ -1,0 +1,72 @@
+Logger ID: Sonda30
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: 32D11B160000
+Probe Voltage: 12184mV
+Last Response: 053 Connection Failure: "Failed to open PPP connection" [Start PPP]
+Connection Details:
+Log started: 16-01-01 04:00:00
+04:00:00 Initialize Modem
+04:00:00 001 Initializing Interface: [Connect Modem]
+04:00:00  Waiting Network
+04:00:03 +WIND: 3
+04:00:06 +WIND: 1
+04:00:09 +WIND: 7
+04:00:10 +WIND: 4
+04:00:10 Matched '+WIND: 4'
+04:00:10 AT&D2
+04:00:10 OK
+04:00:10 Matched 'OK'
+04:00:11 AT+CSQ
+04:00:11 +CSQ: 8,99
+04:00:11 OK
+04:00:11 Matched 'OK'
+04:00:11 Connect
+04:00:11 ATS0=0
+04:00:11 OK
+04:00:11 Matched 'OK'
+04:00:11 ATD*99***1#
+04:00:11 CONNECT 9600
+04:00:11 Matched 'CONNECT*'
+04:00:12 Connected
+04:00:12 001 Initializing Interface: [Connect Init]
+04:00:12  Initialise TCP/IP Stack
+04:00:12 001 Initializing Interface: [Start PPP]
+04:00:12  Connecting
+04:00:53 001 Initializing Interface: [PPP Connected]
+04:00:53  Connected 186.126.247.248
+04:00:53 002 Initializing FTP: [Connect Server]
+04:00:53  Open Connection to 190.228.29.71
+04:00:56  220 POWER FTP
+04:00:58  331 Password required for monsanto.seedmech.com.ar
+04:01:08  230 User monsanto.seedmech.com.ar logged in
+04:01:15 054 Server Error: [SET Binary Mode]
+04:01:15  SOCKET_TIMED_OUT
+04:01:15 054 Server Error: SOCKET_TIMED_OUT - ''
+04:01:16 005 Disconnecting from Server: [Disconnect FTP Server]
+04:01:16  200 Type set to I
+04:01:16 002 Initializing FTP: [Connect Server]
+04:01:16  Open Connection to 190.228.29.71
+04:01:19  220 POWER FTP
+04:01:19  331 Password required for monsanto.seedmech.com.ar
+04:01:20  230 User monsanto.seedmech.com.ar logged in
+04:01:20 002 Initializing FTP: [SET Binary Mode]
+04:01:20  200 Type set to I
+04:01:21 003 Transferring
+04:01:22 004 Uploading to Server
+04:01:23 004 Uploading to Server: [Upload File]
+04:01:23  227 Entering Passive Mode (190,228,29,71,170,205).
+04:01:31 054 Server Error: 
+04:01:31  FTP_CMD_FAILED STOR Sonda30-C016DF0D-151231-202000.esp
+04:01:32 Disconnect
+04:01:32 OK
+04:01:32 Matched 'OK'
+04:01:32 ATH
+04:01:32 OK
+04:01:32 Matched 'OK'
+04:01:32 AT+CFUN=0
+04:01:36 OK
+04:01:36 Matched 'OK'
+04:01:36 001 Initializing Interface: [Disconnect Modem]
+04:01:36  Waiting to retry

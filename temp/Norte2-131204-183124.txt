@@ -1,0 +1,9 @@
+Logger ID: Norte2
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.4.2
+Build: Feb 20 2012 14:51:21
+Serial: 9B96A1140000
+Probe Voltage: 12289mV
+Last Response: 053 Connection Failure: "Failed to open PPP connection" [Start PPP]
+Connection Details:
+Log started: 13-12-04 18:24:37

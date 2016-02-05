@@ -1,0 +1,49 @@
+Logger ID: TDF01
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: E6ED1B160000
+Probe Voltage: 13548mV
+Last Response: 053 Connection Failure: "Failed to open PPP connection" [Start PPP]
+Connection Details:
+Log started: 15-05-05 08:01:10
+08:01:10 Initialize Modem
+08:01:10 001 Initializing Interface: [Connect Modem]
+08:01:10  Waiting Network
+08:01:18 +WIND: 3
+08:01:21 +STIN: 0
+08:01:21 +WIND: 1
+08:01:23 +WIND: 7
+08:01:26 +WIND: 4
+08:01:26 Matched '+WIND: 4'
+08:01:26 AT&D2
+08:01:27 OK
+08:01:27 Matched 'OK'
+08:01:27 AT+CSQ
+08:01:27 +CSQ: 19,99
+08:01:27 OK
+08:01:27 Matched 'OK'
+08:01:27 Connect
+08:01:27 ATS0=0
+08:01:27 OK
+08:01:27 Matched 'OK'
+08:01:27 ATD*99***1#
+08:01:28 CONNECT 9600
+08:01:28 Matched 'CONNECT*'
+08:01:28 Connected
+08:01:28 001 Initializing Interface: [Connect Init]
+08:01:28  Initialise TCP/IP Stack
+08:01:28 001 Initializing Interface: [Start PPP]
+08:01:28  Connecting
+08:02:21 053 Connection Failure: 
+08:02:21  Failed to open PPP connection
+08:02:21 Disconnect
+08:02:22 ATH
+08:02:22 OK
+08:02:22 Matched 'OK'
+08:02:22 AT+CFUN=0
+08:02:24 OK
+08:02:24 Matched 'OK'
+12:00:00 001 Initializing Interface
+12:00:00 001 Initializing Interface: [Idle]
+12:00:00  Process URL

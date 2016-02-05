@@ -1,0 +1,68 @@
+Logger ID: Sonda30
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: 32D11B160000
+Probe Voltage: 12709mV
+Last Response: 054 Server Error: "Timeout" [Upload File]
+Connection Details:
+Log started: 15-10-26 00:03:16
+00:03:16 Initialize Modem
+00:03:16 001 Initializing Interface: [Connect Modem]
+00:03:16  Waiting Network
+00:03:23 +WIND: 3
+00:03:25 +WIND: 1
+00:03:29 +WIND: 7
+00:03:30 +WIND: 4
+00:03:30 Matched '+WIND: 4'
+00:03:30 AT&D2
+00:03:30 OK
+00:03:30 Matched 'OK'
+00:03:30 AT+CSQ
+00:03:30 +CSQ: 15,99
+00:03:31 OK
+00:03:31 Matched 'OK'
+00:03:31 Connect
+00:03:31 ATS0=0
+00:03:31 OK
+00:03:31 Matched 'OK'
+00:03:31 ATD*99***1#
+00:03:31 CONNECT 9600
+00:03:31 Matched 'CONNECT*'
+00:03:31 Connected
+00:03:32 001 Initializing Interface: [Connect Init]
+00:03:32  Initialise TCP/IP Stack
+00:03:32 001 Initializing Interface: [Start PPP]
+00:03:32  Connecting
+00:03:41 001 Initializing Interface: [PPP Connected]
+00:03:41  Connected 186.110.196.207
+00:03:41 002 Initializing FTP: [Connect Server]
+00:03:41  Open Connection to 190.228.29.71
+00:04:26 054 Server Error: 
+00:04:26  FTP_OPEN_FAILED
+00:04:26 054 Server Error: FTP_OPEN_FAILED - ''
+00:04:27 002 Initializing FTP: 
+00:04:27  Open Connection to 190.228.29.71
+00:04:29  220 POWER FTP
+00:04:30  331 Password required for monsanto.seedmech.com.ar
+00:04:31  230 User monsanto.seedmech.com.ar logged in
+00:04:32 002 Initializing FTP: [SET Binary Mode]
+00:04:32  200 Type set to I
+00:04:33 004 Uploading to Server: [Upload File]
+00:04:33  227 Entering Passive Mode (190,228,29,71,214,101).
+00:05:17 054 Server Error: 
+00:05:17  Timeout
+00:06:02  Timeout
+00:06:02  FTP_CMD_FAILED STOR Sonda30-C016DDFA-151025-122000.esp
+00:06:16 Disconnect
+00:06:16 OK
+00:06:16 Matched 'OK'
+00:06:16 ATH
+00:06:16 OK
+00:06:16 Matched 'OK'
+00:06:16 AT+CFUN=0
+00:06:19 OK
+00:06:19 Matched 'OK'
+04:00:00 001 Initializing Interface
+04:00:00 001 Initializing Interface: [Idle]
+04:00:00  Process URL

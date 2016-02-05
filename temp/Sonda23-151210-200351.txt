@@ -1,0 +1,77 @@
+Logger ID: Sonda23
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: F6681C160000
+Probe Voltage: 12667mV
+Last Response: 053 Connection Failure: "Failed to open PPP connection" [Start PPP]
+Connection Details:
+Log started: 15-12-10 20:00:00
+20:00:00 Initialize Modem
+20:00:00 001 Initializing Interface: [Connect Modem]
+20:00:00  Waiting Network
+20:00:04 +WIND: 3
+20:00:06 +WIND: 1
+20:00:11 +WIND: 7
+20:00:22 +WIND: 4
+20:00:22 Matched '+WIND: 4'
+20:00:22 AT&D2
+20:00:22 OK
+20:00:22 Matched 'OK'
+20:00:22 AT+CSQ
+20:00:22 +CSQ: 9,0
+20:00:23 OK
+20:00:23 Matched 'OK'
+20:00:23 Connect
+20:00:23 ATS0=0
+20:00:23 OK
+20:00:23 Matched 'OK'
+20:00:23 ATD*99***1#
+20:00:23 CONNECT 9600
+20:00:23 Matched 'CONNECT*'
+20:00:23 Connected
+20:00:24 001 Initializing Interface: [Connect Init]
+20:00:24  Initialise TCP/IP Stack
+20:00:24 001 Initializing Interface: [Start PPP]
+20:00:24  Connecting
+20:00:38 001 Initializing Interface: [PPP Connected]
+20:00:38  Connected 181.4.146.245
+20:00:38 002 Initializing FTP: [Connect Server]
+20:00:38  Open Connection to 190.228.29.71
+20:00:40  220 POWER FTP
+20:00:41  331 Password required for monsanto.seedmech.com.ar
+20:00:42  230 User monsanto.seedmech.com.ar logged in
+20:00:43 002 Initializing FTP: [SET Binary Mode]
+20:00:43  200 Type set to I
+20:00:43 003 Transferring
+20:00:45 004 Uploading to Server
+20:00:53 004 Uploading to Server: [Upload File]
+20:00:53  227 Entering Passive Mode (190,228,29,71,205,214).
+20:00:53 054 Server Error: 
+20:00:53  FTP_CMD_FAILED PORT 181,4,146,245,239,130
+20:00:53 054 Server Error: [Disconnect FTP Server]
+20:00:53  500 81,4,146,245,239,130 not understood
+20:00:54 002 Initializing FTP: [Connect Server]
+20:00:54  Open Connection to 190.228.29.71
+20:00:56  220 POWER FTP
+20:00:57  331 Password required for monsanto.seedmech.com.ar
+20:00:58  230 User monsanto.seedmech.com.ar logged in
+20:00:59 002 Initializing FTP: [SET Binary Mode]
+20:00:59  200 Type set to I
+20:00:59 004 Uploading to Server: [Upload File]
+20:00:59  227 Entering Passive Mode (190,228,29,71,234,57).
+20:01:44 054 Server Error: 
+20:01:44  Timeout
+20:02:29  Timeout
+20:02:29  FTP_CMD_FAILED STOR Sonda23-1A2F1BB6-151210-082000.esp
+20:02:44 Disconnect
+20:02:44 OK
+20:02:44 Matched 'OK'
+20:02:45 ATH
+20:02:45 OK
+20:02:45 Matched 'OK'
+20:02:45 AT+CFUN=0
+20:02:47 OK
+20:02:47 Matched 'OK'
+20:02:47 001 Initializing Interface: [Disconnect Modem]
+20:02:47  Waiting to retry

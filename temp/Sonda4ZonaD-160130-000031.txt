@@ -1,0 +1,80 @@
+Logger ID: Sonda4ZonaD
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.6.5
+Build: Jun 12 2015 17:01:21
+Serial ID: 2AD062180000
+Serial Number: <blank>
+Probe Voltage: 12835mV
+Last Response: 054 Server Error: "Timeout" [Connect Server]
+Connection Details:
+Log started: 16-01-29 22:00:32
+22:00:32 Initialize Modem [13002mV]
+22:00:32 001 Initializing Interface: [Connect Modem]
+22:00:32  Waiting Network
+22:00:39 +WIND: 3
+22:00:40 +STIN: 0
+22:00:40 +WIND: 1
+22:00:44 +WIND: 7
+22:00:44 +WIND: 4
+22:00:44 Matched '+WIND: 4'
+22:00:44 AT+CREG=2
+22:00:45 OK
+22:00:45 Matched 'OK'
+22:00:45 +CREG: 1,"07DF","0A39"
+22:00:45 Matched '+CREG: 1*'
+22:00:45 AT&D2
+22:00:45 OK
+22:00:45 Matched 'OK'
+22:00:45 AT+CSQ
+22:00:45 +CSQ: 17,99
+22:00:45 OK
+22:00:45 Matched 'OK'
+22:00:46 AT+CCED=0,1
+22:00:46 +CCED: 722,07,07df,0a39,35,165,30,,,255,,,4
+22:00:46 OK
+22:00:46 Matched 'OK'
+22:00:46 AT+ADC?
+22:00:46 +ADC: 4015,103,6,909
+22:00:46 OK
+22:00:46 Matched 'OK'
+22:00:46 Connect [12939mV]
+22:00:46 ATS0=0
+22:00:46 OK
+22:00:46 Matched 'OK'
+22:00:47 ATD*99***1#
+22:00:47 CONNECT 9600
+22:00:47 Matched 'CONNECT*'
+22:00:47 Connected [12897mV]
+22:00:47 001 Initializing Interface: [Connect Init]
+22:00:47  Initialise TCP/IP Stack
+22:00:47 001 Initializing Interface: [Start PPP]
+22:00:47  Connecting
+22:00:54 001 Initializing Interface: [PPP Connected]
+22:00:54  Connected 10.86.32.224
+22:00:54 002 Initializing FTP: [Connect Server]
+22:00:54  Open Connection to 190.228.29.71
+22:01:39 054 Server Error: 
+22:01:39  Timeout
+22:02:01 054 Server Error: TCP_OPEN_FAILED - '221 Goodbye.
+22:02:01 '
+22:02:01 002 Initializing FTP: 
+22:02:01  Open Connection to 190.228.29.71
+22:02:46 054 Server Error: 
+22:02:46  Timeout
+22:03:07 054 Server Error: TCP_OPEN_FAILED - '221 Goodbye.
+22:03:07 '
+22:03:07 Disconnect
+22:03:07 +STIN: 98
+22:03:07 OK
+22:03:07 Matched 'OK'
+22:03:07 +STIN: 99
+22:03:08 ATH
+22:03:08 OK
+22:03:08 Matched 'OK'
+22:03:08 AT+CFUN=0
+22:03:10 OK
+22:03:10 Matched 'OK'
+22:03:10 Power down [12709mV]
+00:00:00 001 Initializing Interface
+00:00:00 001 Initializing Interface: [Idle]
+00:00:00  Process URL

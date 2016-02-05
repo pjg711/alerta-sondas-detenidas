@@ -1,0 +1,82 @@
+Logger ID: Sonda34
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.6.2
+Build: May 29 2014 14:00:00
+Serial: ECAC4E170000
+Probe Voltage: 13233mV
+Last Response: 054 Server Error: "Timeout" [Upload File]
+Connection Details:
+Log started: 15-11-20 23:02:53
+23:02:53 Initialize Modem
+23:02:53 001 Initializing Interface: [Connect Modem]
+23:02:53  Waiting Network
+23:03:00 +WIND: 3
+23:03:02 +WIND: 1
+23:03:07 +WIND: 7
+23:03:07 +WIND: 4
+23:03:07 Matched '+WIND: 4'
+23:03:07 AT+CREG=2
+23:03:07 OK
+23:03:07 Matched 'OK'
+23:03:08 +CREG: 1,"07DF","165F"
+23:03:08 Matched '+CREG: 1*'
+23:03:08 AT&D2
+23:03:08 OK
+23:03:08 Matched 'OK'
+23:03:08 AT+CSQ
+23:03:08 +CSQ: 20,99
+23:03:08 OK
+23:03:08 Matched 'OK'
+23:03:08 AT+CCED=0,1
+23:03:08 +CCED: 722,07,07df,165f,53,178,36,,,255,,,4
+23:03:09 OK
+23:03:09 Matched 'OK'
+23:03:09 AT+ADC?
+23:03:09 +ADC: 3910,4845,4843,4843
+23:03:09 OK
+23:03:09 Matched 'OK'
+23:03:09 Connect
+23:03:09 ATS0=0
+23:03:09 OK
+23:03:09 Matched 'OK'
+23:03:10 ATD*99***1#
+23:03:10 CONNECT 9600
+23:03:10 Matched 'CONNECT*'
+23:03:10 Connected
+23:03:10 001 Initializing Interface: [Connect Init]
+23:03:10  Initialise TCP/IP Stack
+23:03:10 001 Initializing Interface: [Start PPP]
+23:03:10  Connecting
+23:04:02 001 Initializing Interface: [PPP Connected]
+23:04:02  Connected 10.16.38.16
+23:04:02 002 Initializing FTP: [Connect Server]
+23:04:02  Open Connection to 190.228.29.71
+23:04:05  220 POWER FTP
+23:04:08  331 Password required for monsanto.seedmech.com.ar
+23:04:25  230 User monsanto.seedmech.com.ar logged in
+23:04:33 054 Server Error: [SET Binary Mode]
+23:04:33  SOCKET_TIMED_OUT
+23:04:33 054 Server Error: SOCKET_TIMED_OUT - ''
+23:04:51 002 Initializing FTP: [Connect Server]
+23:04:51  Open Connection to 190.228.29.71
+23:04:52  220 POWER FTP
+23:04:53  331 Password required for monsanto.seedmech.com.ar
+23:04:53  230 User monsanto.seedmech.com.ar logged in
+23:04:54 002 Initializing FTP: [SET Binary Mode]
+23:04:54  200 Type set to I
+23:04:55 004 Uploading to Server: [Upload File]
+23:04:55  227 Entering Passive Mode (190,228,29,71,188,253)
+23:05:24 054 Server Error: 
+23:05:24  Timeout
+23:05:54  Timeout
+23:05:54  FTP_CMD_FAILED STOR Sonda34-1B96F73F-151120-221000.esp
+23:06:14 Disconnect
+23:06:15 OK
+23:06:15 Matched 'OK'
+23:06:15 ATH
+23:06:15 AT+CFUN=0
+23:06:15 OK
+23:06:15 Matched 'OK'
+00:00:01 001 Initializing Interface
+00:00:01 001 Initializing Interface: [Idle]
+00:00:01  Process URL

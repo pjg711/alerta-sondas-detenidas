@@ -1,0 +1,45 @@
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.2.3
+Serial: 4949A1140000
+Probe Voltage: 12876mV
+Last Response: 054 Server Error: "FTP_OPEN_FAILED 250 CWD command successful" [Connect Server]
+Connection Details:
+001 Initializing Interface: [Connect Modem]
+ Waiting Network
+Initialize Modem
++WIND: 3
++WIND: 1
++WIND: 4
+Matched '+WIND: 4'
+AT&D2
+OK
+Matched 'OK'
++WIND: 7
+AT+CSQ
++CSQ: 14,0
+OK
+Matched 'OK'
+Connect
+ATS0=0
+OK
+Matched 'OK'
+ATD*99***1#
+CONNECT 9600
+Matched 'CONNECT*'
+Connected
+001 Initializing Interface: [Connect Init]
+ Initialise TCP/IP Stack
+001 Initializing Interface: [Start PPP]
+ Connecting
+053 Connection Failure: 
+ Failed to open PPP connection
+Disconnect
+OK
+Matched 'OK'
+ATH
+OK
+Matched 'OK'
+AT+CFUN=0
+Error timeout
+001 Initializing Interface: [Disconnect Modem]
+ Waiting to retry

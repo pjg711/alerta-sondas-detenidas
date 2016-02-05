@@ -1,0 +1,65 @@
+Logger ID: TDF01
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: E6ED1B160000
+Probe Voltage: 13254mV
+Last Response: 054 Server Error: "FTP_OPEN_FAILED 227 Entering Passive Mod..." [Connect Server]
+Connection Details:
+Log started: 15-05-15 14:01:50
+14:01:50 Initialize Modem
+14:01:50 001 Initializing Interface: [Connect Modem]
+14:01:50  Waiting Network
+14:01:58 +WIND: 3
+14:02:00 +STIN: 0
+14:02:00 +WIND: 1
+14:02:03 +WIND: 7
+14:02:06 +WIND: 4
+14:02:06 Matched '+WIND: 4'
+14:02:06 AT&D2
+14:02:06 OK
+14:02:06 Matched 'OK'
+14:02:06 AT+CSQ
+14:02:06 +CSQ: 17,99
+14:02:06 OK
+14:02:06 Matched 'OK'
+14:02:07 Connect
+14:02:07 ATS0=0
+14:02:07 OK
+14:02:07 Matched 'OK'
+14:02:07 ATD*99***1#
+14:02:07 CONNECT 9600
+14:02:07 Matched 'CONNECT*'
+14:02:07 Connected
+14:02:08 001 Initializing Interface: [Connect Init]
+14:02:08  Initialise TCP/IP Stack
+14:02:08 001 Initializing Interface: [Start PPP]
+14:02:08  Connecting
+14:02:13 001 Initializing Interface: [PPP Connected]
+14:02:13  Connected 10.51.185.236
+14:02:13 002 Initializing FTP: [Connect Server]
+14:02:13  Open Connection to 190.228.29.71
+14:02:58 054 Server Error: 
+14:02:58  Timeout
+14:03:22 054 Server Error: FTP_OPEN_FAILED - '227 Entering Passive Mode (190,228,29,71,203,236)
+14:03:22 '
+14:03:22 002 Initializing FTP: 
+14:03:22  Open Connection to 190.228.29.71
+14:03:55 054 Server Error: 
+14:03:55  FTP_OPEN_FAILED 227 Entering Passive Mode (190,228,29,71,203,236)
+14:03:56 054 Server Error: FTP_OPEN_FAILED - '227 Entering Passive Mode (190,228,29,71,203,236)
+14:03:56 '
+14:03:56 Disconnect
+14:03:56 +STIN: 98
+14:03:56 OK
+14:03:56 Matched 'OK'
+14:03:56 +STIN: 99
+14:03:56 ATH
+14:03:56 OK
+14:03:56 Matched 'OK'
+14:03:56 AT+CFUN=0
+14:03:59 OK
+14:03:59 Matched 'OK'
+16:00:00 001 Initializing Interface
+16:00:00 001 Initializing Interface: [Idle]
+16:00:00  Process URL

@@ -1,0 +1,63 @@
+Logger ID: TDF02
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.6.5
+Build: Jun 12 2015 17:01:21
+Serial ID: 97B4EE130000
+Serial Number: <blank>
+Probe Voltage: 12667mV
+Last Response: 053 Connection Failure: "Failed to open PPP connection" [Start PPP]
+Connection Details:
+Log started: 15-12-08 18:02:38
+18:02:38 Initialize Modem [13044mV]
+18:02:38 001 Initializing Interface: [Connect Modem]
+18:02:38  Waiting Network
+18:02:45 +WIND: 3
+18:02:48 +WIND: 1
+18:02:50 +WIND: 7
+18:02:53 +WIND: 4
+18:02:53 Matched '+WIND: 4'
+18:02:53 AT+CREG=2
+18:02:53 OK
+18:02:53 Matched 'OK'
+18:02:53 +CREG: 1,"07DF","0A35"
+18:02:53 Matched '+CREG: 1*'
+18:02:54 AT&D2
+18:02:54 OK
+18:02:54 Matched 'OK'
+18:02:54 AT+CSQ
+18:02:54 +CSQ: 17,99
+18:02:54 OK
+18:02:54 Matched 'OK'
+18:02:54 AT+CCED=0,1
+18:02:54 +CCED: 722,07,07df,0a35,55,169,31,,,255,,,4
+18:02:54 OK
+18:02:54 Matched 'OK'
+18:02:55 AT+ADC?
+18:02:55 +ADC: 3933,119,4805,896
+18:02:55 OK
+18:02:55 Matched 'OK'
+18:02:55 Connect [13002mV]
+18:02:55 ATS0=0
+18:02:55 OK
+18:02:55 Matched 'OK'
+18:02:55 ATD*99***1#
+18:02:55 CONNECT 9600
+18:02:55 Matched 'CONNECT*'
+18:02:56 Connected [13002mV]
+18:02:56 001 Initializing Interface: [Connect Init]
+18:02:56  Initialise TCP/IP Stack
+18:02:56 001 Initializing Interface: [Start PPP]
+18:02:56  Connecting
+18:03:05 053 Connection Failure: 
+18:03:05  Failed to open PPP connection
+18:03:05 Disconnect
+18:03:06 ATH
+18:03:06 OK
+18:03:06 Matched 'OK'
+18:03:06 AT+CFUN=0
+18:03:09 OK
+18:03:09 Matched 'OK'
+18:03:09 Power down [12981mV]
+20:00:01 001 Initializing Interface
+20:00:01 001 Initializing Interface: [Idle]
+20:00:01  Process URL

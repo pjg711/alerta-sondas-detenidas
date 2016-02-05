@@ -1,0 +1,54 @@
+Logger ID: TDF04
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: 53821B160000
+Probe Voltage: 13338mV
+Last Response: 053 Connection Failure: "Failed to open PPP connection" [Start PPP]
+Connection Details:
+Log started: 15-09-04 17:20:21
+17:20:21 Initialize Modem
+17:20:21 001 Initializing Interface: [Connect Modem]
+17:20:21  Waiting Network
+17:20:28 +WIND: 3
+17:20:30 +WIND: 1
+17:20:35 +WIND: 4
+17:20:35 Matched '+WIND: 4'
+17:20:35 AT&D2
+17:20:35 OK
+17:20:35 Matched 'OK'
+17:20:35 AT+CSQ
+17:20:36 +CSQ: 20,0
+17:20:36 OK
+17:20:36 Matched 'OK'
+17:20:36 Connect
+17:20:36 ATS0=0
+17:20:36 OK
+17:20:36 Matched 'OK'
+17:20:36 ATD*99***1#
+17:20:36 CONNECT 9600
+17:20:36 Matched 'CONNECT*'
+17:20:37 Connected
+17:20:37 001 Initializing Interface: [Connect Init]
+17:20:37  Initialise TCP/IP Stack
+17:20:37 001 Initializing Interface: [Start PPP]
+17:20:37  Connecting
+17:20:42 001 Initializing Interface: [PPP Connected]
+17:20:42  Connected 10.34.165.106
+17:20:42 002 Initializing FTP: [Connect Server]
+17:20:42  Open Connection to 190.228.29.71
+17:20:44  220 POWER FTP
+17:20:45  331 Password required for monsanto.seedmech.com.ar
+17:20:45  230 User monsanto.seedmech.com.ar logged in
+17:20:52 054 Server Error: [SET Binary Mode]
+17:20:52  SOCKET_TIMED_OUT
+17:20:52 054 Server Error: SOCKET_TIMED_OUT - ''
+17:20:52 005 Disconnecting from Server: [Disconnect FTP Server]
+17:20:52  200 Type set to I
+17:20:53 002 Initializing FTP: [Connect Server]
+17:20:53  Open Connection to 190.228.29.71
+17:20:54  220 POWER FTP
+17:20:55  331 Password required for monsanto.seedmech.com.ar
+17:20:56  230 User monsanto.seedmech.com.ar logged in
+17:20:56 002 Initializing FTP: [SET Binary Mode]
+17:20:56  200 Type set to I

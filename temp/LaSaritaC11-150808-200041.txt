@@ -1,0 +1,49 @@
+Logger ID: LaSaritaC11
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: 69871B160000
+Probe Voltage: 13107mV
+Last Response: 053 Connection Failure: "Failed to open PPP connection" [Start PPP]
+Connection Details:
+Log started: 15-08-08 16:01:07
+16:01:07 Initialize Modem
+16:01:07 001 Initializing Interface: [Connect Modem]
+16:01:07  Waiting Network
+16:01:14 +WIND: 3
+16:01:15 +STIN: 0
+16:01:15 +WIND: 1
+16:01:19 +WIND: 7
+16:01:19 +WIND: 4
+16:01:19 Matched '+WIND: 4'
+16:01:20 AT&D2
+16:01:20 OK
+16:01:20 Matched 'OK'
+16:01:20 AT+CSQ
+16:01:20 +CSQ: 14,99
+16:01:20 OK
+16:01:20 Matched 'OK'
+16:01:20 Connect
+16:01:20 ATS0=0
+16:01:20 OK
+16:01:20 Matched 'OK'
+16:01:20 ATD*99***1#
+16:01:21 CONNECT 9600
+16:01:21 Matched 'CONNECT*'
+16:01:21 Connected
+16:01:21 001 Initializing Interface: [Connect Init]
+16:01:21  Initialise TCP/IP Stack
+16:01:21 001 Initializing Interface: [Start PPP]
+16:01:21  Connecting
+16:02:14 053 Connection Failure: 
+16:02:14  Failed to open PPP connection
+16:02:14 Disconnect
+16:02:15 ATH
+16:02:15 OK
+16:02:15 Matched 'OK'
+16:02:15 AT+CFUN=0
+16:02:17 OK
+16:02:17 Matched 'OK'
+20:00:00 001 Initializing Interface
+20:00:00 001 Initializing Interface: [Idle]
+20:00:00  Process URL

@@ -1,0 +1,43 @@
+Logger ID: Sonda30
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: 32D11B160000
+Probe Voltage: 13128mV
+Last Response: 053 Connection Failure: "Error timeout" [Connect Modem]
+Connection Details:
+Log started: 15-10-16 16:00:27
+16:00:27 Initialize Modem
+16:00:27 001 Initializing Interface: [Connect Modem]
+16:00:27  Waiting Network
+16:00:34 +WIND: 3
+16:00:36 +WIND: 1
+16:00:40 +WIND: 7
+16:00:41 +WIND: 4
+16:00:41 Matched '+WIND: 4'
+16:00:41 AT&D2
+16:00:41 OK
+16:00:41 Matched 'OK'
+16:00:41 AT+CSQ
+16:00:42 +CSQ: 15,99
+16:00:42 OK
+16:00:42 Matched 'OK'
+16:00:42 Connect
+16:00:42 ATS0=0
+16:00:42 OK
+16:00:42 Matched 'OK'
+16:00:47 Error timeout
+16:00:47 053 Connection Failure: 
+16:00:47  Error timeout
+16:00:47 Disconnect
+16:00:47 OK
+16:00:47 Matched 'OK'
+16:00:48 ATH
+16:00:48 OK
+16:00:48 Matched 'OK'
+16:00:48 AT+CFUN=0
+16:00:50 OK
+16:00:50 Matched 'OK'
+20:00:00 001 Initializing Interface
+20:00:00 001 Initializing Interface: [Idle]
+20:00:00  Process URL

@@ -1,0 +1,65 @@
+Logger ID: LaSaritaC1
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: 8EE11B160000
+Probe Voltage: 13589mV
+Last Response: 054 Server Error: "Timeout" [Connect Server]
+Connection Details:
+Log started: 15-03-01 20:01:15
+20:01:15 Initialize Modem
+20:01:15 001 Initializing Interface: [Connect Modem]
+20:01:15  Waiting Network
+20:01:23 +WIND: 3
+20:01:24 +STIN: 0
+20:01:24 +WIND: 1
+20:01:27 +WIND: 7
+20:01:28 +WIND: 4
+20:01:28 Matched '+WIND: 4'
+20:01:28 AT&D2
+20:01:28 OK
+20:01:28 Matched 'OK'
+20:01:28 AT+CSQ
+20:01:28 +CSQ: 12,99
+20:01:28 OK
+20:01:28 Matched 'OK'
+20:01:29 Connect
+20:01:29 ATS0=0
+20:01:29 OK
+20:01:29 Matched 'OK'
+20:01:29 ATD*99***1#
+20:01:29 CONNECT 9600
+20:01:29 Matched 'CONNECT*'
+20:01:29 Connected
+20:01:30 001 Initializing Interface: [Connect Init]
+20:01:30  Initialise TCP/IP Stack
+20:01:30 001 Initializing Interface: [Start PPP]
+20:01:30  Connecting
+20:01:35 001 Initializing Interface: [PPP Connected]
+20:01:35  Connected 10.116.86.241
+20:01:35 002 Initializing FTP: [Connect Server]
+20:01:35  Open Connection to 190.228.29.71
+20:02:20 054 Server Error: 
+20:02:20  Timeout
+20:02:41 054 Server Error: TCP_OPEN_FAILED - '221 Goodbye.
+20:02:41 '
+20:02:42 002 Initializing FTP: 
+20:02:42  Open Connection to 190.228.29.71
+20:03:27 054 Server Error: 
+20:03:27  Timeout
+20:03:48 054 Server Error: TCP_OPEN_FAILED - '221 Goodbye.
+20:03:48 '
+20:03:48 Disconnect
+20:03:48 +STIN: 98
+20:03:48 OK
+20:03:48 Matched 'OK'
+20:03:48 +STIN: 99
+20:03:49 ATH
+20:03:49 OK
+20:03:49 Matched 'OK'
+20:03:49 AT+CFUN=0
+20:03:51 OK
+20:03:51 Matched 'OK'
+00:00:00 001 Initializing Interface
+00:00:00 001 Initializing Interface: [Idle]
+00:00:00  Process URL

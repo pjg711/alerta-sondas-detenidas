@@ -1,0 +1,73 @@
+Logger ID: Sonda34
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.6.2
+Build: May 29 2014 14:00:00
+Serial: ECAC4E170000
+Probe Voltage: 13170mV
+Last Response: 054 Server Error: "FTP_OPEN_FAILED 221 Goodbye." [Connect Server]
+Connection Details:
+Log started: 15-11-01 07:00:25
+07:00:25 Initialize Modem
+07:00:25 001 Initializing Interface: [Connect Modem]
+07:00:25  Waiting Network
+07:00:32 +WIND: 3
+07:00:34 +WIND: 1
+07:00:37 +WIND: 7
+07:00:39 +WIND: 4
+07:00:39 Matched '+WIND: 4'
+07:00:39 AT+CREG=2
+07:00:39 OK
+07:00:39 Matched 'OK'
+07:00:39 +CREG: 1,"07DF","0A35"
+07:00:39 Matched '+CREG: 1*'
+07:00:40 AT&D2
+07:00:40 OK
+07:00:40 Matched 'OK'
+07:00:40 AT+CSQ
+07:00:40 +CSQ: 18,99
+07:00:40 OK
+07:00:40 Matched 'OK'
+07:00:40 AT+CCED=0,1
+07:00:40 +CCED: 722,07,07df,0a35,55,169,33,,,255,,,4
+07:00:40 OK
+07:00:40 Matched 'OK'
+07:00:41 AT+ADC?
+07:00:41 +ADC: 3923,4846,4843,4843
+07:00:41 OK
+07:00:41 Matched 'OK'
+07:00:41 Connect
+07:00:41 ATS0=0
+07:00:41 OK
+07:00:41 Matched 'OK'
+07:00:41 ATD*99***1#
+07:00:41 CONNECT 9600
+07:00:41 Matched 'CONNECT*'
+07:00:42 Connected
+07:00:42 001 Initializing Interface: [Connect Init]
+07:00:42  Initialise TCP/IP Stack
+07:00:42 001 Initializing Interface: [Start PPP]
+07:00:42  Connecting
+07:00:47 001 Initializing Interface: [PPP Connected]
+07:00:47  Connected 10.16.12.177
+07:00:47 002 Initializing FTP: [Connect Server]
+07:00:47  Open Connection to 190.228.29.71
+07:00:48 054 Server Error: 
+07:00:48  FTP_OPEN_FAILED 221 Goodbye.
+07:00:49 054 Server Error: FTP_OPEN_FAILED - '221 Goodbye.
+07:00:49 '
+07:00:49 002 Initializing FTP: 
+07:00:49  Open Connection to 190.228.29.71
+07:00:50 054 Server Error: 
+07:00:50  FTP_OPEN_FAILED 221 Goodbye.
+07:00:50 054 Server Error: FTP_OPEN_FAILED - '221 Goodbye.
+07:00:50 '
+07:00:51 Disconnect
+07:00:51 OK
+07:00:51 Matched 'OK'
+07:00:51 ATH
+07:00:51 AT+CFUN=0
+07:00:51 OK
+07:00:51 Matched 'OK'
+08:00:01 001 Initializing Interface
+08:00:01 001 Initializing Interface: [Idle]
+08:00:01  Process URL

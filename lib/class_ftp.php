@@ -55,6 +55,25 @@ class FTP
                 $item['type'] = $chunks[0]{0} === 'd' ? 'directory' : 'file'; 
                 array_splice($chunks, 0, 8); 
                 $items[implode(" ", $chunks)] = $item; 
+                
+                //$chunks contiene el nombre del archivo
+                echo "\n chunks---------------------------------\n";
+                print_r($chunks);
+                echo "\n";
+                // descargo archivo si tiene extension txt
+                if(substr($chunks[0],-4)==".txt")
+                {
+                    $local_file="temp/".$chunks[0];
+                    $server_file=$chunks[0];
+                    if(ftp_get($resource, $local_file, $server_file, FTP_ASCII))
+                    {
+                        echo "Se descargo archivo\n";
+                    }else
+                    {
+                        echo "ERROR! No se pudo descargar archivo\n";
+                    }
+                }
+                //exit;
             } 
             return $items; 
         } 

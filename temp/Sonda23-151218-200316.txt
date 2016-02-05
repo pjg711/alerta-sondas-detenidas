@@ -1,0 +1,66 @@
+Logger ID: Sonda23
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: F6681C160000
+Probe Voltage: 12855mV
+Last Response: 053 Connection Failure: "Failed to open PPP connection" [Start PPP]
+Connection Details:
+Log started: 15-12-18 20:00:00
+20:00:00 Initialize Modem
+20:00:00 001 Initializing Interface: [Connect Modem]
+20:00:00  Waiting Network
+20:00:04 +WIND: 3
+20:00:07 +WIND: 1
+20:00:10 +WIND: 7
+20:00:22 +WIND: 4
+20:00:22 Matched '+WIND: 4'
+20:00:23 AT&D2
+20:00:23 OK
+20:00:23 Matched 'OK'
+20:00:23 AT+CSQ
+20:00:23 +CSQ: 9,3
+20:00:23 OK
+20:00:23 Matched 'OK'
+20:00:23 Connect
+20:00:23 ATS0=0
+20:00:23 OK
+20:00:23 Matched 'OK'
+20:00:24 ATD*99***1#
+20:00:24 CONNECT 9600
+20:00:24 Matched 'CONNECT*'
+20:00:24 Connected
+20:00:24 001 Initializing Interface: [Connect Init]
+20:00:24  Initialise TCP/IP Stack
+20:00:24 001 Initializing Interface: [Start PPP]
+20:00:24  Connecting
+20:00:44 001 Initializing Interface: [PPP Connected]
+20:00:44  Connected 186.152.80.146
+20:00:44 002 Initializing FTP: [Connect Server]
+20:00:44  Open Connection to 190.228.29.71
+20:00:47  220 POWER FTP
+20:00:48  331 Password required for monsanto.seedmech.com.ar
+20:00:57  230 User monsanto.seedmech.com.ar logged in
+20:00:58 002 Initializing FTP: [SET Binary Mode]
+20:00:58  200 Type set to I
+20:00:58 003 Transferring
+20:01:01 004 Uploading to Server
+20:01:07 004 Uploading to Server: [Upload File]
+20:01:07  227 Entering Passive Mode (190,228,29,71,203,150).
+20:01:46 054 Server Error: 
+20:01:46  Timeout
+20:01:47 005 Disconnecting from Server: [Disconnect FTP Server]
+20:01:47  221 Goodbye.
+20:02:31 054 Server Error: 
+20:02:31  Timeout
+20:02:32 Disconnect
+20:02:32 OK
+20:02:32 Matched 'OK'
+20:02:32 ATH
+20:02:32 OK
+20:02:32 Matched 'OK'
+20:02:32 AT+CFUN=0
+20:02:36 OK
+20:02:36 Matched 'OK'
+20:02:36 001 Initializing Interface: [Disconnect Modem]
+20:02:36  Waiting to retry

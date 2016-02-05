@@ -1,0 +1,73 @@
+Logger ID: Sonda34
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.6.2
+Build: May 29 2014 14:00:00
+Serial: ECAC4E170000
+Probe Voltage: 13401mV
+Last Response: 054 Server Error: "FTP_OPEN_FAILED 221 Goodbye." [Connect Server]
+Connection Details:
+Log started: 15-10-29 18:00:26
+18:00:26 Initialize Modem
+18:00:26 001 Initializing Interface: [Connect Modem]
+18:00:26  Waiting Network
+18:00:34 +WIND: 3
+18:00:36 +WIND: 1
+18:00:40 +WIND: 7
+18:00:41 +WIND: 4
+18:00:41 Matched '+WIND: 4'
+18:00:41 AT+CREG=2
+18:00:41 OK
+18:00:41 Matched 'OK'
+18:00:41 +CREG: 1,"07DF","0A35"
+18:00:41 Matched '+CREG: 1*'
+18:00:42 AT&D2
+18:00:42 OK
+18:00:42 Matched 'OK'
+18:00:42 AT+CSQ
+18:00:42 +CSQ: 19,99
+18:00:42 OK
+18:00:42 Matched 'OK'
+18:00:42 AT+CCED=0,1
+18:00:42 +CCED: 722,07,07df,0a35,55,169,34,,,255,,,4
+18:00:42 OK
+18:00:42 Matched 'OK'
+18:00:42 AT+ADC?
+18:00:43 +ADC: 3919,4844,4842,4842
+18:00:43 OK
+18:00:43 Matched 'OK'
+18:00:43 Connect
+18:00:43 ATS0=0
+18:00:43 OK
+18:00:43 Matched 'OK'
+18:00:43 ATD*99***1#
+18:00:43 CONNECT 9600
+18:00:43 Matched 'CONNECT*'
+18:00:44 Connected
+18:00:44 001 Initializing Interface: [Connect Init]
+18:00:44  Initialise TCP/IP Stack
+18:00:44 001 Initializing Interface: [Start PPP]
+18:00:44  Connecting
+18:00:49 001 Initializing Interface: [PPP Connected]
+18:00:49  Connected 10.33.63.55
+18:00:50 002 Initializing FTP: [Connect Server]
+18:00:50  Open Connection to 190.228.29.71
+18:00:52 054 Server Error: 
+18:00:52  FTP_OPEN_FAILED 221 Goodbye.
+18:00:52 054 Server Error: FTP_OPEN_FAILED - '221 Goodbye.
+18:00:52 '
+18:00:52 002 Initializing FTP: 
+18:00:52  Open Connection to 190.228.29.71
+18:00:54 054 Server Error: 
+18:00:54  FTP_OPEN_FAILED 221 Goodbye.
+18:00:54 054 Server Error: FTP_OPEN_FAILED - '221 Goodbye.
+18:00:54 '
+18:00:55 Disconnect
+18:00:55 OK
+18:00:55 Matched 'OK'
+18:00:55 ATH
+18:00:55 AT+CFUN=0
+18:00:55 OK
+18:00:55 Matched 'OK'
+19:00:01 001 Initializing Interface
+19:00:01 001 Initializing Interface: [Idle]
+19:00:01  Process URL

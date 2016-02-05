@@ -1,0 +1,79 @@
+Logger ID: TDF01
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: E6ED1B160000
+Probe Voltage: 13548mV
+Last Response: 054 Server Error: "Timeout" [Upload File]
+Connection Details:
+Log started: 15-08-11 12:02:17
+12:02:17 Initialize Modem
+12:02:17 001 Initializing Interface: [Connect Modem]
+12:02:17  Waiting Network
+12:02:24 +WIND: 3
+12:02:27 +STIN: 0
+12:02:27 +WIND: 1
+12:02:29 +WIND: 7
+12:02:32 +WIND: 4
+12:02:32 Matched '+WIND: 4'
+12:02:32 AT&D2
+12:02:32 OK
+12:02:32 Matched 'OK'
+12:02:33 AT+CSQ
+12:02:33 +CSQ: 20,99
+12:02:33 OK
+12:02:33 Matched 'OK'
+12:02:33 Connect
+12:02:33 ATS0=0
+12:02:33 OK
+12:02:33 Matched 'OK'
+12:02:33 ATD*99***1#
+12:02:33 CONNECT 9600
+12:02:33 Matched 'CONNECT*'
+12:02:34 Connected
+12:02:34 001 Initializing Interface: [Connect Init]
+12:02:34  Initialise TCP/IP Stack
+12:02:34 001 Initializing Interface: [Start PPP]
+12:02:34  Connecting
+12:02:43 001 Initializing Interface: [PPP Connected]
+12:02:43  Connected 10.111.124.194
+12:02:44 002 Initializing FTP: [Connect Server]
+12:02:44  Open Connection to 190.228.29.71
+12:03:12  220 POWER FTP
+12:03:15  331 Password required for monsanto.seedmech.com.ar
+12:03:17  230 User monsanto.seedmech.com.ar logged in
+12:03:28 054 Server Error: [SET Binary Mode]
+12:03:28  SOCKET_TIMED_OUT 230 User monsanto.seedmech.com.ar logged in
+12:03:28 054 Server Error: SOCKET_TIMED_OUT - '230 User monsanto.seedmech.com.ar logged in
+12:03:28 '
+12:03:32 005 Disconnecting from Server: [Disconnect FTP Server]
+12:03:32  221 Goodbye.
+12:03:33 002 Initializing FTP: [Connect Server]
+12:03:33  Open Connection to 190.228.29.71
+12:03:37  220 POWER FTP
+12:03:38  331 Password required for monsanto.seedmech.com.ar
+12:03:47  230 User monsanto.seedmech.com.ar logged in
+12:03:49 002 Initializing FTP: [SET Binary Mode]
+12:03:49  200 Type set to I
+12:03:58 004 Uploading to Server: [Upload File]
+12:03:58  200 PORT command successful
+12:04:35 054 Server Error: 
+12:04:35  Timeout
+12:05:20  Timeout
+12:05:20  FTP_CMD_FAILED STOR TDF01-1A2F175B-150811-101000.esp
+12:05:21 005 Disconnecting from Server: [Disconnect FTP Server]
+12:05:21  221 Goodbye.
+12:05:22 Disconnect
+12:05:22 +STIN: 98
+12:05:22 OK
+12:05:22 Matched 'OK'
+12:05:22 +STIN: 99
+12:05:23 ATH
+12:05:23 OK
+12:05:23 Matched 'OK'
+12:05:23 AT+CFUN=0
+12:05:26 OK
+12:05:26 Matched 'OK'
+14:00:00 001 Initializing Interface
+14:00:00 001 Initializing Interface: [Idle]
+14:00:00  Process URL

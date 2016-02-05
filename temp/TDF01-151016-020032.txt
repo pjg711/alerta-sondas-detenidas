@@ -1,0 +1,45 @@
+Logger ID: TDF01
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: E6ED1B160000
+Probe Voltage: 12918mV
+Last Response: 053 Connection Failure: "Error timeout" [Connect Modem]
+Connection Details:
+Log started: 15-10-16 00:02:37
+00:02:37 Initialize Modem
+00:02:37 001 Initializing Interface: [Connect Modem]
+00:02:37  Waiting Network
+00:02:44 +WIND: 3
+00:02:47 +STIN: 0
+00:02:47 +WIND: 1
+00:02:50 +WIND: 7
+00:02:53 +WIND: 4
+00:02:53 Matched '+WIND: 4'
+00:02:53 AT&D2
+00:02:53 OK
+00:02:53 Matched 'OK'
+00:02:53 AT+CSQ
+00:02:53 +CSQ: 11,99
+00:02:53 OK
+00:02:53 Matched 'OK'
+00:02:53 Connect
+00:02:54 ATS0=0
+00:02:54 OK
+00:02:54 Matched 'OK'
+00:02:54 ATD*99***1#
+00:02:59 Error timeout
+00:02:59 053 Connection Failure: 
+00:02:59  Error timeout
+00:02:59 Disconnect
+00:02:59 OK
+00:02:59 Matched 'OK'
+00:03:00 ATH
+00:03:00 OK
+00:03:00 Matched 'OK'
+00:03:00 AT+CFUN=0
+00:03:02 OK
+00:03:02 Matched 'OK'
+02:00:00 001 Initializing Interface
+02:00:00 001 Initializing Interface: [Idle]
+02:00:00  Process URL

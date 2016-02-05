@@ -1,0 +1,67 @@
+Logger ID: TDF01
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: E6ED1B160000
+Probe Voltage: 13422mV
+Last Response: 054 Server Error: "FTP_OPEN_FAILED 221 Goodbye." [Connect Server]
+Connection Details:
+Log started: 15-03-13 12:01:10
+12:01:10 Initialize Modem
+12:01:10 001 Initializing Interface: [Connect Modem]
+12:01:10  Waiting Network
+12:01:18 +WIND: 3
+12:01:20 +STIN: 0
+12:01:20 +WIND: 1
+12:01:23 +WIND: 7
+12:01:26 +WIND: 4
+12:01:26 Matched '+WIND: 4'
+12:01:26 AT&D2
+12:01:26 OK
+12:01:26 Matched 'OK'
+12:01:26 AT+CSQ
+12:01:26 +CSQ: 17,99
+12:01:26 OK
+12:01:26 Matched 'OK'
+12:01:26 Connect
+12:01:26 ATS0=0
+12:01:27 OK
+12:01:27 Matched 'OK'
+12:01:27 ATD*99***1#
+12:01:27 CONNECT 9600
+12:01:27 Matched 'CONNECT*'
+12:01:27 Connected
+12:01:27 001 Initializing Interface: [Connect Init]
+12:01:27  Initialise TCP/IP Stack
+12:01:27 001 Initializing Interface: [Start PPP]
+12:01:27  Connecting
+12:01:55 001 Initializing Interface: [PPP Connected]
+12:01:55  Connected 10.147.32.59
+12:01:55 002 Initializing FTP: [Connect Server]
+12:01:55  Open Connection to 190.228.29.71
+12:01:58  220 POWER FTP
+12:01:59  331 Password required for monsanto.seedmech.com.ar
+12:02:00  230 User monsanto.seedmech.com.ar logged in
+12:02:06 054 Server Error: [SET Binary Mode]
+12:02:06  SOCKET_TIMED_OUT
+12:02:06 054 Server Error: SOCKET_TIMED_OUT - ''
+12:02:21 002 Initializing FTP: [Connect Server]
+12:02:21  Open Connection to 190.228.29.71
+12:02:44 054 Server Error: 
+12:02:44  FTP_OPEN_FAILED 221 Goodbye.
+12:02:44 054 Server Error: FTP_OPEN_FAILED - '221 Goodbye.
+12:02:44 '
+12:02:45 Disconnect
+12:02:45 +STIN: 98
+12:02:45 OK
+12:02:45 Matched 'OK'
+12:02:45 +STIN: 99
+12:02:45 ATH
+12:02:45 OK
+12:02:45 Matched 'OK'
+12:02:45 AT+CFUN=0
+12:02:47 OK
+12:02:47 Matched 'OK'
+16:00:00 001 Initializing Interface
+16:00:00 001 Initializing Interface: [Idle]
+16:00:00  Process URL

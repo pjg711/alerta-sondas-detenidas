@@ -1,0 +1,37 @@
+Logger ID: TDF01
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.6.5
+Build: Jun 12 2015 17:01:21
+Serial ID: C89962180000
+Serial Number: <blank>
+Probe Voltage: 12625mV
+Last Response: 053 Connection Failure [Connect Modem]
+Connection Details:
+Log started: 15-12-28 20:01:18
+20:01:18 Initialize Modem [12688mV]
+20:01:18 001 Initializing Interface: [Connect Modem]
+20:01:18  Waiting Network
+20:01:26 +WIND: 3
+20:01:28 +STIN: 0
+20:01:28 +WIND: 1
+20:01:34 +WIND: 4
+20:01:34 Matched '+WIND: 4'
+20:01:34 AT+CREG=2
+20:01:34 OK
+20:01:34 Matched 'OK'
+20:01:34 +CREG: 2
+20:01:58 +STIN: 98
+20:01:59 +STIN: 99
+20:02:33 053 Connection Failure: 
+20:02:33  
+20:02:33 Disconnect
+20:02:34 ATH
+20:02:34 OK
+20:02:34 Matched 'OK'
+20:02:34 AT+CFUN=0
+20:02:35 OK
+20:02:35 Matched 'OK'
+20:02:35 Power down [12625mV]
+22:00:01 001 Initializing Interface
+22:00:01 001 Initializing Interface: [Idle]
+22:00:01  Process URL

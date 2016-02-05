@@ -1,0 +1,74 @@
+Logger ID: Sonda23
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: F6681C160000
+Probe Voltage: 12814mV
+Last Response: 054 Server Error: "FTP_CMD_FAILED PORT 186,127,30,254,234,242" [Upload File]
+Connection Details:
+Log started: 15-10-06 16:02:04
+16:02:04 Initialize Modem
+16:02:04 001 Initializing Interface: [Connect Modem]
+16:02:04  Waiting Network
+16:02:12 +WIND: 3
+16:02:14 +WIND: 1
+16:02:18 +WIND: 7
+16:02:31 +WIND: 4
+16:02:31 Matched '+WIND: 4'
+16:02:31 AT&D2
+16:02:31 OK
+16:02:31 Matched 'OK'
+16:02:31 AT+CSQ
+16:02:31 +CSQ: 9,0
+16:02:31 OK
+16:02:31 Matched 'OK'
+16:02:31 Connect
+16:02:32 ATS0=0
+16:02:32 OK
+16:02:32 Matched 'OK'
+16:02:32 ATD*99***1#
+16:02:32 CONNECT 9600
+16:02:32 Matched 'CONNECT*'
+16:02:32 Connected
+16:02:32 001 Initializing Interface: [Connect Init]
+16:02:32  Initialise TCP/IP Stack
+16:02:33 001 Initializing Interface: [Start PPP]
+16:02:33  Connecting
+16:02:40 001 Initializing Interface: [PPP Connected]
+16:02:40  Connected 186.127.30.254
+16:02:41 002 Initializing FTP: [Connect Server]
+16:02:41  Open Connection to 190.228.29.71
+16:02:43  220 POWER FTP
+16:02:50  331 Password required for monsanto.seedmech.com.ar
+16:02:52  230 User monsanto.seedmech.com.ar logged in
+16:02:53 002 Initializing FTP: [SET Binary Mode]
+16:02:53  200 Type set to I
+16:02:53 003 Transferring
+16:02:54 004 Uploading to Server
+16:03:08 054 Server Error: [Upload File]
+16:03:08  FTP_CMD_FAILED PORT 186,127,30,254,234,239
+16:03:27 002 Initializing FTP: [Connect Server]
+16:03:27  Open Connection to 190.228.29.71
+16:03:29  220 POWER FTP
+16:03:30  331 Password required for monsanto.seedmech.com.ar
+16:03:31  230 User monsanto.seedmech.com.ar logged in
+16:03:32 002 Initializing FTP: [SET Binary Mode]
+16:03:32  200 Type set to I
+16:03:40 004 Uploading to Server: [Upload File]
+16:03:40  227 Entering Passive Mode (190,228,29,71,177,59).
+16:03:40 054 Server Error: 
+16:03:40  FTP_CMD_FAILED PORT 186,127,30,254,234,242
+16:03:41 054 Server Error: [Disconnect FTP Server]
+16:03:41  500 86,127,30,254,234,242 not understood
+16:03:41 Disconnect
+16:03:41 OK
+16:03:41 Matched 'OK'
+16:03:42 ATH
+16:03:42 OK
+16:03:42 Matched 'OK'
+16:03:42 AT+CFUN=0
+16:03:45 OK
+16:03:45 Matched 'OK'
+20:00:00 001 Initializing Interface
+20:00:00 001 Initializing Interface: [Idle]
+20:00:00  Process URL

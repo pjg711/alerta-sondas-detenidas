@@ -1,0 +1,71 @@
+Logger ID: Sonda34
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.6.2
+Build: May 29 2014 14:00:00
+Serial: ECAC4E170000
+Probe Voltage: 13380mV
+Last Response: 054 Server Error: "Timeout" [Connect Server]
+Connection Details:
+Log started: 15-11-02 13:01:20
+13:01:20 Initialize Modem
+13:01:20 001 Initializing Interface: [Connect Modem]
+13:01:20  Waiting Network
+13:01:28 +WIND: 3
+13:01:29 +WIND: 1
+13:01:33 +WIND: 7
+13:01:34 +WIND: 4
+13:01:34 Matched '+WIND: 4'
+13:01:34 AT+CREG=2
+13:01:34 OK
+13:01:34 Matched 'OK'
+13:01:34 +CREG: 1,"07DF","0A35"
+13:01:34 Matched '+CREG: 1*'
+13:01:35 AT&D2
+13:01:35 OK
+13:01:35 Matched 'OK'
+13:01:35 AT+CSQ
+13:01:35 +CSQ: 19,99
+13:01:35 OK
+13:01:35 Matched 'OK'
+13:01:35 AT+CCED=0,1
+13:01:35 +CCED: 722,07,07df,0a35,55,169,34,,,255,,,4
+13:01:35 OK
+13:01:35 Matched 'OK'
+13:01:36 AT+ADC?
+13:01:36 +ADC: 3914,4844,4842,4842
+13:01:36 OK
+13:01:36 Matched 'OK'
+13:01:36 Connect
+13:01:36 ATS0=0
+13:01:36 OK
+13:01:36 Matched 'OK'
+13:01:36 ATD*99***1#
+13:01:36 CONNECT 9600
+13:01:36 Matched 'CONNECT*'
+13:01:37 Connected
+13:01:37 001 Initializing Interface: [Connect Init]
+13:01:37  Initialise TCP/IP Stack
+13:01:37 001 Initializing Interface: [Start PPP]
+13:01:37  Connecting
+13:01:43 001 Initializing Interface: [PPP Connected]
+13:01:43  Connected 10.33.31.234
+13:01:43 002 Initializing FTP: [Connect Server]
+13:01:43  Open Connection to 190.228.29.71
+13:01:56  220 POWER FTP
+13:02:13 054 Server Error: 
+13:02:13  Timeout
+13:02:37 005 Disconnecting from Server: 
+13:02:37  331 Password required for monsanto.seedmech.com.ar
+13:02:43 054 Server Error: 
+13:02:43  Timeout
+13:02:43 054 Server Error: NEED_TO_EXIT - ''
+13:02:44 Disconnect
+13:02:44 OK
+13:02:44 Matched 'OK'
+13:02:44 ATH
+13:02:44 AT+CFUN=0
+13:02:44 OK
+13:02:44 Matched 'OK'
+14:00:01 001 Initializing Interface
+14:00:01 001 Initializing Interface: [Idle]
+14:00:01  Process URL

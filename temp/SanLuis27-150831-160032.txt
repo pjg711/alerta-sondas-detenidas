@@ -1,0 +1,81 @@
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.2.3
+Serial: 3341A1140000
+Probe Voltage: 13778mV
+Last Response: 054 Server Error: "Timeout" [Upload File]
+Connection Details:
+001 Initializing Interface: [Connect Modem]
+ Waiting Network
+Initialize Modem
++WIND: 3
++WIND: 1
++WIND: 4
+Matched '+WIND: 4'
+AT&D2
+OK
+Matched 'OK'
++WIND: 7
+AT+CSQ
++CSQ: 22,5
+OK
+Matched 'OK'
+Connect
+ATS0=0
+OK
+Matched 'OK'
+ATD*99***1#
+CONNECT 9600
+Matched 'CONNECT*'
+Connected
+001 Initializing Interface: [Connect Init]
+ Initialise TCP/IP Stack
+001 Initializing Interface: [Start PPP]
+ Connecting
+001 Initializing Interface: [PPP Connected]
+ Connected 10.157.24.98
+002 Initializing FTP: [Connect Server]
+ Open Connection to 190.228.29.71
+ 220 POWER FTP
+ 331 Password required for monsanto.seedmech.com.ar
+ 230 User monsanto.seedmech.com.ar logged in
+002 Initializing FTP: [CWD]
+ 250 CWD command successful
+002 Initializing FTP: [SET Binary Mode]
+ 200 Type set to I
+003 Transferring
+004 Uploading to Server
+004 Uploading to Server: [Upload File]
+ 227 Entering Passive Mode (190,228,29,71,147,84)
+054 Server Error: 
+ Timeout
+ Timeout
+ FTP_CMD_FAILED STOR SanLuis27-15FA0E45-150831-082000.esp
+002 Initializing FTP: [Connect Server]
+ Open Connection to 190.228.29.71
+ 220 POWER FTP
+ 331 Password required for monsanto.seedmech.com.ar
+ 230 User monsanto.seedmech.com.ar logged in
+002 Initializing FTP: [CWD]
+ 250 CWD command successful
+002 Initializing FTP: [SET Binary Mode]
+ 200 Type set to I
+004 Uploading to Server: [Upload File]
+ 227 Entering Passive Mode (190,228,29,71,210,67)
+054 Server Error: 
+ Timeout
+ Timeout
+ FTP_CMD_FAILED STOR SanLuis27-15FA0E45-150831-082000.esp
+005 Disconnecting from Server: [Disconnect FTP Server]
+ 221 Goodbye.
+Disconnect
+OK
+Matched 'OK'
+ATH
+OK
+Matched 'OK'
+AT+CFUN=0
+OK
+Matched 'OK'
+001 Initializing Interface
+001 Initializing Interface: [Idle]
+ Process URL

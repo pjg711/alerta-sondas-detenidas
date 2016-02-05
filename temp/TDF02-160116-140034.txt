@@ -1,0 +1,59 @@
+Logger ID: TDF02
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.6.5
+Build: Jun 12 2015 17:01:21
+Serial ID: 97B4EE130000
+Serial Number: <blank>
+Probe Voltage: 13652mV
+Last Response: 053 Connection Failure: "Error timeout" [Connect Modem]
+Connection Details:
+Log started: 16-01-16 12:02:39
+12:02:39 Initialize Modem [13652mV]
+12:02:39 001 Initializing Interface: [Connect Modem]
+12:02:39  Waiting Network
+12:02:46 +WIND: 3
+12:02:49 +WIND: 1
+12:02:51 +WIND: 7
+12:02:55 +WIND: 4
+12:02:55 Matched '+WIND: 4'
+12:02:55 AT+CREG=2
+12:02:55 OK
+12:02:55 Matched 'OK'
+12:02:55 +CREG: 1,"07DF","0A3C"
+12:02:55 Matched '+CREG: 1*'
+12:02:55 AT&D2
+12:02:55 OK
+12:02:55 Matched 'OK'
+12:02:55 AT+CSQ
+12:02:56 +CSQ: 12,99
+12:02:56 OK
+12:02:56 Matched 'OK'
+12:02:56 AT+CCED=0,1
+12:02:56 +CCED: 722,07,07df,0a3c,14,176,21,,,255,,,4
+12:02:56 OK
+12:02:56 Matched 'OK'
+12:02:56 AT+ADC?
+12:02:56 +ADC: 3986,117,4846,688
+12:02:56 OK
+12:02:56 Matched 'OK'
+12:02:57 Connect [13569mV]
+12:02:57 ATS0=0
+12:02:57 OK
+12:02:57 Matched 'OK'
+12:02:57 ATD*99***1#
+12:03:02 Error timeout
+12:03:02 053 Connection Failure: 
+12:03:02  Error timeout
+12:03:02 Disconnect
+12:03:02 OK
+12:03:02 Matched 'OK'
+12:03:03 ATH
+12:03:03 OK
+12:03:03 Matched 'OK'
+12:03:03 AT+CFUN=0
+12:03:06 OK
+12:03:06 Matched 'OK'
+12:03:06 Power down [13673mV]
+14:00:01 001 Initializing Interface
+14:00:01 001 Initializing Interface: [Idle]
+14:00:01  Process URL

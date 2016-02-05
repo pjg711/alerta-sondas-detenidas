@@ -1,0 +1,58 @@
+Logger ID: Lote27
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.4.2
+Build: Feb 20 2012 14:51:21
+Serial: 9B96A1140000
+Probe Voltage: 12604mV
+Last Response: 054 Server Error: "TCP_OPEN_FAILED 221 Goodbye." [Connect Server]
+Connection Details:
+Log started: 16-02-03 20:00:00
+20:00:00 Initialize Modem
+20:00:00 001 Initializing Interface: [Connect Modem]
+20:00:00  Waiting Network
+20:00:04 +WIND: 3
+20:00:05 +WIND: 1
+20:00:09 +WIND: 4
+20:00:09 Matched '+WIND: 4'
+20:00:09 AT&D2
+20:00:09 OK
+20:00:09 Matched 'OK'
+20:00:09 +WIND: 7
+20:00:09 AT+CSQ
+20:00:10 +CSQ: 17,5
+20:00:10 OK
+20:00:10 Matched 'OK'
+20:00:10 Connect
+20:00:10 ATS0=0
+20:00:10 OK
+20:00:10 Matched 'OK'
+20:00:10 ATD*99***1#
+20:00:10 CONNECT 9600
+20:00:10 Matched 'CONNECT*'
+20:00:11 Connected
+20:00:11 001 Initializing Interface: [Connect Init]
+20:00:11  Initialise TCP/IP Stack
+20:00:11 001 Initializing Interface: [Start PPP]
+20:00:11  Connecting
+20:00:16 001 Initializing Interface: [PPP Connected]
+20:00:16  Connected 10.86.44.156
+20:00:17 002 Initializing FTP: [Connect Server]
+20:00:17  Open Connection to 190.228.29.71
+20:01:23 054 Server Error: 
+20:01:23  TCP_OPEN_FAILED 221 Goodbye.
+20:01:23 002 Initializing FTP: 
+20:01:23  Open Connection to 190.228.29.71
+20:02:29 054 Server Error: 
+20:02:29  TCP_OPEN_FAILED 221 Goodbye.
+20:02:30 Disconnect
+20:02:30 OK
+20:02:30 Matched 'OK'
+20:02:30 ATH
+20:02:30 OK
+20:02:30 Matched 'OK'
+20:02:30 AT+CFUN=0
+20:02:33 OK
+20:02:33 Matched 'OK'
+00:00:00 001 Initializing Interface
+00:00:00 001 Initializing Interface: [Idle]
+00:00:00  Process URL

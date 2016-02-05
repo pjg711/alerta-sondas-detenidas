@@ -1,0 +1,48 @@
+Logger ID: Sonda23
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: F6681C160000
+Probe Voltage: 12268mV
+Last Response: 053 Connection Failure: "Failed to open PPP connection" [Start PPP]
+Connection Details:
+Log started: 15-12-11 00:00:30
+00:00:30 Initialize Modem
+00:00:30 001 Initializing Interface: [Connect Modem]
+00:00:30  Waiting Network
+00:00:37 +WIND: 3
+00:00:40 +WIND: 1
+00:00:45 +WIND: 7
+00:00:55 +WIND: 4
+00:00:55 Matched '+WIND: 4'
+00:00:56 AT&D2
+00:00:56 OK
+00:00:56 Matched 'OK'
+00:00:56 AT+CSQ
+00:00:56 +CSQ: 13,0
+00:00:56 OK
+00:00:56 Matched 'OK'
+00:00:56 Connect
+00:00:56 ATS0=0
+00:00:56 OK
+00:00:56 Matched 'OK'
+00:00:57 ATD*99***1#
+00:00:57 CONNECT 9600
+00:00:57 Matched 'CONNECT*'
+00:00:57 Connected
+00:00:57 001 Initializing Interface: [Connect Init]
+00:00:57  Initialise TCP/IP Stack
+00:00:57 001 Initializing Interface: [Start PPP]
+00:00:57  Connecting
+00:01:00 053 Connection Failure: 
+00:01:00  Failed to open PPP connection
+00:01:00 Disconnect
+00:01:01 ATH
+00:01:01 OK
+00:01:01 Matched 'OK'
+00:01:01 AT+CFUN=0
+00:01:02 OK
+00:01:02 Matched 'OK'
+04:00:00 001 Initializing Interface
+04:00:00 001 Initializing Interface: [Idle]
+04:00:00  Process URL

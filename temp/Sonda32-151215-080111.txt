@@ -1,0 +1,64 @@
+Logger ID: Sonda32
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.6.5
+Build: Jun 12 2015 17:01:21
+Serial ID: 72D262180000
+Serial Number: <blank>
+Probe Voltage: 13422mV
+Last Response: 053 Connection Failure: "Failed to open PPP connection" [Start PPP]
+Connection Details:
+Log started: 15-12-15 06:01:30
+06:01:30 Initialize Modem [13380mV]
+06:01:30 001 Initializing Interface: [Connect Modem]
+06:01:30  Waiting Network
+06:01:38 +WIND: 3
+06:01:39 +STIN: 0
+06:01:39 +WIND: 1
+06:01:42 +WIND: 4
+06:01:42 Matched '+WIND: 4'
+06:01:43 +WIND: 7
+06:01:43 AT+CREG=2
+06:01:43 OK
+06:01:43 Matched 'OK'
+06:01:43 +CREG: 1,"07DF","0A39"
+06:01:43 Matched '+CREG: 1*'
+06:01:43 AT&D2
+06:01:43 OK
+06:01:43 Matched 'OK'
+06:01:43 AT+CSQ
+06:01:43 +CSQ: 19,99
+06:01:43 OK
+06:01:43 Matched 'OK'
+06:01:44 AT+CCED=0,1
+06:01:44 +CCED: 722,07,07df,0a39,35,165,34,,,255,,,4
+06:01:44 OK
+06:01:44 Matched 'OK'
+06:01:44 AT+ADC?
+06:01:44 +ADC: 4026,115,10,831
+06:01:44 OK
+06:01:44 Matched 'OK'
+06:01:44 Connect [13338mV]
+06:01:44 ATS0=0
+06:01:45 OK
+06:01:45 Matched 'OK'
+06:01:45 ATD*99***1#
+06:01:45 CONNECT 9600
+06:01:45 Matched 'CONNECT*'
+06:01:45 Connected [13422mV]
+06:01:45 001 Initializing Interface: [Connect Init]
+06:01:45  Initialise TCP/IP Stack
+06:01:45 001 Initializing Interface: [Start PPP]
+06:01:45  Connecting
+06:02:38 053 Connection Failure: 
+06:02:38  Failed to open PPP connection
+06:02:38 Disconnect
+06:02:39 ATH
+06:02:39 OK
+06:02:39 Matched 'OK'
+06:02:39 AT+CFUN=0
+06:02:41 OK
+06:02:41 Matched 'OK'
+06:02:41 Power down [13338mV]
+08:00:00 001 Initializing Interface
+08:00:00 001 Initializing Interface: [Idle]
+08:00:00  Process URL

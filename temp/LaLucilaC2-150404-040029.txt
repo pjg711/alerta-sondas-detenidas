@@ -1,0 +1,65 @@
+Logger ID: LaLucilaC2
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: 7B741B160000
+Probe Voltage: 13589mV
+Last Response: 054 Server Error: "FTP_OPEN_FAILED 221 Goodbye." [Connect Server]
+Connection Details:
+Log started: 15-04-04 00:02:09
+00:02:09 Initialize Modem
+00:02:09 001 Initializing Interface: [Connect Modem]
+00:02:09  Waiting Network
+00:02:16 +WIND: 3
+00:02:17 +STIN: 0
+00:02:17 +WIND: 1
+00:02:20 +WIND: 7
+00:02:21 +WIND: 4
+00:02:21 Matched '+WIND: 4'
+00:02:21 AT&D2
+00:02:21 OK
+00:02:21 Matched 'OK'
+00:02:21 AT+CSQ
+00:02:21 +CSQ: 10,99
+00:02:21 OK
+00:02:21 Matched 'OK'
+00:02:22 Connect
+00:02:22 ATS0=0
+00:02:22 OK
+00:02:22 Matched 'OK'
+00:02:22 ATD*99***1#
+00:02:22 CONNECT 9600
+00:02:22 Matched 'CONNECT*'
+00:02:22 Connected
+00:02:23 001 Initializing Interface: [Connect Init]
+00:02:23  Initialise TCP/IP Stack
+00:02:23 001 Initializing Interface: [Start PPP]
+00:02:23  Connecting
+00:02:27 001 Initializing Interface: [PPP Connected]
+00:02:27  Connected 10.188.16.41
+00:02:28 002 Initializing FTP: [Connect Server]
+00:02:28  Open Connection to 190.228.29.71
+00:03:13 054 Server Error: 
+00:03:13  Timeout
+00:03:36 054 Server Error: FTP_OPEN_FAILED - '221 Goodbye.
+00:03:36 '
+00:03:36 002 Initializing FTP: 
+00:03:36  Open Connection to 190.228.29.71
+00:04:06 054 Server Error: 
+00:04:06  FTP_OPEN_FAILED 221 Goodbye.
+00:04:06 054 Server Error: FTP_OPEN_FAILED - '221 Goodbye.
+00:04:06 '
+00:04:07 Disconnect
+00:04:07 +STIN: 98
+00:04:07 OK
+00:04:07 Matched 'OK'
+00:04:07 +STIN: 99
+00:04:07 ATH
+00:04:07 OK
+00:04:07 Matched 'OK'
+00:04:07 AT+CFUN=0
+00:04:10 OK
+00:04:10 Matched 'OK'
+04:00:00 001 Initializing Interface
+04:00:00 001 Initializing Interface: [Idle]
+04:00:00  Process URL

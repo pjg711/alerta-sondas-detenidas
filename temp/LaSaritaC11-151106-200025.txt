@@ -1,0 +1,79 @@
+Logger ID: LaSaritaC11
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: 69871B160000
+Probe Voltage: 13212mV
+Last Response: 054 Server Error: "Timeout" [Connect Server]
+Connection Details:
+Log started: 15-11-06 16:01:59
+16:01:59 Initialize Modem
+16:01:59 001 Initializing Interface: [Connect Modem]
+16:01:59  Waiting Network
+16:02:07 +WIND: 3
+16:02:08 +STIN: 0
+16:02:08 +WIND: 1
+16:02:11 +WIND: 7
+16:02:12 +WIND: 4
+16:02:12 Matched '+WIND: 4'
+16:02:12 AT&D2
+16:02:12 OK
+16:02:12 Matched 'OK'
+16:02:12 AT+CSQ
+16:02:12 +CSQ: 8,99
+16:02:12 OK
+16:02:12 Matched 'OK'
+16:02:13 Connect
+16:02:13 ATS0=0
+16:02:13 OK
+16:02:13 Matched 'OK'
+16:02:13 ATD*99***1#
+16:02:13 CONNECT 9600
+16:02:13 Matched 'CONNECT*'
+16:02:13 Connected
+16:02:13 001 Initializing Interface: [Connect Init]
+16:02:13  Initialise TCP/IP Stack
+16:02:14 001 Initializing Interface: [Start PPP]
+16:02:14  Connecting
+16:02:19 001 Initializing Interface: [PPP Connected]
+16:02:19  Connected 10.179.138.103
+16:02:19 002 Initializing FTP: [Connect Server]
+16:02:19  Open Connection to 190.228.29.71
+16:02:21  220 POWER FTP
+16:02:21  331 Password required for monsanto.seedmech.com.ar
+16:03:04 054 Server Error: 
+16:03:04  Timeout
+16:03:11 005 Disconnecting from Server: 
+16:03:11  230 User monsanto.seedmech.com.ar logged in
+16:03:11 054 Server Error: UNKNOWN - '230 User monsanto.seedmech.com.ar logged in
+16:03:11 '
+16:03:23 002 Initializing FTP: 
+16:03:23  Open Connection to 190.228.29.71
+16:03:50  220 POWER FTP
+16:03:51  331 Password required for monsanto.seedmech.com.ar
+16:04:09 054 Server Error: 
+16:04:09  Timeout
+16:04:31 005 Disconnecting from Server: 
+16:04:31  230 User monsanto.seedmech.com.ar logged in
+16:04:31 054 Server Error: UNKNOWN - '230 User monsanto.seedmech.com.ar logged in
+16:04:31 '
+16:04:32 005 Disconnecting from Server: [Disconnect FTP Server]
+16:04:32  221 Goodbye.
+16:05:16 054 Server Error: 
+16:05:16  Timeout
+16:05:16 Disconnect
+16:05:16 +STIN: 98
+16:05:16 OK
+16:05:16 Matched 'OK'
+16:05:16 +STIN: 99
+16:05:16 +STIN: 9
+16:05:16 +STGI: ""
+16:05:17 ATH
+16:05:17 OK
+16:05:17 Matched 'OK'
+16:05:17 AT+CFUN=0
+16:05:21 OK
+16:05:21 Matched 'OK'
+20:00:00 001 Initializing Interface
+20:00:00 001 Initializing Interface: [Idle]
+20:00:00  Process URL

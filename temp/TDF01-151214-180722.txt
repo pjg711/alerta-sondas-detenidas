@@ -1,0 +1,93 @@
+Logger ID: TDF01
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.6.5
+Build: Jun 12 2015 17:01:21
+Serial ID: C89962180000
+Serial Number: <blank>
+Probe Voltage: 13233mV
+Last Response: 057 Supply Voltage Too Low
+Connection Details:
+Log started: 15-12-14 18:00:00
+18:00:00 Initialize Modem [13464mV]
+18:00:04 +WIND: 3
+18:00:07 +STIN: 0
+18:00:07 +WIND: 1
+18:00:12 +WIND: 4
+18:00:12 Matched '+WIND: 4'
+18:00:12 AT+CREG=2
+18:00:12 OK
+18:00:12 Matched 'OK'
+18:00:12 +CREG: 2
+18:00:16 +WIND: 7
+18:00:16 +CREG: 1,"07DF","0A35"
+18:00:16 Matched '+CREG: 1*'
+18:00:16 AT&D2
+18:00:16 OK
+18:00:16 Matched 'OK'
+18:00:16 AT+CSQ
+18:00:16 +CSQ: 20,99
+18:00:16 OK
+18:00:16 Matched 'OK'
+18:00:16 AT+CCED=0,1
+18:00:17 +CCED: 722,07,07df,0a35,55,169,37,,,255,,,4
+18:00:17 OK
+18:00:17 Matched 'OK'
+18:00:17 AT+ADC?
+18:00:17 +ADC: 3988,96,4846,766
+18:00:17 OK
+18:00:17 Matched 'OK'
+18:00:17 Connect [13422mV]
+18:00:17 ATS0=0
+18:00:17 OK
+18:00:17 Matched 'OK'
+18:00:18 ATD*99***1#
+18:00:18 CONNECT 9600
+18:00:18 Matched 'CONNECT*'
+18:00:18 Connected [13317mV]
+18:00:18 001 Initializing Interface: [Connect Init]
+18:00:18  Initialise TCP/IP Stack
+18:00:18 001 Initializing Interface: [Start PPP]
+18:00:18  Connecting
+18:00:24 001 Initializing Interface: [PPP Connected]
+18:00:24  Connected 10.58.65.27
+18:00:24 002 Initializing FTP: [Connect Server]
+18:00:24  Open Connection to 190.228.29.71
+18:00:26  220 POWER FTP
+18:00:26  331 Password required for monsanto.seedmech.com.ar
+18:00:27  230 User monsanto.seedmech.com.ar logged in
+18:00:28 002 Initializing FTP: [SET Binary Mode]
+18:00:28  200 Type set to I
+18:00:29 003 Transferring
+18:00:32 004 Uploading to Server
+18:00:34 004 Uploading to Server: [Upload File]
+18:00:34  227 Entering Passive Mode (190,228,29,71,180,74).
+18:00:48 003 Transferring
+18:00:51 004 Uploading to Server
+18:00:54  227 Entering Passive Mode (190,228,29,71,162,164).
+18:01:36 054 Server Error: 
+18:01:36  Timeout
+18:02:21  Timeout
+18:02:22  FTP_CMD_FAILED STOR TDF01-1DAF87D2-151212-002000.esp
+18:02:24 005 Disconnecting from Server: [Disconnect FTP Server]
+18:02:24  221 Goodbye.
+18:02:26 002 Initializing FTP: [Connect Server]
+18:02:26  Open Connection to 190.228.29.71
+18:02:45 054 Server Error: 
+18:02:45  FTP_OPEN_FAILED 221 Goodbye.
+18:02:45 054 Server Error: FTP_OPEN_FAILED - '221 Goodbye.
+18:02:45 '
+18:02:46 Disconnect
+18:02:46 +STIN: 98
+18:02:46 OK
+18:02:46 Matched 'OK'
+18:02:46 +STIN: 99
+18:02:46 +CREG: 1,"07DF","165F"
+18:02:46 ATH
+18:02:46 OK
+18:02:46 Matched 'OK'
+18:02:46 AT+CFUN=0
+18:02:48 OK
+18:02:48 Matched 'OK'
+18:02:49 001 Initializing Interface: [Disconnect Modem]
+18:02:49  Waiting to retry
+18:02:49 Power down [13275mV]

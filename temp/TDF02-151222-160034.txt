@@ -1,0 +1,77 @@
+Logger ID: TDF02
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.6.5
+Build: Jun 12 2015 17:01:21
+Serial ID: 97B4EE130000
+Serial Number: <blank>
+Probe Voltage: 13715mV
+Last Response: 054 Server Error: "Timeout" [Connect Server]
+Connection Details:
+Log started: 15-12-22 14:02:38
+14:02:38 Initialize Modem [13652mV]
+14:02:38 001 Initializing Interface: [Connect Modem]
+14:02:38  Waiting Network
+14:02:45 +WIND: 3
+14:02:48 +WIND: 1
+14:02:52 +WIND: 7
+14:02:54 +WIND: 4
+14:02:54 Matched '+WIND: 4'
+14:02:54 AT+CREG=2
+14:02:54 OK
+14:02:54 Matched 'OK'
+14:02:54 +CREG: 1,"07DF","0A3C"
+14:02:54 Matched '+CREG: 1*'
+14:02:54 AT&D2
+14:02:55 OK
+14:02:55 Matched 'OK'
+14:02:55 AT+CSQ
+14:02:55 +CSQ: 12,99
+14:02:55 OK
+14:02:55 Matched 'OK'
+14:02:55 AT+CCED=0,1
+14:02:55 +CCED: 722,07,07df,0a3c,14,176,21,,,255,,,4
+14:02:55 OK
+14:02:55 Matched 'OK'
+14:02:55 AT+ADC?
+14:02:55 +ADC: 3986,117,4843,714
+14:02:56 OK
+14:02:56 Matched 'OK'
+14:02:56 Connect [13652mV]
+14:02:56 ATS0=0
+14:02:56 OK
+14:02:56 Matched 'OK'
+14:02:56 ATD*99***1#
+14:02:56 CONNECT 9600
+14:02:56 Matched 'CONNECT*'
+14:02:56 Connected [13673mV]
+14:02:57 001 Initializing Interface: [Connect Init]
+14:02:57  Initialise TCP/IP Stack
+14:02:57 001 Initializing Interface: [Start PPP]
+14:02:57  Connecting
+14:03:02 001 Initializing Interface: [PPP Connected]
+14:03:02  Connected 10.103.245.240
+14:03:02 002 Initializing FTP: [Connect Server]
+14:03:02  Open Connection to 190.228.29.71
+14:03:47 054 Server Error: 
+14:03:47  Timeout
+14:04:08 054 Server Error: TCP_OPEN_FAILED - '221 Goodbye.
+14:04:08 '
+14:04:08 002 Initializing FTP: 
+14:04:08  Open Connection to 190.228.29.71
+14:04:54 054 Server Error: 
+14:04:54  Timeout
+14:05:15 054 Server Error: TCP_OPEN_FAILED - '221 Goodbye.
+14:05:15 '
+14:05:15 Disconnect
+14:05:15 OK
+14:05:15 Matched 'OK'
+14:05:15 ATH
+14:05:15 OK
+14:05:15 Matched 'OK'
+14:05:15 AT+CFUN=0
+14:05:18 OK
+14:05:18 Matched 'OK'
+14:05:18 Power down [13569mV]
+16:00:01 001 Initializing Interface
+16:00:01 001 Initializing Interface: [Idle]
+16:00:01  Process URL

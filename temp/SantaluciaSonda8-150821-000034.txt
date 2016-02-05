@@ -1,0 +1,47 @@
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.2.3
+Serial: D105A1140000
+Probe Voltage: 13086mV
+Last Response: 053 Connection Failure: "Failed to open PPP connection" [Start PPP]
+Connection Details:
+001 Initializing Interface: [Connect Modem]
+ Waiting Network
+Initialize Modem
++WIND: 3
++WIND: 1
++WIND: 7
++WIND: 4
+Matched '+WIND: 4'
+AT&D2
+OK
+Matched 'OK'
+AT+CSQ
++CSQ: 15,99
+OK
+Matched 'OK'
+Connect
+ATS0=0
+OK
+Matched 'OK'
+ATD*99***1#
+CONNECT 9600
+Matched 'CONNECT*'
+Connected
+001 Initializing Interface: [Connect Init]
+ Initialise TCP/IP Stack
+001 Initializing Interface: [Start PPP]
+ Connecting
+053 Connection Failure: 
+ Failed to open PPP connection
+Disconnect
+OK
+Matched 'OK'
+ATH
+OK
+Matched 'OK'
+AT+CFUN=0
+OK
+Matched 'OK'
+001 Initializing Interface
+001 Initializing Interface: [Idle]
+ Process URL

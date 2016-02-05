@@ -1,0 +1,63 @@
+Logger ID: Sonda23
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: F6681C160000
+Probe Voltage: 12478mV
+Last Response: 054 Server Error: "FTP_CMD_FAILED PORT 181,4,180,163,241,74" [Upload File]
+Connection Details:
+Log started: 16-01-02 00:01:43
+00:01:43 Initialize Modem
+00:01:43 001 Initializing Interface: [Connect Modem]
+00:01:43  Waiting Network
+00:01:50 +WIND: 3
+00:01:53 +WIND: 1
+00:01:58 +WIND: 7
+00:02:10 +WIND: 4
+00:02:10 Matched '+WIND: 4'
+00:02:10 AT&D2
+00:02:10 OK
+00:02:10 Matched 'OK'
+00:02:10 AT+CSQ
+00:02:10 +CSQ: 11,0
+00:02:10 OK
+00:02:10 Matched 'OK'
+00:02:10 Connect
+00:02:11 ATS0=0
+00:02:11 OK
+00:02:11 Matched 'OK'
+00:02:11 ATD*99***1#
+00:02:11 CONNECT 9600
+00:02:11 Matched 'CONNECT*'
+00:02:11 Connected
+00:02:11 001 Initializing Interface: [Connect Init]
+00:02:11  Initialise TCP/IP Stack
+00:02:12 001 Initializing Interface: [Start PPP]
+00:02:12  Connecting
+00:03:13 001 Initializing Interface: [PPP Connected]
+00:03:13  Connected 181.4.180.163
+00:03:14 002 Initializing FTP: [Connect Server]
+00:03:14  Open Connection to 190.228.29.71
+00:03:16  220 POWER FTP
+00:03:17  331 Password required for monsanto.seedmech.com.ar
+00:03:18  230 User monsanto.seedmech.com.ar logged in
+00:03:19 002 Initializing FTP: [SET Binary Mode]
+00:03:19  200 Type set to I
+00:03:19 003 Transferring
+00:03:20 004 Uploading to Server
+00:03:32 054 Server Error: [Upload File]
+00:03:32  FTP_CMD_FAILED PORT 181,4,180,163,241,74
+00:04:18 054 Server Error: [Disconnect FTP Server]
+00:04:18  Timeout
+00:04:18 Disconnect
+00:04:18 OK
+00:04:18 Matched 'OK'
+00:04:18 ATH
+00:04:18 OK
+00:04:18 Matched 'OK'
+00:04:18 AT+CFUN=0
+00:04:22 OK
+00:04:22 Matched 'OK'
+04:00:00 001 Initializing Interface
+04:00:00 001 Initializing Interface: [Idle]
+04:00:00  Process URL

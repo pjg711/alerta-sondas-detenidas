@@ -1,0 +1,92 @@
+Logger ID: Sonda34
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.6.2
+Build: May 29 2014 14:00:00
+Serial: ECAC4E170000
+Probe Voltage: 13254mV
+Last Response: 054 Server Error: "FTP_OPEN_FAILED 221 Goodbye." [Connect Server]
+Connection Details:
+Log started: 15-10-11 22:00:01
+22:00:01 Initialize Modem
+22:00:01 001 Initializing Interface: [Connect Modem]
+22:00:01  Waiting Network
+22:00:05 +WIND: 3
+22:00:06 +WIND: 1
+22:00:10 +WIND: 7
+22:00:11 +WIND: 4
+22:00:11 Matched '+WIND: 4'
+22:00:12 AT+CREG=2
+22:00:12 OK
+22:00:12 Matched 'OK'
+22:00:12 +CREG: 1,"07DF","0A35"
+22:00:12 Matched '+CREG: 1*'
+22:00:12 AT&D2
+22:00:12 OK
+22:00:12 Matched 'OK'
+22:00:12 AT+CSQ
+22:00:12 +CSQ: 20,99
+22:00:12 OK
+22:00:12 Matched 'OK'
+22:00:13 AT+CCED=0,1
+22:00:13 +CCED: 722,07,07df,0a35,55,169,36,,,255,,,4
+22:00:13 OK
+22:00:13 Matched 'OK'
+22:00:13 AT+ADC?
+22:00:13 +ADC: 3919,4845,4843,4843
+22:00:13 OK
+22:00:13 Matched 'OK'
+22:00:13 Connect
+22:00:13 ATS0=0
+22:00:13 OK
+22:00:13 Matched 'OK'
+22:00:14 ATD*99***1#
+22:00:14 CONNECT 9600
+22:00:14 Matched 'CONNECT*'
+22:00:14 Connected
+22:00:14 001 Initializing Interface: [Connect Init]
+22:00:14  Initialise TCP/IP Stack
+22:00:14 001 Initializing Interface: [Start PPP]
+22:00:14  Connecting
+22:00:20 001 Initializing Interface: [PPP Connected]
+22:00:20  Connected 10.34.56.35
+22:00:20 002 Initializing FTP: [Connect Server]
+22:00:20  Open Connection to 190.228.29.71
+22:00:21  220 POWER FTP
+22:00:22  331 Password required for monsanto.seedmech.com.ar
+22:00:23  230 User monsanto.seedmech.com.ar logged in
+22:00:24 002 Initializing FTP: [SET Binary Mode]
+22:00:24  200 Type set to I
+22:00:24 003 Transferring
+22:00:25 004 Uploading to Server
+22:00:26 004 Uploading to Server: [Upload File]
+22:00:26  227 Entering Passive Mode (190,228,29,71,141,201)
+22:00:55 054 Server Error: 
+22:00:55  Timeout
+22:01:25  Timeout
+22:01:25  FTP_CMD_FAILED STOR Sonda34-1B96F38D-151011-201000.esp
+22:01:26 005 Disconnecting from Server: [Disconnect FTP Server]
+22:01:26  221 Goodbye.
+22:01:27 002 Initializing FTP: [Connect Server]
+22:01:27  Open Connection to 190.228.29.71
+22:01:28  220 POWER FTP
+22:01:29  331 Password required for monsanto.seedmech.com.ar
+22:01:30  230 User monsanto.seedmech.com.ar logged in
+22:01:31 002 Initializing FTP: [SET Binary Mode]
+22:01:31  200 Type set to I
+22:01:32 004 Uploading to Server: [Upload File]
+22:01:32  227 Entering Passive Mode (190,228,29,71,129,204)
+22:02:01 054 Server Error: 
+22:02:01  Timeout
+22:02:31  Timeout
+22:02:31  FTP_CMD_FAILED STOR Sonda34-1B96F38D-151011-201000.esp
+22:02:33 005 Disconnecting from Server: [Disconnect FTP Server]
+22:02:33  226 Transfer complete
+22:02:34 Disconnect
+22:02:35 OK
+22:02:35 Matched 'OK'
+22:02:35 ATH
+22:02:35 AT+CFUN=0
+22:02:35 OK
+22:02:35 Matched 'OK'
+22:02:35 001 Initializing Interface: [Disconnect Modem]
+22:02:35  Waiting to retry

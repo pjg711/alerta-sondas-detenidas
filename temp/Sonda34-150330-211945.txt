@@ -1,0 +1,57 @@
+Logger ID: Sonda34
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.6.2
+Build: May 29 2014 14:00:00
+Serial: ECAC4E170000
+Probe Voltage: 13317mV
+Last Response: 040 Success
+Connection Details:
+Log started: 15-03-30 21:19:46
+21:19:46 Initialize Modem
+21:19:49 +WIND: 3
+21:19:51 +WIND: 1
+21:20:04 +WIND: 4
+21:20:04 Matched '+WIND: 4'
+21:20:04 AT+CREG=2
+21:20:04 OK
+21:20:04 Matched 'OK'
+21:20:04 +CREG: 2
+21:20:06 +WIND: 7
+21:20:06 +CREG: 1,"0961","5329"
+21:20:06 Matched '+CREG: 1*'
+21:20:06 AT&D2
+21:20:06 OK
+21:20:06 Matched 'OK'
+21:20:06 AT+CSQ
+21:20:06 +CSQ: 14,99
+21:20:06 OK
+21:20:06 Matched 'OK'
+21:20:07 AT+CCED=0,1
+21:20:07 +CCED: 722,07,0961,5329,10,1536,24,,,255,,,4
+21:20:07 OK
+21:20:07 Matched 'OK'
+21:20:07 AT+ADC?
+21:20:07 +ADC: 3910,4844,4842,4842
+21:20:07 OK
+21:20:07 Matched 'OK'
+21:20:07 Connect
+21:20:08 ATS0=0
+21:20:08 OK
+21:20:08 Matched 'OK'
+21:20:08 ATD*99***1#
+21:20:08 CONNECT 9600
+21:20:08 Matched 'CONNECT*'
+21:20:08 Connected
+21:20:08 001 Initializing Interface: [Connect Init]
+21:20:08  Initialise TCP/IP Stack
+21:20:09 001 Initializing Interface: [Start PPP]
+21:20:09  Connecting
+21:20:13 001 Initializing Interface: [PPP Connected]
+21:20:13  Connected 10.33.35.33
+21:20:14 002 Initializing FTP: [Connect Server]
+21:20:14  Open Connection to 190.228.29.71
+21:20:15  220 POWER FTP
+21:20:15  331 Password required for monsanto.seedmech.com.ar
+21:20:16  230 User monsanto.seedmech.com.ar logged in
+21:20:17 002 Initializing FTP: [SET Binary Mode]
+21:20:17  200 Type set to I

@@ -1,0 +1,59 @@
+Logger ID: Sonda23
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: F6681C160000
+Probe Voltage: 12730mV
+Last Response: 053 Connection Failure: "Failed to open PPP connection" [Start PPP]
+Connection Details:
+Log started: 15-12-26 20:00:00
+20:00:00 Initialize Modem
+20:00:00 001 Initializing Interface: [Connect Modem]
+20:00:00  Waiting Network
+20:00:04 +WIND: 3
+20:00:06 +WIND: 1
+20:00:10 +WIND: 7
+20:00:22 +WIND: 4
+20:00:22 Matched '+WIND: 4'
+20:00:22 AT&D2
+20:00:22 OK
+20:00:22 Matched 'OK'
+20:00:22 AT+CSQ
+20:00:22 +CSQ: 10,0
+20:00:22 OK
+20:00:22 Matched 'OK'
+20:00:22 Connect
+20:00:22 ATS0=0
+20:00:23 OK
+20:00:23 Matched 'OK'
+20:00:23 ATD*99***1#
+20:00:23 CONNECT 9600
+20:00:23 Matched 'CONNECT*'
+20:00:23 Connected
+20:00:23 001 Initializing Interface: [Connect Init]
+20:00:23  Initialise TCP/IP Stack
+20:00:23 001 Initializing Interface: [Start PPP]
+20:00:23  Connecting
+20:01:38 001 Initializing Interface: [PPP Connected]
+20:01:38  Connected 181.4.235.206
+20:01:38 002 Initializing FTP: [Connect Server]
+20:01:38  Open Connection to 190.228.29.71
+20:02:23 054 Server Error: 
+20:02:23  Timeout
+20:02:44 054 Server Error: TCP_OPEN_FAILED - '221 Goodbye.
+20:02:44 '
+20:02:44 002 Initializing FTP: 
+20:02:44  Open Connection to 190.228.29.71
+20:03:30 054 Server Error: 
+20:03:30  Timeout
+20:03:51 054 Server Error: TCP_OPEN_FAILED - '221 Goodbye.
+20:03:51 '
+20:03:51 Disconnect
+20:03:51 ATH
+20:03:51 OK
+20:03:51 Matched 'OK'
+20:03:51 AT+CFUN=0
+20:03:54 OK
+20:03:54 Matched 'OK'
+20:03:54 001 Initializing Interface: [Disconnect Modem]
+20:03:54  Waiting to retry

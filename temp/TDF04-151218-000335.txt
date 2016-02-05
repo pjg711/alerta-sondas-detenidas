@@ -1,0 +1,76 @@
+Logger ID: TDF04
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: 53821B160000
+Probe Voltage: 12604mV
+Last Response: 054 Server Error: "FTP_OPEN_FAILED 221 Goodbye." [Connect Server]
+Connection Details:
+Log started: 15-12-18 00:00:01
+00:00:01 Initialize Modem
+00:00:01 001 Initializing Interface: [Connect Modem]
+00:00:01  Waiting Network
+00:00:04 +WIND: 3
+00:00:05 +WIND: 1
+00:00:10 +WIND: 4
+00:00:10 Matched '+WIND: 4'
+00:00:10 AT&D2
+00:00:11 OK
+00:00:11 Matched 'OK'
+00:00:11 AT+CSQ
+00:00:11 +CSQ: 13,1
+00:00:11 OK
+00:00:11 Matched 'OK'
+00:00:11 Connect
+00:00:11 ATS0=0
+00:00:11 OK
+00:00:11 Matched 'OK'
+00:00:11 ATD*99***1#
+00:00:12 CONNECT 9600
+00:00:12 Matched 'CONNECT*'
+00:00:12 Connected
+00:00:12 001 Initializing Interface: [Connect Init]
+00:00:12  Initialise TCP/IP Stack
+00:00:12 001 Initializing Interface: [Start PPP]
+00:00:12  Connecting
+00:00:30 001 Initializing Interface: [PPP Connected]
+00:00:30  Connected 10.32.76.59
+00:00:31 002 Initializing FTP: [Connect Server]
+00:00:31  Open Connection to 190.228.29.71
+00:00:34  220 POWER FTP
+00:00:35  331 Password required for monsanto.seedmech.com.ar
+00:00:45  230 User monsanto.seedmech.com.ar logged in
+00:00:46 002 Initializing FTP: [SET Binary Mode]
+00:00:46  200 Type set to I
+00:00:46 003 Transferring
+00:00:48 004 Uploading to Server
+00:00:50 004 Uploading to Server: [Upload File]
+00:00:50  227 Entering Passive Mode (190,228,29,71,160,96)
+00:01:06 054 Server Error: 
+00:01:06  FTP_CMD_FAILED STOR TDF04-1A2F4E2C-151217-181000.esp
+00:01:08 002 Initializing FTP: [Connect Server]
+00:01:08  Open Connection to 190.228.29.71
+00:01:13  220 POWER FTP
+00:01:15  331 Password required for monsanto.seedmech.com.ar
+00:01:16  230 User monsanto.seedmech.com.ar logged in
+00:01:21 002 Initializing FTP: [SET Binary Mode]
+00:01:21  200 Type set to I
+00:01:31 004 Uploading to Server: [Upload File]
+00:01:31  200 PORT command successful
+00:02:07 054 Server Error: 
+00:02:07  Timeout
+00:02:52  Timeout
+00:02:52  FTP_CMD_FAILED STOR TDF04-1A2F4E2C-151217-181000.esp
+00:02:53 005 Disconnecting from Server: [Disconnect FTP Server]
+00:02:53  221 Goodbye.
+00:02:55 Disconnect
+00:02:55 OK
+00:02:55 Matched 'OK'
+00:02:55 ATH
+00:02:55 OK
+00:02:55 Matched 'OK'
+00:02:55 AT+CFUN=0
+00:02:58 OK
+00:02:58 Matched 'OK'
+00:02:58 001 Initializing Interface: [Disconnect Modem]
+00:02:58  Waiting to retry

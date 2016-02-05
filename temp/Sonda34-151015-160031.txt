@@ -1,0 +1,69 @@
+Logger ID: Sonda34
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.6.2
+Build: May 29 2014 14:00:00
+Serial: ECAC4E170000
+Probe Voltage: 13401mV
+Last Response: 054 Server Error: "Timeout" [Connect Server]
+Connection Details:
+Log started: 15-10-15 15:01:21
+15:01:21 Initialize Modem
+15:01:21 001 Initializing Interface: [Connect Modem]
+15:01:21  Waiting Network
+15:01:29 +WIND: 3
+15:01:31 +WIND: 1
+15:01:34 +WIND: 7
+15:01:36 +WIND: 4
+15:01:36 Matched '+WIND: 4'
+15:01:36 AT+CREG=2
+15:01:36 OK
+15:01:36 Matched 'OK'
+15:01:36 +CREG: 1,"07DF","0A35"
+15:01:36 Matched '+CREG: 1*'
+15:01:37 AT&D2
+15:01:37 OK
+15:01:37 Matched 'OK'
+15:01:37 AT+CSQ
+15:01:37 +CSQ: 18,99
+15:01:37 OK
+15:01:37 Matched 'OK'
+15:01:37 AT+CCED=0,1
+15:01:37 +CCED: 722,07,07df,0a35,55,169,33,,,255,,,4
+15:01:37 OK
+15:01:37 Matched 'OK'
+15:01:38 AT+ADC?
+15:01:38 +ADC: 3910,4844,4841,4842
+15:01:38 OK
+15:01:38 Matched 'OK'
+15:01:38 Connect
+15:01:38 ATS0=0
+15:01:38 OK
+15:01:38 Matched 'OK'
+15:01:38 ATD*99***1#
+15:01:38 CONNECT 9600
+15:01:38 Matched 'CONNECT*'
+15:01:39 Connected
+15:01:39 001 Initializing Interface: [Connect Init]
+15:01:39  Initialise TCP/IP Stack
+15:01:39 001 Initializing Interface: [Start PPP]
+15:01:39  Connecting
+15:01:44 001 Initializing Interface: [PPP Connected]
+15:01:44  Connected 10.33.3.241
+15:01:44 002 Initializing FTP: [Connect Server]
+15:01:44  Open Connection to 190.228.29.71
+15:02:14 054 Server Error: 
+15:02:14  Timeout
+15:02:44  Timeout
+15:02:44 054 Server Error: TCP_OPEN_FAILED - '221 Goodbye.
+15:02:44 omplete
+15:02:44 '
+15:02:45 Disconnect
+15:02:45 OK
+15:02:45 Matched 'OK'
+15:02:45 ATH
+15:02:45 AT+CFUN=0
+15:02:45 OK
+15:02:45 Matched 'OK'
+16:00:01 001 Initializing Interface
+16:00:01 001 Initializing Interface: [Idle]
+16:00:01  Process URL

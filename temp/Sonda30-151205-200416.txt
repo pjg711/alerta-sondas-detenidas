@@ -1,0 +1,76 @@
+Logger ID: Sonda30
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: 32D11B160000
+Probe Voltage: 12751mV
+Last Response: 054 Server Error: "Timeout" [Upload File]
+Connection Details:
+Log started: 15-12-05 16:04:12
+16:04:12 Initialize Modem
+16:04:12 001 Initializing Interface: [Connect Modem]
+16:04:12  Waiting Network
+16:04:19 +WIND: 3
+16:04:21 +WIND: 1
+16:04:24 +WIND: 7
+16:04:26 +WIND: 4
+16:04:26 Matched '+WIND: 4'
+16:04:26 AT&D2
+16:04:26 OK
+16:04:26 Matched 'OK'
+16:04:26 AT+CSQ
+16:04:26 +CSQ: 8,99
+16:04:26 OK
+16:04:26 Matched 'OK'
+16:04:27 Connect
+16:04:27 ATS0=0
+16:04:27 OK
+16:04:27 Matched 'OK'
+16:04:27 ATD*99***1#
+16:04:27 CONNECT 9600
+16:04:27 Matched 'CONNECT*'
+16:04:27 Connected
+16:04:27 001 Initializing Interface: [Connect Init]
+16:04:27  Initialise TCP/IP Stack
+16:04:28 001 Initializing Interface: [Start PPP]
+16:04:28  Connecting
+16:04:36 001 Initializing Interface: [PPP Connected]
+16:04:36  Connected 186.126.75.233
+16:04:36 002 Initializing FTP: [Connect Server]
+16:04:36  Open Connection to 190.228.29.71
+16:04:39  220 POWER FTP
+16:04:40  331 Password required for monsanto.seedmech.com.ar
+16:04:41  230 User monsanto.seedmech.com.ar logged in
+16:04:42 002 Initializing FTP: [SET Binary Mode]
+16:04:42  200 Type set to I
+16:04:43 004 Uploading to Server: [Upload File]
+16:04:43  227 Entering Passive Mode (190,228,29,71,155,201).
+16:05:27 054 Server Error: 
+16:05:27  Timeout
+16:06:12  Timeout
+16:06:12  FTP_CMD_FAILED STOR Sonda30-C016DEC2-151130-082000.esp
+16:06:26 002 Initializing FTP: [Connect Server]
+16:06:26  Open Connection to 190.228.29.71
+16:06:31  220 POWER FTP
+16:06:33  331 Password required for monsanto.seedmech.com.ar
+16:06:34  230 User monsanto.seedmech.com.ar logged in
+16:06:35 002 Initializing FTP: [SET Binary Mode]
+16:06:35  200 Type set to I
+16:06:37 004 Uploading to Server: [Upload File]
+16:06:37  227 Entering Passive Mode (190,228,29,71,168,102).
+16:07:21 054 Server Error: 
+16:07:21  Timeout
+16:08:06  Timeout
+16:08:06  FTP_CMD_FAILED STOR Sonda30-C016DEC2-151130-082000.esp
+16:08:21 Disconnect
+16:08:21 OK
+16:08:21 Matched 'OK'
+16:08:21 ATH
+16:08:21 OK
+16:08:21 Matched 'OK'
+16:08:21 AT+CFUN=0
+16:08:25 OK
+16:08:25 Matched 'OK'
+20:00:00 001 Initializing Interface
+20:00:00 001 Initializing Interface: [Idle]
+20:00:00  Process URL

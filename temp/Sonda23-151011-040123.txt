@@ -1,0 +1,56 @@
+Logger ID: Sonda23
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: F6681C160000
+Probe Voltage: 12457mV
+Last Response: 054 Server Error: "Timeout" [Connect Server]
+Connection Details:
+Log started: 15-10-11 00:01:42
+00:01:42 Initialize Modem
+00:01:42 001 Initializing Interface: [Connect Modem]
+00:01:42  Waiting Network
+00:01:49 +WIND: 3
+00:01:52 +WIND: 1
+00:01:56 +WIND: 7
+00:02:08 +WIND: 4
+00:02:08 Matched '+WIND: 4'
+00:02:08 AT&D2
+00:02:08 OK
+00:02:08 Matched 'OK'
+00:02:08 AT+CSQ
+00:02:08 +CSQ: 9,0
+00:02:08 OK
+00:02:08 Matched 'OK'
+00:02:09 Connect
+00:02:09 ATS0=0
+00:02:09 OK
+00:02:09 Matched 'OK'
+00:02:09 ATD*99***1#
+00:02:09 CONNECT 9600
+00:02:09 Matched 'CONNECT*'
+00:02:09 Connected
+00:02:10 001 Initializing Interface: [Connect Init]
+00:02:10  Initialise TCP/IP Stack
+00:02:10 001 Initializing Interface: [Start PPP]
+00:02:10  Connecting
+00:02:30 001 Initializing Interface: [PPP Connected]
+00:02:30  Connected 181.4.54.103
+00:02:30 002 Initializing FTP: [Connect Server]
+00:02:30  Open Connection to 190.228.29.71
+00:02:45  220 POWER FTP
+00:03:15 054 Server Error: 
+00:03:15  Timeout
+00:04:00  Timeout
+00:04:00 054 Server Error: NEED_TO_EXIT - ''
+00:04:00 Disconnect
+00:04:00 OK
+00:04:00 Matched 'OK'
+00:04:01 ATH
+00:04:01 OK
+00:04:01 Matched 'OK'
+00:04:01 AT+CFUN=0
+00:04:06 Error timeout
+04:00:00 001 Initializing Interface
+04:00:00 001 Initializing Interface: [Idle]
+04:00:00  Process URL

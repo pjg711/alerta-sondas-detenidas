@@ -1,0 +1,45 @@
+Logger ID: Sonda23
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: F6681C160000
+Probe Voltage: 12163mV
+Last Response: 040 Success
+Connection Details:
+Log started: 15-09-18 15:34:03
+15:34:03 Initialize Modem
+15:34:03 001 Initializing Interface: [Connect Modem]
+15:34:03  Waiting Network
+15:34:10 +WIND: 3
+15:34:11 +WIND: 1
+15:34:15 +WIND: 7
+15:34:15 +WIND: 4
+15:34:15 Matched '+WIND: 4'
+15:34:15 AT&D2
+15:34:15 OK
+15:34:15 Matched 'OK'
+15:34:15 AT+CSQ
+15:34:15 +CSQ: 12,99
+15:34:15 OK
+15:34:15 Matched 'OK'
+15:34:16 Connect
+15:34:16 ATS0=0
+15:34:16 OK
+15:34:16 Matched 'OK'
+15:34:16 ATD*99***1#
+15:34:16 CONNECT 9600
+15:34:16 Matched 'CONNECT*'
+15:34:17 Connected
+15:34:17 001 Initializing Interface: [Connect Init]
+15:34:17  Initialise TCP/IP Stack
+15:34:17 001 Initializing Interface: [Start PPP]
+15:34:17  Connecting
+15:34:28 001 Initializing Interface: [PPP Connected]
+15:34:28  Connected 10.112.171.133
+15:34:29 002 Initializing FTP: [Connect Server]
+15:34:29  Open Connection to 190.228.29.71
+15:34:35  220 POWER FTP
+15:34:36  331 Password required for monsanto.seedmech.com.ar
+15:34:44  230 User monsanto.seedmech.com.ar logged in
+15:34:46 002 Initializing FTP: [SET Binary Mode]
+15:34:46  200 Type set to I

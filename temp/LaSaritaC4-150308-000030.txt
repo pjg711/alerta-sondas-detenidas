@@ -1,0 +1,65 @@
+Logger ID: LaSaritaC4
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: AEBB1B160000
+Probe Voltage: 12625mV
+Last Response: 054 Server Error: "FTP_CMD_FAILED PORT 10,94,105,94,199,106" [Upload File]
+Connection Details:
+Log started: 15-03-07 20:00:21
+20:00:21 Initialize Modem
+20:00:21 001 Initializing Interface: [Connect Modem]
+20:00:21  Waiting Network
+20:00:29 +WIND: 3
+20:00:30 +STIN: 0
+20:00:31 +WIND: 1
+20:00:35 +WIND: 4
+20:00:35 Matched '+WIND: 4'
+20:00:35 AT&D2
+20:00:35 OK
+20:00:35 Matched 'OK'
+20:00:35 AT+CSQ
+20:00:35 +CSQ: 13,99
+20:00:35 OK
+20:00:35 Matched 'OK'
+20:00:35 Connect
+20:00:35 ATS0=0
+20:00:35 OK
+20:00:35 Matched 'OK'
+20:00:36 ATD*99***1#
+20:00:36 CONNECT 9600
+20:00:36 Matched 'CONNECT*'
+20:00:36 Connected
+20:00:36 001 Initializing Interface: [Connect Init]
+20:00:36  Initialise TCP/IP Stack
+20:00:36 001 Initializing Interface: [Start PPP]
+20:00:36  Connecting
+20:00:49 001 Initializing Interface: [PPP Connected]
+20:00:49  Connected 10.94.105.94
+20:00:49 002 Initializing FTP: [Connect Server]
+20:00:49  Open Connection to 190.228.29.71
+20:00:50  220 POWER FTP
+20:00:51  331 Password required for monsanto.seedmech.com.ar
+20:00:52  230 User monsanto.seedmech.com.ar logged in
+20:00:52 002 Initializing FTP: [SET Binary Mode]
+20:00:52  200 Type set to I
+20:00:53 003 Transferring
+20:00:53 004 Uploading to Server
+20:01:05 054 Server Error: [Upload File]
+20:01:05  FTP_CMD_FAILED PORT 10,94,105,94,199,106
+20:01:51 054 Server Error: [Disconnect FTP Server]
+20:01:51  Timeout
+20:01:51 Disconnect
+20:01:51 +WIND: 7
+20:01:51 OK
+20:01:51 Matched 'OK'
+20:01:51 +STIN: 98
+20:01:51 +STIN: 99
+20:01:52 ATH
+20:01:52 OK
+20:01:52 Matched 'OK'
+20:01:52 AT+CFUN=0
+20:01:57 Error timeout
+00:00:00 001 Initializing Interface
+00:00:00 001 Initializing Interface: [Idle]
+00:00:00  Process URL

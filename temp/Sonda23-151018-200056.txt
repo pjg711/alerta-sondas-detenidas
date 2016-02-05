@@ -1,0 +1,64 @@
+Logger ID: Sonda23
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: F6681C160000
+Probe Voltage: 12876mV
+Last Response: 054 Server Error: "FTP_OPEN_FAILED 230 User monsanto.seedme..." [Connect Server]
+Connection Details:
+Log started: 15-10-18 16:03:03
+16:03:03 Initialize Modem
+16:03:03 001 Initializing Interface: [Connect Modem]
+16:03:03  Waiting Network
+16:03:10 +WIND: 3
+16:03:12 +WIND: 1
+16:03:16 +WIND: 7
+16:03:28 +WIND: 4
+16:03:28 Matched '+WIND: 4'
+16:03:28 AT&D2
+16:03:28 OK
+16:03:28 Matched 'OK'
+16:03:28 AT+CSQ
+16:03:28 +CSQ: 12,0
+16:03:28 OK
+16:03:28 Matched 'OK'
+16:03:29 Connect
+16:03:29 ATS0=0
+16:03:29 OK
+16:03:29 Matched 'OK'
+16:03:29 ATD*99***1#
+16:03:29 CONNECT 9600
+16:03:29 Matched 'CONNECT*'
+16:03:29 Connected
+16:03:29 001 Initializing Interface: [Connect Init]
+16:03:29  Initialise TCP/IP Stack
+16:03:30 001 Initializing Interface: [Start PPP]
+16:03:30  Connecting
+16:03:45 001 Initializing Interface: [PPP Connected]
+16:03:45  Connected 181.4.174.25
+16:03:45 002 Initializing FTP: [Connect Server]
+16:03:45  Open Connection to 190.228.29.71
+16:03:49  220 POWER FTP
+16:03:52  331 Password required for monsanto.seedmech.com.ar
+16:04:03  230 User monsanto.seedmech.com.ar logged in
+16:04:04 054 Server Error: [SET Binary Mode]
+16:04:04  230 User monsanto.seedmech.com.ar logged in
+16:04:04 054 Server Error: UNKNOWN - '230 User monsanto.seedmech.com.ar logged in
+16:04:04 '
+16:04:06 002 Initializing FTP: [Connect Server]
+16:04:06  Open Connection to 190.228.29.71
+16:04:30 054 Server Error: 
+16:04:30  FTP_OPEN_FAILED 230 User monsanto.seedmech.com.ar logged in
+16:04:31 054 Server Error: FTP_OPEN_FAILED - '230 User monsanto.seedmech.com.ar logged in
+16:04:31 '
+16:04:31 Disconnect
+16:04:31 OK
+16:04:31 Matched 'OK'
+16:04:31 ATH
+16:04:31 OK
+16:04:31 Matched 'OK'
+16:04:31 AT+CFUN=0
+16:04:36 Error timeout
+20:00:00 001 Initializing Interface
+20:00:00 001 Initializing Interface: [Idle]
+20:00:00  Process URL

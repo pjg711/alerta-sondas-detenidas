@@ -1,0 +1,67 @@
+Logger ID: Sonda30
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: 32D11B160000
+Probe Voltage: 13569mV
+Last Response: 053 Connection Failure: "Failed to open PPP connection" [Start PPP]
+Connection Details:
+Log started: 15-12-20 12:00:00
+12:00:00 Initialize Modem
+12:00:00 001 Initializing Interface: [Connect Modem]
+12:00:00  Waiting Network
+12:00:04 +WIND: 3
+12:00:06 +WIND: 1
+12:00:10 +WIND: 4
+12:00:10 Matched '+WIND: 4'
+12:00:10 AT&D2
+12:00:10 OK
+12:00:10 Matched 'OK'
+12:00:10 AT+CSQ
+12:00:11 +CSQ: 7,6
+12:00:11 OK
+12:00:11 Matched 'OK'
+12:00:11 Connect
+12:00:11 ATS0=0
+12:00:11 OK
+12:00:11 Matched 'OK'
+12:00:11 ATD*99***1#
+12:00:11 CONNECT 9600
+12:00:11 Matched 'CONNECT*'
+12:00:12 Connected
+12:00:12 001 Initializing Interface: [Connect Init]
+12:00:12  Initialise TCP/IP Stack
+12:00:12 001 Initializing Interface: [Start PPP]
+12:00:12  Connecting
+12:00:30 001 Initializing Interface: [PPP Connected]
+12:00:30  Connected 186.152.40.23
+12:00:30 002 Initializing FTP: [Connect Server]
+12:00:30  Open Connection to 190.228.29.71
+12:00:33  220 POWER FTP
+12:00:43  331 Password required for monsanto.seedmech.com.ar
+12:00:43  230 User monsanto.seedmech.com.ar logged in
+12:00:44 002 Initializing FTP: [SET Binary Mode]
+12:00:44  200 Type set to I
+12:00:44 003 Transferring
+12:00:46 004 Uploading to Server
+12:00:55 004 Uploading to Server: [Upload File]
+12:00:55  227 Entering Passive Mode (190,228,29,71,200,84).
+12:00:55 054 Server Error: 
+12:00:55  FTP_CMD_FAILED PORT 186,152,40,23,219,225
+12:00:56 002 Initializing FTP: [Connect Server]
+12:00:56  Open Connection to 190.228.29.71
+12:01:05 054 Server Error: 
+12:01:05  FTP_OPEN_FAILED 227 Entering Passive Mode (190,228,29,71,200,84).
+12:01:05 054 Server Error: FTP_OPEN_FAILED - '227 Entering Passive Mode (190,228,29,71,200,84).
+12:01:05 '
+12:01:06 Disconnect
+12:01:06 +WIND: 7
+12:01:06 OK
+12:01:06 Matched 'OK'
+12:01:06 ATH
+12:01:06 OK
+12:01:06 Matched 'OK'
+12:01:06 AT+CFUN=0
+12:01:11 Error timeout
+12:01:11 001 Initializing Interface: [Disconnect Modem]
+12:01:11  Waiting to retry

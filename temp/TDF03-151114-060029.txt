@@ -1,0 +1,63 @@
+Logger ID: TDF03
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.6.2
+Build: May 29 2014 14:00:00
+Serial: 40FBA0140000
+Probe Voltage: 12604mV
+Last Response: 054 Server Error: "FTP_OPEN_FAILED 221 Goodbye." [Connect Server]
+Connection Details:
+Log started: 15-11-14 04:00:27
+04:00:27 Initialize Modem
+04:00:27 001 Initializing Interface: [Connect Modem]
+04:00:27  Waiting Network
+04:00:34 øÀàÀàÿàü†ÿÿþÿ
+04:00:34 +WIND: 3
+04:00:35 +WIND: 1
+04:00:40 +WIND: 7
+04:00:43 +WIND: 4
+04:00:43 Matched '+WIND: 4'
+04:00:43 AT&D2
+04:00:43 OK
+04:00:43 Matched 'OK'
+04:00:44 AT+CSQ
+04:00:44 +CSQ: 18,99
+04:00:44 OK
+04:00:44 Matched 'OK'
+04:00:44 Connect
+04:00:44 ATS0=0
+04:00:44 OK
+04:00:44 Matched 'OK'
+04:00:44 ATD*99***1#
+04:00:44 CONNECT 9600
+04:00:44 Matched 'CONNECT*'
+04:00:45 Connected
+04:00:45 001 Initializing Interface: [Connect Init]
+04:00:45  Initialise TCP/IP Stack
+04:00:45 001 Initializing Interface: [Start PPP]
+04:00:45  Connecting
+04:00:50 001 Initializing Interface: [PPP Connected]
+04:00:50  Connected 10.34.177.184
+04:00:50 002 Initializing FTP: [Connect Server]
+04:00:50  Open Connection to 190.228.29.71
+04:00:51 054 Server Error: 
+04:00:51  FTP_OPEN_FAILED 221 Goodbye.
+04:00:51 054 Server Error: FTP_OPEN_FAILED - '221 Goodbye.
+04:00:51 '
+04:00:52 002 Initializing FTP: 
+04:00:52  Open Connection to 190.228.29.71
+04:00:53 054 Server Error: 
+04:00:53  FTP_OPEN_FAILED 221 Goodbye.
+04:00:53 054 Server Error: FTP_OPEN_FAILED - '221 Goodbye.
+04:00:53 '
+04:00:54 Disconnect
+04:00:54 OK
+04:00:54 Matched 'OK'
+04:00:54 ATH
+04:00:54 OK
+04:00:54 Matched 'OK'
+04:00:54 AT+CFUN=0
+04:00:56 OK
+04:00:56 Matched 'OK'
+06:00:01 001 Initializing Interface
+06:00:01 001 Initializing Interface: [Idle]
+06:00:01  Process URL

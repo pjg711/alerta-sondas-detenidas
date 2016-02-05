@@ -1,0 +1,62 @@
+Logger ID: Sonda23
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.5.2
+Build: Apr 10 2013 16:49:59
+Serial: F6681C160000
+Probe Voltage: 13736mV
+Last Response: 054 Server Error: "Timeout" [Connect Server]
+Connection Details:
+Log started: 15-11-22 04:02:21
+04:02:21 Initialize Modem
+04:02:21 001 Initializing Interface: [Connect Modem]
+04:02:21  Waiting Network
+04:02:28 +WIND: 3
+04:02:31 +WIND: 1
+04:02:35 +WIND: 7
+04:02:47 +WIND: 4
+04:02:47 Matched '+WIND: 4'
+04:02:47 AT&D2
+04:02:47 OK
+04:02:47 Matched 'OK'
+04:02:48 AT+CSQ
+04:02:48 +CSQ: 13,0
+04:02:48 OK
+04:02:48 Matched 'OK'
+04:02:48 Connect
+04:02:48 ATS0=0
+04:02:48 OK
+04:02:48 Matched 'OK'
+04:02:48 ATD*99***1#
+04:02:48 CONNECT 9600
+04:02:48 Matched 'CONNECT*'
+04:02:49 Connected
+04:02:49 001 Initializing Interface: [Connect Init]
+04:02:49  Initialise TCP/IP Stack
+04:02:49 001 Initializing Interface: [Start PPP]
+04:02:49  Connecting
+04:02:57 001 Initializing Interface: [PPP Connected]
+04:02:57  Connected 186.126.50.1
+04:02:57 002 Initializing FTP: [Connect Server]
+04:02:57  Open Connection to 190.228.29.71
+04:03:42 054 Server Error: 
+04:03:42  Timeout
+04:04:03 054 Server Error: TCP_OPEN_FAILED - '221 Goodbye.
+04:04:03 '
+04:04:03 002 Initializing FTP: 
+04:04:03  Open Connection to 190.228.29.71
+04:04:48 054 Server Error: 
+04:04:48  Timeout
+04:05:15 054 Server Error: FTP_OPEN_FAILED - '221 Goodbye.
+04:05:15 '
+04:05:15 Disconnect
+04:05:16 OK
+04:05:16 Matched 'OK'
+04:05:16 ATH
+04:05:16 OK
+04:05:16 Matched 'OK'
+04:05:16 AT+CFUN=0
+04:05:19 OK
+04:05:19 Matched 'OK'
+08:00:00 001 Initializing Interface
+08:00:00 001 Initializing Interface: [Idle]
+08:00:00  Process URL

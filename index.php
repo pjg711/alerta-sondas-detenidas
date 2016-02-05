@@ -75,17 +75,6 @@ if($login->getLoginSession())
     $login->sesion_iniciada();
     if($login->get_es_admin())
     {
-        if(isset($_POST['alta_usuario']))
-        {
-            //inserto usuario nuevo
-            if(insertar_usuario())
-            {
-                mensaje("Se guardó el nuevo usuario.");
-            }else
-            {
-                mensaje("ERROR! No se pudo guardar el usuario.");
-            }
-        }
         if(isset($_POST['comprobar']))
         {
             //comprobar la conexion al sitio ftp
@@ -97,7 +86,17 @@ if($login->getLoginSession())
                 mensaje("ERROR! Revise los datos de la conexion al servidor.");
             }
         }
-        /* usuarios */
+        if(isset($_POST['alta_usuario']))
+        {
+            //inserto usuario nuevo
+            if(insertar_usuario())
+            {
+                mensaje("Se guardó el nuevo usuario.");
+            }else
+            {
+                mensaje("ERROR! No se pudo guardar el usuario.");
+            }
+        }
         if(isset($_POST['guardar_edicion_usuario']))
         {
             if(actualizar_usuario())
@@ -179,6 +178,9 @@ function hago_informe($sql,$lo_guardo=false)
                             echo "Se inserto informe\n";
                         }
                     }
+                }else
+                {
+                    echo "ERROR! Hubo algún problema en la creación del informe.";
                 }
             }
         }
@@ -203,10 +205,10 @@ function presento_informes($informes)
     {
         echo "<tr>
                 <td align=\"right\">
-                    <a class=\"link-tabla\" href=\"#\" onclick=\"mostrar_ocultar('informe_".$informe['id_informe']."')\" title=\"Ver informe\">
+                    <a class=\"link-tabla\" href=\"javascript:mostrar_ocultar('informe_".$informe['id_informe']."');\" title=\"Ver informe\">
                         <i class=\"fa fa-eye\"></i>
                     </a>&nbsp;&nbsp;
-                    <a class=\"link-tabla\" href=\"#\" onclick=\"borrar_informe('".$informe['id_informe']."')\" title=\"Borrar informe\">
+                    <a class=\"link-tabla\" href=\"javascript:borrar_informe('".$informe['id_informe']."')\" title=\"Borrar informe\">
                         <i class=\"fa fa-trash\"></i>
                     </a>&nbsp;&nbsp;
                 </td>";
@@ -237,7 +239,6 @@ function presento_informes($informes)
 }
 function presento_informe($xml_informe)
 {
-    //echo htmlentities($xml_informe)."<br><br>";
     $xml_informe2= html_entity_decode($xml_informe);
     $dom = new DOMDocument;
     $dom->loadXML($xml_informe2);
@@ -274,7 +275,7 @@ function presento_informe($xml_informe)
                 $cadena.=
                     "<td>
                         <div style=\"display:block\">
-                            <a href=\"#\" onclick=\"mostrar_ocultar('sonda_".$sonda->nombre."')\" title=\"M&aacute;s informaci&oacute;n\"><i class=\"fa fa-info\"></i></a>
+                            <a href=\"javascript:mostrar_ocultar('sonda_".$sonda->nombre."');\" title=\"M&aacute;s informaci&oacute;n\"><i class=\"fa fa-info\"></i></a>
                         </div>
                         <div id=\"sonda_".$sonda->nombre."\" style='display:none'>".
                             $sonda->mas_info."prueba
@@ -299,29 +300,49 @@ function analizo_sondas($sondas)
 {
     if(!is_array($sondas)) 
     {
-        echo "La variable $sondas no es un array\n";
+        //echo "La variable $sondas no es un array\n";
         return false;
     }
     $cadena="";
     $q_sondas_cantidad=array();
+    $q_sondas_txt=array();
     foreach($sondas as $key => $sonda)
     {
         if(isset($sonda["type"]))
         {
             if($sonda["type"]=="file")
             {
+                $partes=explode("-",$key);
+                if(substr($key,-4)==".txt")
+                {
+                    // archivo con informacion de sonda detenida ya estan descargados en carpeta temp
+                    if(count($partes)==3)
+                    {
+                        //fecha es AAMMDD
+                        $anio=2000+intval(substr($partes[1],0,2));
+                        $mes=intval(substr($partes[1],2,2));
+                        $dia=intval(substr($partes[1],-2));
+                        //hora es HHMMSS
+                        $hora=intval(substr($partes[2],0,2));
+                        $minu=intval(substr($partes[2],2,2));
+                        $segu=intval(substr($partes[2],-2));
+                        //
+                        $fecha=mktime($hora,$minu,$segu,$mes,$dia,$anio);
+                        $q_sondas_txt[$partes[0]][$fecha]=$key;
+                        sort($q_sondas_txt[$partes[0]]);
+                    }
+                }
                 if(substr($key,-4)==".esp")
                 {
-                    $partes=explode("-",$key);
                     if(count($partes)==4)
                     {   
                         // es sonda
                         $agrego=array("archivo"=>$key,"sonda"=>$partes[0],"fecha"=>$partes[2]);
                         $sonda=array_merge($sonda,$agrego);
                         //$partes[0] contiene el nombre de la sonda
-                        $linea_archivo="nombre_estacion--->".$partes[0]."\n";
                         $q_sondas[$partes[0]][]=$sonda;
                         if(!isset($q_sondas_cantidad[$partes[0]])) $q_sondas_cantidad[$partes[0]]=0;
+                        if(isset())
                         $q_sondas_cantidad[$partes[0]]++;
                     }
                 }
@@ -420,7 +441,7 @@ function nuevo_usuario()
     // agregar nuevo informe
     echo "
         <br><br><br><br><br>
-        <a class=\"nuevo-usuario\" href=\"#\" onclick=\"mostrar_ocultar('nuevo_usuario')\"><img src=\"./img/nuevo_informe.png\">&nbsp;Nuevo usuario FTP</a>
+        <a class=\"nuevo-usuario\" href=\"javascript:mostrar_ocultar('nuevo_usuario')\"><img src=\"./img/nuevo_informe.png\">&nbsp;Nuevo usuario FTP</a>
         <table id='tabla-opciones-general'>
             <tr>
                 <td>
@@ -494,10 +515,10 @@ function listado_usuarios_ftp($es_admin=false)
             echo "
                 <tr>
                     <td align=\"center\">
-                        <a class=\"link-tabla\" href=\"#\" onclick=\"borrar_usuario('".$usuario['id']."')\">
+                        <a class=\"link-tabla\" href=\"javascript:borrar_usuario('".$usuario['id']."')\">
                             <i class=\"fa fa-trash\"></i>
                         </a>&nbsp;
-                        <a class=\"link-tabla\" href=\"#\" onclick=\"mostrar_ocultar('usuario_".trim($usuario['id'])."')\">
+                        <a class=\"link-tabla\" href=\"javascript:mostrar_ocultar('usuario_".trim($usuario['id'])."')\">
                             <i class=\"fa fa-pencil\"></i>
                         </a>
                     </td>
@@ -626,7 +647,7 @@ function borrar_usuario($id_usuario=0)
 {
     if($id_usuario==0) return false;
     $obj_BD=new BD();
-    $sql="DELETE FROM `usuario` WHERE `id`=".$id_usuario;
+    $sql="DELETE FROM `usuarios` WHERE `id`=".$id_usuario;
     if(!$obj_BD->sql_select($sql, $consulta))
     {
         return false;
@@ -694,7 +715,8 @@ function insertar_usuario()
     $obj_BD=new BD();
     $sql="INSERT INTO `usuarios` (`activo`,`fecha_alta`,`usuario`,`password`,`servidor`,`directorio_remoto`,
                 `es_admin`,`tipo_usuario`,`mails`) 
-            VALUES (1,".$fecha_alta.",'".$usuario_ftp."','".$password_ftp."','".$servidor_ftp."','".$directorio_remoto."',0,'ftp','".$mails."'";
+            VALUES (1,".$fecha_alta.",'".$usuario_ftp."','".$password_ftp."','".$servidor_ftp."','".$directorio_remoto."',0,'ftp','".$mails."')";
+    echo "sql insertar_usuario--->".$sql."<br>";
     if(!$obj_BD->sql_select($sql, $consulta))
     {
         unset($obj_BD);
