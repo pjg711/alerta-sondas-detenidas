@@ -8,9 +8,12 @@ define('PASSWORD','alertasondas932');
 //
 class BD
 {
+    public $num_registros=0;
+    
     function __construct()
     {
         global $db_link;
+        $this->num_registros=0;
         if(!($db_link = new PDO('mysql:host='.SERVIDOR.';dbname='.BASE_DATOS.';charset=utf8',USUARIO,PASSWORD)))
         {
             echo "No es posible conectar con la base de datos ".$base_datos."<br>";
@@ -26,13 +29,17 @@ class BD
             $db_link->query("SET NAMES 'utf8'");
         }
         $rv = $db_link->prepare($query);
-        if (!$rv->execute())
+        if(!$rv->execute())
         {
             return false;
         }
         if($last_id=$db_link->lastInsertId())
         {
             return $last_id;
+        }
+        if($rv->rowCount())
+        {
+            $this->num_registros=$rv->rowCount();
         }
         return true;
     }
@@ -42,9 +49,7 @@ class BD
         $finalResult = array(); 
         if(strlen(trim($table)) < 1) return false; 
         $query = "show columns from $table";
-        //$result = mysql_query($query);
         $this->sql_select($query, $consulta);
-        //while ($row = mysql_fetch_array($result))
         while($row = $consulta->fetch(PDO::FETCH_ASSOC))
         { 
             if($field != $row["Field"]) continue;
@@ -61,22 +66,4 @@ class BD
         }
         return $finalResult; 
     }     
-    /*
-    public function insertar_usuario($usuario,$password)
-    {
-        $sql="INSERT INTO `usuarios` ("
-    }
-     * 
-     */
-    /*
-    public function insertar_informe($informe,$id_usuario)
-    {
-        $sql="INSERT INTO `informes` (`id_usuario`,`informe`,`fecha`) VALUES (".$id_usuario.",'".$informe."',".now().")";
-        if($this->sql_select($sql,$consulta))
-        {
-            
-        }
-    }
-     * 
-     */
 }

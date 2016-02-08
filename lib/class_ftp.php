@@ -27,12 +27,8 @@ class FTP
         $this->ftp_password=$ftp_password;
         $this->directorio_remoto=$directorio_remoto;
         //
-        //echo "\n";
-        //echo "servidor-->".$this->ftp_server."\n";
-        //echo "usuario--->".$this->ftp_user."\n";
-        //echo "password-->".$this->ftp_password."\n";
-        $this->conn_id = ftp_connect($this->ftp_server,21) or die("No es posible la conexión con el servidor $this->ftp_server");
-        //echo "conn result: ".$this->conn_id."\n";
+        $this->conn_id = ftp_connect($this->ftp_server,21) or die("No es posible la conexión con el servidor $this->ftp_server\n");
+        echo "connid: ".$this->conn_id."\n";
         if(ftp_login($this->conn_id, $this->ftp_user, $this->ftp_password))
         {
             if($this->listado=$this->lista_detallada($this->conn_id,$this->directorio_remoto))
@@ -41,6 +37,7 @@ class FTP
                 return true;
             }
         }
+        echo "ERROR! No se pudo realizar la conexión\n";
         return false;
     }
     private function lista_detallada($resource, $directorio = '.')
@@ -55,25 +52,27 @@ class FTP
                 $item['type'] = $chunks[0]{0} === 'd' ? 'directory' : 'file'; 
                 array_splice($chunks, 0, 8); 
                 $items[implode(" ", $chunks)] = $item; 
-                
                 //$chunks contiene el nombre del archivo
-                echo "\n chunks---------------------------------\n";
-                print_r($chunks);
-                echo "\n";
+                //echo "\n chunks---------------------------------\n";
+                //print_r($chunks);
+                //echo "\n";
                 // descargo archivo si tiene extension txt
                 if(substr($chunks[0],-4)==".txt")
                 {
                     $local_file="temp/".$chunks[0];
                     $server_file=$chunks[0];
-                    if(ftp_get($resource, $local_file, $server_file, FTP_ASCII))
+                    if(!file_exists($local_file))
                     {
-                        echo "Se descargo archivo\n";
-                    }else
-                    {
-                        echo "ERROR! No se pudo descargar archivo\n";
+                        //si el archivo no existe lo descargo
+                        if(ftp_get($resource, $local_file, $server_file, FTP_ASCII))
+                        {
+                            echo "Se descargo archivo\n";
+                        }else
+                        {
+                            echo "ERROR! No se pudo descargar archivo\n";
+                        }
                     }
                 }
-                //exit;
             } 
             return $items; 
         } 

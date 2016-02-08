@@ -1,0 +1,64 @@
+Logger ID: SantaLuciaZonaD
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.6.5
+Build: Jun 12 2015 17:01:21
+Serial ID: BF9C62180000
+Serial Number: <blank>
+Probe Voltage: 12562mV
+Last Response: 053 Connection Failure: "Failed to open PPP connection" [Start PPP]
+Connection Details:
+Log started: 16-02-06 22:00:34
+22:00:34 Initialize Modem [12835mV]
+22:00:34 001 Initializing Interface: [Connect Modem]
+22:00:34  Waiting Network
+22:00:42 +WIND: 3
+22:00:45 +WIND: 7
+22:00:45 +STIN: 0
+22:00:46 +WIND: 1
+22:00:51 +WIND: 4
+22:00:51 Matched '+WIND: 4'
+22:00:51 AT+CREG=2
+22:00:51 OK
+22:00:51 Matched 'OK'
+22:00:51 +CREG: 1,"07DF","0C9E"
+22:00:51 Matched '+CREG: 1*'
+22:00:52 AT&D2
+22:00:52 OK
+22:00:52 Matched 'OK'
+22:00:52 AT+CSQ
+22:00:52 +CSQ: 18,99
+22:00:52 OK
+22:00:52 Matched 'OK'
+22:00:52 AT+CCED=0,1
+22:00:52 +CCED: 722,07,07df,0c9e,40,179,32,,,255,,,4
+22:00:52 OK
+22:00:52 Matched 'OK'
+22:00:53 AT+ADC?
+22:00:53 +ADC: 4044,109,12,818
+22:00:53 OK
+22:00:53 Matched 'OK'
+22:00:53 Connect [12876mV]
+22:00:53 ATS0=0
+22:00:53 OK
+22:00:53 Matched 'OK'
+22:00:53 ATD*99***1#
+22:00:53 CONNECT 9600
+22:00:53 Matched 'CONNECT*'
+22:00:54 Connected [13002mV]
+22:00:54 001 Initializing Interface: [Connect Init]
+22:00:54  Initialise TCP/IP Stack
+22:00:54 001 Initializing Interface: [Start PPP]
+22:00:54  Connecting
+22:01:09 053 Connection Failure: 
+22:01:09  Failed to open PPP connection
+22:01:09 Disconnect
+22:01:09 ATH
+22:01:09 OK
+22:01:09 Matched 'OK'
+22:01:10 AT+CFUN=0
+22:01:12 OK
+22:01:12 Matched 'OK'
+22:01:12 Power down [12876mV]
+00:00:00 001 Initializing Interface
+00:00:00 001 Initializing Interface: [Idle]
+00:00:00  Process URL

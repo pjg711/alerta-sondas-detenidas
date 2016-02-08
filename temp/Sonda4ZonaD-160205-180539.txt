@@ -1,0 +1,82 @@
+Logger ID: Sonda4ZonaD
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.6.5
+Build: Jun 12 2015 17:01:21
+Serial ID: 2AD062180000
+Serial Number: <blank>
+Probe Voltage: 13275mV
+Last Response: 053 Connection Failure: "Failed to open PPP connection" [Start PPP]
+Connection Details:
+Log started: 16-02-05 18:00:01
+18:00:01 Initialize Modem [13820mV]
+18:00:01 001 Initializing Interface: [Connect Modem]
+18:00:01  Waiting Network
+18:00:04 +WIND: 3
+18:00:05 +STIN: 0
+18:00:05 +WIND: 1
+18:00:09 +WIND: 4
+18:00:09 Matched '+WIND: 4'
+18:00:09 AT+CREG=2
+18:00:09 OK
+18:00:09 Matched 'OK'
+18:00:10 +CREG: 2
+18:00:10 +WIND: 7
+18:00:10 +CREG: 1,"07DF","0A39"
+18:00:10 Matched '+CREG: 1*'
+18:00:10 AT&D2
+18:00:10 OK
+18:00:10 Matched 'OK'
+18:00:10 AT+CSQ
+18:00:10 +CSQ: 15,99
+18:00:10 OK
+18:00:10 Matched 'OK'
+18:00:10 AT+CCED=0,1
+18:00:11 +CCED: 722,07,07df,0a39,35,165,27,,,255,,,4
+18:00:11 OK
+18:00:11 Matched 'OK'
+18:00:11 AT+ADC?
+18:00:11 +ADC: 4015,95,0,792
+18:00:11 OK
+18:00:11 Matched 'OK'
+18:00:11 Connect [13506mV]
+18:00:11 ATS0=0
+18:00:11 OK
+18:00:11 Matched 'OK'
+18:00:12 ATD*99***1#
+18:00:12 CONNECT 9600
+18:00:12 Matched 'CONNECT*'
+18:00:12 Connected [13527mV]
+18:00:12 001 Initializing Interface: [Connect Init]
+18:00:12  Initialise TCP/IP Stack
+18:00:12 001 Initializing Interface: [Start PPP]
+18:00:12  Connecting
+18:01:05 001 Initializing Interface: [PPP Connected]
+18:01:05  Connected 10.103.176.15
+18:01:05 002 Initializing FTP: [Connect Server]
+18:01:05  Open Connection to 190.228.29.71
+18:01:50 054 Server Error: 
+18:01:50  Timeout
+18:02:11 054 Server Error: TCP_OPEN_FAILED - '221 Goodbye.
+18:02:11 omplete
+18:02:11 '
+18:02:11 002 Initializing FTP: 
+18:02:11  Open Connection to 190.228.29.71
+18:02:57 054 Server Error: 
+18:02:57  Timeout
+18:03:18 054 Server Error: TCP_OPEN_FAILED - '221 Goodbye.
+18:03:18 omplete
+18:03:18 '
+18:03:18 Disconnect
+18:03:18 +STIN: 98
+18:03:18 OK
+18:03:18 Matched 'OK'
+18:03:18 +STIN: 99
+18:03:18 ATH
+18:03:19 OK
+18:03:19 Matched 'OK'
+18:03:19 AT+CFUN=0
+18:03:21 OK
+18:03:21 Matched 'OK'
+18:03:21 001 Initializing Interface: [Disconnect Modem]
+18:03:21  Waiting to retry
+18:03:21 Power down [13422mV]

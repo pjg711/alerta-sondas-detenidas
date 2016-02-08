@@ -6,7 +6,7 @@ require_once("lib/class_base-datos.php");
 require_once("lib/class_login.php");
 require_once("lib/class_ftp.php");
 require_once("lib/class_pagina.php");
-require_once("lib/PHPMailer/_lib/class.phpmailer.php");
+require_once("lib/PHPMailer-master/class.phpmailer.php");
 //
 include("config.php");
 //
@@ -15,10 +15,10 @@ if(isset($argv))
     if(count($argv)==2)
     {
         // llamado desde un script en el cron...
-        // el 2do argumento es el nombre de usuario
+        // el 2do argumento es el nombre de usuario...
+        // ejemplo: php index.php monsanto.seedmech.com.ar
         // busco el nombre de usuario en la base de datos
-        $sql="SELECT * FROM `usuarios` WHERE `usuario`='".$argv[1]."' LIMIT 1";
-        hago_informe($sql,true);
+        hago_informe($argv,true);
         exit;
     }
 }
@@ -38,10 +38,18 @@ if($login->getLoginSession())
             mensaje("ERROR! No se pudo borrar el informe");
         }
     }
+    if(isset($_GET['confirmado_borrar_todos']))
+    {
+        if(isset($_SESSION['id_usuario']))
+        {
+            $id_usuario=$_SESSION['id_usuario'];
+            borrar_informes($id_usuario);
+        }
+    }
     if(isset($_GET['cambiar_conf']))
     {
         
-    }
+    }    
 }
 //
 $pagina=new PAGINA();
@@ -134,7 +142,6 @@ if($login->getLoginSession())
         // vuelvo a mostrar el div
         ?>
         <script LANGUAGE="JavaScript">
-            //alert("pase por aca");
             mostrar_ocultar('nuevo_usuario');
         </script>
         <?php
@@ -151,38 +158,48 @@ exit;
 /*******************************************************/
 /* ------------------FUNCIONES ------------------------*/
 /*******************************************************/
-function hago_informe($sql,$lo_guardo=false)
+function hago_informe($argv,$lo_guardo=false)
 {
+    $sql="SELECT * FROM `usuarios` WHERE `usuario`='".$argv[1]."' LIMIT 1";
     $obj_BD=new BD();
     if($obj_BD->sql_select($sql, $consulta))
     {
-        // hago el informe y lo guardo
-        if($registro=$consulta->fetch(PDO::FETCH_ASSOC))
+        if($obj_BD->num_registros>0)
         {
-            $servidor=trim(utf8_decode($registro['servidor']));
-            $usuario=trim(utf8_decode($registro['usuario']));
-            $password=trim(utf8_decode($registro['password']));
-            $directorio=trim(utf8_decode($registro['directorio_remoto']));
-            if($obj_ftp=new FTP($servidor,$usuario,$password,$directorio))
+            // hago el informe y lo guardo
+            if($registro=$consulta->fetch(PDO::FETCH_ASSOC))
             {
-                // hago el informe
-                if($informe=analizo_sondas($obj_ftp->get_listado()))
+                $servidor=trim(utf8_decode($registro['servidor']));
+                $usuario=trim(utf8_decode($registro['usuario']));
+                $password=trim(utf8_decode($registro['password']));
+                $directorio=trim(utf8_decode($registro['directorio_remoto']));
+                $emails=explode(",",$registro['mails']);
+                if($obj_ftp=new FTP($servidor,$usuario,$password,$directorio))
                 {
-                    if($lo_guardo)
+                    // hago el informe
+                    if($informe=analizo_sondas($obj_ftp->get_listado()))
                     {
-                        // y lo guardo en la base de datos
-                        $fecha_actual=date("Y-m-d H:i:s");
-                        $sql="INSERT INTO `informes` (`id_usuario`,`informe`,`fecha`) VALUES (".$registro['id'].",'".$informe."','".$fecha_actual."')";
-                        if($obj_BD->sql_select($sql, $consulta))
+                        if($lo_guardo)
                         {
-                            echo "Se inserto informe\n";
+                            // y lo guardo en la base de datos
+                            $fecha_actual=date("Y-m-d H:i:s");
+                            $sql="INSERT INTO `informes` (`id_usuario`,`informe`,`fecha`) VALUES (".$registro['id'].",'".$informe."','".$fecha_actual."')";
+                            if($obj_BD->sql_select($sql, $consulta))
+                            {
+                                echo "Se inserto informe\n";
+                                // envio mails
+                                envio_emails($informe,$emails);
+                            }
                         }
+                    }else
+                    {
+                        echo "ERROR! Hubo algún problema en la creación del informe.";
                     }
-                }else
-                {
-                    echo "ERROR! Hubo algún problema en la creación del informe.";
                 }
             }
+        }else
+        {
+            echo "ERROR! ".$argv[1]." no corresponde con un usuario cargado en el sistema.\n";
         }
     }
     unset($obj_BD);
@@ -194,7 +211,11 @@ function presento_informes($informes)
         <h1>Listado de informes realizados</h1>
         <table class=\"table table-striped table-hover table-bordered table-condensed\">
             <tr>
-                <th>&nbsp;</th>";
+                <th class=\"text-right\">
+                    <a class=\"link-tabla\" href=\"javascript:borrar_todos();\" title=\"Borrar todos\">
+                        <i class=\"fa fa-trash\"></i>&nbsp;&nbsp;&nbsp;
+                    </a>
+                </th>";
     if($_SESSION['es_admin'])
     {
         echo "  <th>Usuario</th>";
@@ -208,8 +229,8 @@ function presento_informes($informes)
                     <a class=\"link-tabla\" href=\"javascript:mostrar_ocultar('informe_".$informe['id_informe']."');\" title=\"Ver informe\">
                         <i class=\"fa fa-eye\"></i>
                     </a>&nbsp;&nbsp;
-                    <a class=\"link-tabla\" href=\"javascript:borrar_informe('".$informe['id_informe']."')\" title=\"Borrar informe\">
-                        <i class=\"fa fa-trash\"></i>
+                    <a class=\"link-tabla\" href=\"javascript:borrar_informe('".$informe['id_informe']."');\" title=\"Borrar informe\">
+                        <i class=\"fa fa-trash-o\"></i>
                     </a>&nbsp;&nbsp;
                 </td>";
         if($_SESSION['es_admin'])
@@ -300,12 +321,12 @@ function analizo_sondas($sondas)
 {
     if(!is_array($sondas)) 
     {
-        //echo "La variable $sondas no es un array\n";
         return false;
     }
     $cadena="";
     $q_sondas_cantidad=array();
-    $q_sondas_txt=array();
+    $q_sondas_comunicacion=array();
+    $archivo_comunicacion=array();
     foreach($sondas as $key => $sonda)
     {
         if(isset($sonda["type"]))
@@ -325,11 +346,13 @@ function analizo_sondas($sondas)
                         //hora es HHMMSS
                         $hora=intval(substr($partes[2],0,2));
                         $minu=intval(substr($partes[2],2,2));
-                        $segu=intval(substr($partes[2],-2));
+                        $segu=intval(substr($partes[2],4,2));
                         //
                         $fecha=mktime($hora,$minu,$segu,$mes,$dia,$anio);
-                        $q_sondas_txt[$partes[0]][$fecha]=$key;
-                        sort($q_sondas_txt[$partes[0]]);
+                        //
+                        $archivo_comunicacion=array("fecha"=>date("r",$fecha),"mkfecha"=>$fecha,"archivo"=>$key);
+                        $q_sondas_comunicacion[$partes[0]][]=$archivo_comunicacion;
+                        sort($q_sondas_comunicacion[$partes[0]]);
                     }
                 }
                 if(substr($key,-4)==".esp")
@@ -342,7 +365,6 @@ function analizo_sondas($sondas)
                         //$partes[0] contiene el nombre de la sonda
                         $q_sondas[$partes[0]][]=$sonda;
                         if(!isset($q_sondas_cantidad[$partes[0]])) $q_sondas_cantidad[$partes[0]]=0;
-                        if(isset())
                         $q_sondas_cantidad[$partes[0]]++;
                     }
                 }
@@ -353,13 +375,26 @@ function analizo_sondas($sondas)
     $sonda_fuera=0;
     foreach($q_sondas_cantidad as $key => $cantidad)
     {
-        //echo "key--->".$key."\n";
+        //$key contiene el nombre de la sonda
         $cadena.="<sonda>";
         // fuera de fecha?
+        $contenido_archivo_comunicacion2="";
         if(fecha_vencida($q_sondas[$key][count($q_sondas[$key])-1]))
         {
             $sonda_fuera++;
             $cadena.="<fuera_fecha>Si</fuera_fecha>";
+            // busco archivo txt
+            if(isset($q_sondas_comunicacion[$key]))
+            {
+                // hay archivo txt
+                $archivo_comunicacion2=$q_sondas_comunicacion[$key][count($q_sondas_comunicacion[$key])-1]['archivo'];
+                echo "archivo_comunicacion2--->".$archivo_comunicacion2."\n";
+                if(file_exists("temp/".$archivo_comunicacion2))
+                {
+                    //$contenido_archivo_comunicacion2= str_replace(chr(39),chr(34),file_get_contents_utf8("temp/".$archivo_comunicacion2,false));
+                    $contenido_archivo_comunicacion2=$archivo_comunicacion2;
+                }
+            }
         }else
         {
             $cadena.="<fuera_fecha>No</fuera_fecha>";
@@ -367,10 +402,10 @@ function analizo_sondas($sondas)
         $cadena.="<nombre>".$key."</nombre>";
         $cadena.="<nro_archivos>".$cantidad."</nro_archivos>";
         $cadena.="<ultima_fecha>".$q_sondas[$key][count($q_sondas[$key])-1]['fecha']."</ultima_fecha>";
-        $cadena.="<mas_info>".print_r($q_sondas[$key][count($q_sondas[$key])-1])."</mas_info>";
+        $cadena.="<mas_info>".$contenido_archivo_comunicacion2."</mas_info>";
         $cadena.="</sonda>";
     }
-    $cadena.="<cantidad_sondas_fuera_fecha>".$sonda_fuera."</cantidad_sondas_fuera_fecha></sondas></xml>";
+    $cadena.="<cantidad_sondas_fuera_fecha>".$sonda_fuera."</cantidad_sondas_fuera_fecha></sondas>";
     return trim($cadena);
 }
 function fecha_vencida($dato)
@@ -398,10 +433,20 @@ function borrar_informe($id_informe=0)
     if($id_informe==0) return false;
     $obj_BD=new BD();
     $sql="DELETE FROM `informes` WHERE `id`=".$id_informe;
-    echo "sql--->".$sql."<br>";
+    //echo "sql--->".$sql."<br>";
     if($obj_BD->sql_select($sql, $consulta))
     {
-        echo "pase por aca<br>";
+        return true;
+    }
+    return false;
+}
+function borrar_informes($id_usuario=0)
+{
+    if($id_usuario==0) return false;
+    $obj_BD=new BD();
+    $sql="DELETE FROM `informes` WHERE `id_usuario`=".$id_usuario;
+    if($obj_BD->sql_select($sql, $consulta))
+    {
         return true;
     }
     return false;
@@ -441,7 +486,7 @@ function nuevo_usuario()
     // agregar nuevo informe
     echo "
         <br><br><br><br><br>
-        <a class=\"nuevo-usuario\" href=\"javascript:mostrar_ocultar('nuevo_usuario')\"><img src=\"./img/nuevo_informe.png\">&nbsp;Nuevo usuario FTP</a>
+        <a class=\"nuevo-usuario\" href=\"javascript:mostrar_ocultar('nuevo_usuario');\"><img src=\"./img/nuevo_informe.png\">&nbsp;Nuevo usuario FTP</a>
         <table id='tabla-opciones-general'>
             <tr>
                 <td>
@@ -515,10 +560,10 @@ function listado_usuarios_ftp($es_admin=false)
             echo "
                 <tr>
                     <td align=\"center\">
-                        <a class=\"link-tabla\" href=\"javascript:borrar_usuario('".$usuario['id']."')\">
+                        <a class=\"link-tabla\" href=\"javascript:borrar_usuario('".$usuario['id']."');\">
                             <i class=\"fa fa-trash\"></i>
                         </a>&nbsp;
-                        <a class=\"link-tabla\" href=\"javascript:mostrar_ocultar('usuario_".trim($usuario['id'])."')\">
+                        <a class=\"link-tabla\" href=\"javascript:mostrar_ocultar('usuario_".trim($usuario['id'])."');\">
                             <i class=\"fa fa-pencil\"></i>
                         </a>
                     </td>
@@ -762,5 +807,81 @@ function mensaje($texto)
     echo "<script type=\"text/javascript\">";
     echo "alert(\"".utf8_encode($texto)."\");";
     echo "</script>";
+}
+function file_get_contents_utf8($fn)
+{
+    $content = file_get_contents($fn);
+    return mb_convert_encoding($content, 'UTF-8', 
+          mb_detect_encoding($content, 'UTF-8, ISO-8859-1', true)); 
+}
+function envio_emails($informe,$emails)
+{
+    /*
+    echo "emails---->\n";
+    print_r($emails)."\n";
+    echo "informe--->\n";
+    echo $informe."\n\n";
+     * 
+     */
+    //Create a new PHPMailer instance
+    $mail = new PHPMailer;
+
+    //Tell PHPMailer to use SMTP
+    $mail->isSMTP();
+    //Enable SMTP debugging
+    // 0 = off (for production use)
+    // 1 = client messages
+    // 2 = client and server messages
+    $mail->SMTPDebug = 2;
+    //Ask for HTML-friendly debug output
+    $mail->Debugoutput = 'html';
+    //Set the hostname of the mail server
+    $mail->Host = 'smtp.gmail.com';
+    // use
+    // $mail->Host = gethostbyname('smtp.gmail.com');
+    // if your network does not support SMTP over IPv6
+
+    //Set the SMTP port number - 587 for authenticated TLS, a.k.a. RFC4409 SMTP submission
+    $mail->Port = 587;
+
+    //Set the encryption system to use - ssl (deprecated) or tls
+    $mail->SMTPSecure = 'tls';
+
+    //Whether to use SMTP authentication
+    $mail->SMTPAuth = true;
+
+    //Username to use for SMTP authentication - use full email address for gmail
+    $mail->Username = "sondas.seedmech@gmail.com";
+
+    //Password to use for SMTP authentication
+    $mail->Password = "seedmech932";
+
+    //Set who the message is to be sent from
+    $mail->setFrom('sondas.seedmech@gmail.com', 'Sondas Seedmech');
+
+    //Set who the message is to be sent to
+    $mail->addAddress('garcia@cifasis-conicet.gov.ar', 'Pablo García CIFASIS');
+    $mail->addAddress('pablo.ju.garcia@gmail.com','Pablo García GMAIL');
+
+    //Set the subject line
+    $mail->Subject = 'Informe de alerta de sondas. Fecha:';
+
+    //Read an HTML message body from an external file, convert referenced images to embedded,
+    //convert HTML into a basic plain-text alternative body
+    $mail->msgHTML(file_get_contents('contents.html'), dirname(__FILE__));
+
+    //Replace the plain text body with one created manually
+    $mail->AltBody = 'This is a plain-text message body';
+
+    //Attach an image file
+    $mail->addAttachment('images/phpmailer_mini.png');
+
+    //send the message, check for errors
+    if (!$mail->send()) {
+        echo "Mailer Error: " . $mail->ErrorInfo;
+    } else {
+        echo "Message sent!";
+    }
+    
 }
 ?>

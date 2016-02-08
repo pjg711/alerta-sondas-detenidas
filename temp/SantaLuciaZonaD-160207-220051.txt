@@ -1,0 +1,81 @@
+Logger ID: SantaLuciaZonaD
+Board ID: XEPI-232 (16/PLUS)(RMT)
+Version: 1.6.5
+Build: Jun 12 2015 17:01:21
+Serial ID: BF9C62180000
+Serial Number: <blank>
+Probe Voltage: 12772mV
+Last Response: 054 Server Error: "FTP_CMD_FAILED PORT 10,183,82,254,226,56" [Upload File]
+Connection Details:
+Log started: 16-02-07 20:00:51
+20:00:51 Initialize Modem [13149mV]
+20:00:51 001 Initializing Interface: [Connect Modem]
+20:00:51  Waiting Network
+20:00:58 +WIND: 3
+20:01:01 +STIN: 0
+20:01:01 +WIND: 1
+20:01:01 +WIND: 7
+20:01:07 +WIND: 4
+20:01:07 Matched '+WIND: 4'
+20:01:07 AT+CREG=2
+20:01:07 OK
+20:01:07 Matched 'OK'
+20:01:07 +CREG: 1,"07DF","0C9E"
+20:01:07 Matched '+CREG: 1*'
+20:01:07 AT&D2
+20:01:07 OK
+20:01:07 Matched 'OK'
+20:01:07 AT+CSQ
+20:01:07 +CSQ: 16,99
+20:01:08 OK
+20:01:08 Matched 'OK'
+20:01:08 AT+CCED=0,1
+20:01:08 +CCED: 722,07,07df,0c9e,40,179,29,,,255,,,4
+20:01:08 OK
+20:01:08 Matched 'OK'
+20:01:08 AT+ADC?
+20:01:08 +ADC: 4048,110,14,883
+20:01:08 OK
+20:01:08 Matched 'OK'
+20:01:09 Connect [13191mV]
+20:01:09 ATS0=0
+20:01:09 OK
+20:01:09 Matched 'OK'
+20:01:09 ATD*99***1#
+20:01:09 CONNECT 9600
+20:01:09 Matched 'CONNECT*'
+20:01:09 Connected [13170mV]
+20:01:09 001 Initializing Interface: [Connect Init]
+20:01:09  Initialise TCP/IP Stack
+20:01:10 001 Initializing Interface: [Start PPP]
+20:01:10  Connecting
+20:01:32 001 Initializing Interface: [PPP Connected]
+20:01:32  Connected 10.183.82.254
+20:01:32 002 Initializing FTP: [Connect Server]
+20:01:32  Open Connection to 190.228.29.71
+20:01:35  220 POWER FTP
+20:01:47  331 Password required for monsanto.seedmech.com.ar
+20:01:49  230 User monsanto.seedmech.com.ar logged in
+20:01:51 002 Initializing FTP: [SET Binary Mode]
+20:01:51  200 Type set to I
+20:01:51 003 Transferring
+20:01:52 004 Uploading to Server
+20:02:04 054 Server Error: [Upload File]
+20:02:04  FTP_CMD_FAILED PORT 10,183,82,254,226,56
+20:02:50 054 Server Error: [Disconnect FTP Server]
+20:02:50  Timeout
+20:02:50 Disconnect
+20:02:50 +CREG: 1,"07DF","1453"
+20:02:50 OK
+20:02:50 Matched 'OK'
+20:02:50 +STIN: 98
+20:02:50 +STIN: 99
+20:02:50 ATH
+20:02:50 OK
+20:02:50 Matched 'OK'
+20:02:50 AT+CFUN=0
+20:02:55 Error timeout
+20:02:56 Power down [13086mV]
+22:00:00 001 Initializing Interface
+22:00:00 001 Initializing Interface: [Idle]
+22:00:00  Process URL
