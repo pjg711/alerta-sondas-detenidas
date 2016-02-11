@@ -28,13 +28,18 @@ class FTP
         $this->directorio_remoto=$directorio_remoto;
         //
         $this->conn_id = ftp_connect($this->ftp_server,21) or die("No es posible la conexión con el servidor $this->ftp_server\n");
-        echo "connid: ".$this->conn_id."\n";
+        //echo "connid---->".$this->conn_id."\n";
+        //echo "ftp_user-->".$this->ftp_user."\n";
+        //echo "ftp_pass-->".$this->ftp_password."\n";
         if(ftp_login($this->conn_id, $this->ftp_user, $this->ftp_password))
         {
             if($this->listado=$this->lista_detallada($this->conn_id,$this->directorio_remoto))
             {
                 ftp_close($this->conn_id);
                 return true;
+            }else
+            {
+                echo "ERROR en la funcion listado_detallado.\n";
             }
         }
         echo "ERROR! No se pudo realizar la conexión\n";

@@ -3025,6 +3025,7 @@ class PHPMailer
      * @param string $kind 'to', 'cc', or 'bcc'
      * @return void
      */
+    /*
     protected function clearQueuedAddresses($kind)
     {
         if (version_compare(PHP_VERSION, '5.3.0', '<')) {
@@ -3042,7 +3043,7 @@ class PHPMailer
                 });
         }
     }
-
+    */
     /**
      * Clear all To recipients.
      * @return void

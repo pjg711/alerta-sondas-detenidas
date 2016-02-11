@@ -35,7 +35,6 @@ class Login
                 <tr><td colspan="2">&nbsp;</td></tr>
                 <tr>
                     <td colspan="2" align="center">
-                        <!-- <input type="submit" name="ingreso" value="Ingresar"/> -->
                         <button type="submit">
                             <i class="fa fa-sign-in"></i>&nbsp;Ingresar
                         </button>
@@ -56,6 +55,7 @@ class Login
                 $_SESSION['user_login_session']=true;
                 $_SESSION['id_usuario']=$registro['id'];
                 $_SESSION['user_active']=$registro['usuario'];
+                //$_SESSION['tipo_usuario']
                 $_SESSION['password']=$registro['password'];
                 $_SESSION['es_admin']=$registro['es_admin'];
                 return true;
@@ -84,11 +84,14 @@ class Login
                             <b>".utf8_encode($_SESSION['user_active'])."</b>
                         </td>
                     </tr>";
+            /*
             echo "  <tr>
                         <td align=\"right\">
                             <a class=\"sesion-iniciada\" href=\"#\" onclick=\"mostrar_ocultar('configurar-usuario')\"><i class=\"fa fa-user-md\"></i>&nbsp;Configurar usuario</a>
                         </td>
                     </tr>";
+             * 
+             */
             echo "  <tr>
                         <td align=\"right\">
                             <a class=\"sesion-iniciada\" href=\"index.php?cerrar_sesion\"><i class=\"fa fa-sign-out\"></i>&nbsp;Cerrar sesion</a>

@@ -53,6 +53,8 @@ body {
 #tabla-ingreso {
     font: 1.1em verdana, sans-serif;
 }
+#contenido-txt { border-style: dotted; border-width: 1px; }
+
 /* formato link nuevo usuario */
 a.nuevo-usuario:link {
     //background-color: #00FF00;
