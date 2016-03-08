@@ -1,5 +1,7 @@
 <?php
-class Login 
+require 'lib/class_imetos.php';
+
+class Login
 {
     private $es_admin=0;
     
@@ -8,7 +10,8 @@ class Login
         if(isset($_SESSION['es_admin'])) return $_SESSION['es_admin'];
         return $this->es_admin;
     }
-	public function ingreso_usuario($action="index.php") 
+
+    public function ingreso_usuario($action="index.php") 
 	{
 		?>
         <br>
@@ -47,18 +50,25 @@ class Login
     
     public function verifico_usuario($usuario,$password)
     {
-        $sql="SELECT * FROM `usuarios` WHERE usuario='".$usuario."' AND password='".$password."' LIMIT 1";
+        // primero verifico que el usuario este en el sistema
+        $sql="SELECT * FROM `usuarios` WHERE usuario='".$usuario."' AND tipo_usuario='imetos' LIMIT 1";
         if(sql_select($sql, $consulta))
         {
             if($registro=$consulta->fetch(PDO::FETCH_ASSOC))
             {
-                $_SESSION['user_login_session']=true;
-                $_SESSION['id_usuario']=$registro['id'];
-                $_SESSION['user_active']=$registro['usuario'];
-                //$_SESSION['tipo_usuario']
-                $_SESSION['password']=$registro['password'];
-                $_SESSION['es_admin']=$registro['es_admin'];
-                return true;
+                // luego verifico el login en iMetos
+                $iMetos=new JSON_IMETOS($usuario,$password);
+                if(!$iMetos->get_error())
+                {
+                    // bien
+                    $_SESSION['user_login_session']=true;
+                    $_SESSION['id_usuario']=$registro['id'];
+                    $_SESSION['user_active']=$registro['usuario'];
+                    //$_SESSION['tipo_usuario']
+                    $_SESSION['password']=$registro['password'];
+                    $_SESSION['es_admin']=$registro['es_admin'];
+                    return true;
+                }
             }
         }
         return false;
@@ -139,5 +149,6 @@ class Login
         unset($_SESSION['es_admin']);
         session_unset();
         session_destroy();
-    }
+    }    
+    
 }

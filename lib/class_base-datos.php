@@ -2,9 +2,9 @@
 define('DEFAULT_CHARSET',"utf8"); //iso-8859-1     utf-8
 // datos para la conexion a la base de datos 
 define('SERVIDOR','localhost');
-define('BASE_DATOS','alerta_sondas');
-define('USUARIO','alerta');
-define('PASSWORD','alertasondas932');
+define('BASE_DATOS','zu000339_sondas');
+define('USUARIO','zu000339_sondas');
+define('PASSWORD','DAnu56fuso');
 //
 class BD
 {

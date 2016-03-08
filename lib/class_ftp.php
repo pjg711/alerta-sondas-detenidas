@@ -92,4 +92,8 @@ class FTP
         }
         return false;
     }
+    public function cuentas_asociadas()
+    {
+        
+    }
 }

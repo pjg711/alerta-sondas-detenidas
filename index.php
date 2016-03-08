@@ -4,10 +4,12 @@ error_reporting(E_ALL);
 ini_set("display_errors",1);
 ini_set('memory_limit','128M');
 
-require 'lib/class_base-datos.php';
-require 'lib/class_login.php';
+require 'lib/class_login2.php';
 require 'lib/class_ftp.php';
 require 'lib/class_pagina.php';
+//
+require 'lib/Station.php';
+require 'lib/Sensor.php';
 // cargo PHPMailer
 require 'lib/PHPMailer-master/PHPMailerAutoload.php';
 //
@@ -26,6 +28,7 @@ if(isset($argv))
         exit;
     }
 }
+
 $login=new Login();
 // borrar informe
 if($login->getLoginSession())
@@ -73,7 +76,8 @@ if(!$login->getLoginSession())
             // bien
         }else
         {
-            echo "Error en dato de usuario y/o contraseña<br><br>";
+            mensaje("Error en dato de usuario y/o contraseña");
+            redireccionar("index.php");
         }
     }else
     {
@@ -109,24 +113,6 @@ if($login->getLoginSession())
         }
         if(isset($_POST['guardar_edicion_usuario']))
         {
-            /*
-            Array
-            (
-                [id_usuario] => 3
-                [usuario] => monsanto.seedmech.com.ar
-                [password] => monsanto
-                [servidor] => 190.228.29.71
-                [directorio_remoto] => /
-                [tipo_usuario] => 0
-                [mails] => pablo.ju.garcia@gmail.com, garcia@cifasis-conicet.gov.ar
-                [guardar_edicion_usuario] => Guardar edición
-            )
-            echo "<pre>";
-            print_r($_POST);
-            echo "</pre>";
-            exit;
-             * 
-             */
             if(actualizar_usuario())
             {
                 mensaje("Se actualiz\u00F3 el usuario");
@@ -150,17 +136,19 @@ if($login->getLoginSession())
         {
             $usuario=array();
             $usuario[1]=  CCGetFromPost("realizar_informe");
-            //mensaje("Realizo informe para usuario ".$usuario);
             hago_informes($usuario,true);
         }
         // es usuario admin y presento todos los informes ordenados por fecha
         nuevo_usuario();
-        listado_usuarios_ftp(true);
+        listado_usuarios(true);
+        // listado de archivos csv
+        listado_csvs();
         // todos los informes
         listado_informes();
     }else
     {
         $id_usuario=$_SESSION['id_usuario'];
+        listado_usuarios(false);
         // solo los informes de usuario ftp $id_usuario
         listado_informes($id_usuario);
     }
@@ -173,16 +161,6 @@ if($login->getLoginSession())
         </script>
         <?php
     }
-    /*
-    if(isset($_POST['hago_informe']))
-    {
-        if(isset($_SESSION['user_active']))
-        {
-            $argv[1]=$_SESSION['user_active'];
-            hago_informes($argv,true);
-        }
-    }
-     */
     // 
     if(!isset($_SESSION['id_usuario']))
     {
@@ -214,10 +192,9 @@ function hago_informes($argv,$lo_guardo=false)
               FROM      `usuarios` 
               WHERE     `activo`=1 AND `tipo_usuario`='ftp' AND `usuario`='".$usuario."' LIMIT 1";
     }
-    $obj_BD=new BD();
-    if($obj_BD->sql_select($sql, $consulta))
+    if(sql_select($sql, $consulta))
     {
-        if($obj_BD->num_registros==0)
+        if($consulta->rowCount()==0)
         {
             echo "ERROR! ".$usuario." no corresponde con un usuario cargado en el sistema.\n";
         }
@@ -226,7 +203,7 @@ function hago_informes($argv,$lo_guardo=false)
             hago_informe($registro,$lo_guardo);
         }
     }
-    unset($obj_BD);
+    unset($consulta);
 }
 function hago_informe($registro,$lo_guardo=false)
 {
@@ -244,79 +221,29 @@ function hago_informe($registro,$lo_guardo=false)
             {
                 // y lo guardo en la base de datos
                 $fecha_actual=date("Y-m-d H:i:s");
-                $sql="INSERT INTO `informes` (`id_usuario`,`informe`,`fecha`) VALUES (".$registro['id'].",'".$informe."','".$fecha_actual."')";
-                $obj_BD= new BD();
-                if($obj_BD->sql_select($sql, $consulta))
+                $sql="INSERT INTO `informes_sondas_detenidas` (`id_usuario`,`informe`,`fecha`) VALUES (".$registro['id'].",'".$informe."','".$fecha_actual."')";
+                if(sql_select($sql, $consulta))
                 {
                     //echo "Se inserto informe\n";
                     // envio mails
                     envio_emails($informe,$usuario,$fecha_actual,$emails);
                 }
-                unset($obj_BD);
             }
         }else
         {
             echo "ERROR! Hubo algún problema en la creación del informe.\n";
         }
     }
+    unset($consulta);
 }
-/*
-function hago_informe($usuario)
-{
-    $sql="SELECT * FROM `usuarios` WHERE `usuario`='".$usuario."' LIMIT 1";
-    $obj_BD=new BD();
-    if($obj_BD->sql_select($sql, $consulta))
-    {
-        if($obj_BD->num_registros>0)
-        {
-            // hago el informe y lo guardo
-            if($registro=$consulta->fetch(PDO::FETCH_ASSOC))
-            {
-                $servidor=trim(utf8_decode($registro['servidor']));
-                $usuario=trim(utf8_decode($registro['usuario']));
-                $password=trim(utf8_decode($registro['password']));
-                $directorio=trim(utf8_decode($registro['directorio_remoto']));
-                $emails=explode(",",$registro['mails']);
-                if($obj_ftp=new FTP($servidor,$usuario,$password,$directorio))
-                {
-                    // hago el informe
-                    if($informe=analizo_sondas($obj_ftp->get_listado()))
-                    {
-                        if($lo_guardo)
-                        {
-                            // y lo guardo en la base de datos
-                            $fecha_actual=date("d-m-Y H:i:s");
-                            $sql="INSERT INTO `informes` (`id_usuario`,`informe`,`fecha`) VALUES (".$registro['id'].",'".$informe."','".$fecha_actual."')";
-                            if($obj_BD->sql_select($sql, $consulta))
-                            {
-                                echo "Se inserto informe\n";
-                                // envio mails
-                                envio_emails($informe,$usuario,$fecha_actual,$emails);
-                            }
-                        }
-                    }else
-                    {
-                        echo "ERROR! Hubo algún problema en la creación del informe.\n";
-                    }
-                }
-            }
-        }else
-        {
-            echo "ERROR! ".$argv[1]." no corresponde con un usuario cargado en el sistema.\n";
-        }
-    }
-    unset($obj_BD);
-}
- * 
- */
-function presento_informes($informes)
+function informes_sondas_detenidas($informes)
 {
     // para todos los informes
     $cadena= "
         <br><br>
         <!-- <button type=\"submit\" name=\"hago_informe\"><i class=\"fa fa-terminal\"></i>&nbsp;&nbsp;Realizar informe</button> -->
         <br>
-        <h1>Listado de informes realizados</h1>
+        <h1>Listado de informes de sondas detenidas</h1>
         <table class=\"table table-striped table-hover table-bordered table-condensed\">
             <tr>
                 <th class=\"text-right\">
@@ -590,24 +517,25 @@ function dateTimeDiff($date1, $date2)
 function borrar_informe($id_informe=0)
 {
     if($id_informe==0) return false;
-    $obj_BD=new BD();
-    $sql="DELETE FROM `informes` WHERE `id`=".$id_informe;
-    //echo "sql--->".$sql."<br>";
-    if($obj_BD->sql_select($sql, $consulta))
+    $sql="DELETE FROM `informes_sondas_detenidas` WHERE `id`=".$id_informe;
+    if(sql_select($sql, $consulta))
     {
+        unset($consulta);
         return true;
     }
+    unset($consulta);
     return false;
 }
 function borrar_informes($id_usuario=0)
 {
     if($id_usuario==0) return false;
-    $obj_BD=new BD();
-    $sql="DELETE FROM `informes` WHERE `id_usuario`=".$id_usuario;
-    if($obj_BD->sql_select($sql, $consulta))
+    $sql="DELETE FROM `informes_sondas_detenidas` WHERE `id_usuario`=".$id_usuario;
+    if(sql_select($sql, $consulta))
     {
+        unset($consulta);
         return true;
     }
+    unset($consulta);
     return false;
 }
 function nuevo_usuario()
@@ -645,7 +573,7 @@ function nuevo_usuario()
     // agregar nuevo informe
     echo "
         <br><br><br><br><br>
-        <a class=\"nuevo-usuario\" href=\"javascript:mostrar_ocultar('nuevo_usuario');\"><img src=\"./img/nuevo_informe.png\">&nbsp;Nuevo usuario FTP</a>
+        <a class=\"nuevo-usuario\" href=\"javascript:mostrar_ocultar('nuevo_usuario');\"><i class=\"fa fa-user-plus\"></i>&nbsp;Nuevo usuario iMetos</a>
         <table id='tabla-opciones-general'>
             <tr>
                 <td>
@@ -653,13 +581,13 @@ function nuevo_usuario()
                         <form name=\"nuevo_informe\" method=\"post\" action=\"index.php\">
                             <table id=\"tabla-nuevo-usuario\">
                                 <tr>
-                                    <td>Usuario FTP:</td>
+                                    <td>Usuario:</td>
                                 </tr>
                                 <tr>
                                     <td><input type=\"text\" name=\"usuario\" value=\"".$usuario."\" size=\"70\" maxlength=\"255\"></td>
                                 </tr>
                                 <tr>
-                                    <td>Password FTP:</td>
+                                    <td>Password:</td>
                                 </tr>
                                 <tr>
                                     <td><input type=\"password\" name=\"password\" value=\"".$password."\" size=\"70\" maxlength=\"255\"></td>
@@ -697,26 +625,19 @@ function nuevo_usuario()
             </tr>
         </table>";
 }
-function listado_usuarios_ftp($es_admin=false)
+function listado_usuarios($es_admin=false, $id_usuario=0)
 {
-    $obj_BD=new BD();
-    $enum_tipos_usuarios=$obj_BD->getEnumOptions('usuarios', 'tipo_usuario');
-    /*
-    echo "enum_tipos_usuarios---><br>";
-    print_r($enum_tipos_usuarios);
-    echo "<br><br>";
-     * 
-     */
+    $enum_tipos_usuarios=getEnumOptions('usuarios', 'tipo_usuario');
     if($usuarios=cargar_usuarios())
     {
         echo "
-            <h1>Listado de usuarios</h1>
+            <h1>Listado de usuarios iMetos</h1>
             <table class=\"table table-striped table-hover table-bordered table-condensed\">
                 <tr>    
                     <th>&nbsp;</th>
-                    <th>Usuario FTP</th>
-                    <th>Servidor FTP</th>
-                    <th>Directorio remoto</th>
+                    <th>Usuario</th>
+                    <th>Servidor</th>
+                    <th>Directorio remoto</th> 
                     <th>Tipo usuario</th>
                     <th>Mails</th>
                 </tr>";
@@ -732,40 +653,78 @@ function listado_usuarios_ftp($es_admin=false)
             {
                 echo "  <a class=\"link-tabla\" href=\"javascript:realizar_informe('".$usuario['usuario']."');\" title=\"Realizar informe\">
                             <i class=\"fa fa-terminal\"></i>
-                        </a>&nbsp;";
+                        </a>&nbsp;&nbsp;";
             }
-            echo "      <a class=\"link-tabla\" href=\"javascript:mostrar_ocultar('usuario_".trim($usuario['id'])."');\" title=\"Editar usuario\">
+            echo "      <a class=\"link-tabla\" href=\"javascript:mostrar_ocultar('conf_usuario_".trim($usuario['id'])."');\" title=\"Editar usuario\">
+                            <i class=\"fa fa-user\"></i>
+                        </a>&nbsp;&nbsp;";
+            echo "      <a class=\"link-tabla\" href=\"javascript:mostrar_ocultar('conf_csv_".trim($usuario['id'])."');\" title=\"Configuraci&oacute;n de estaciones\">
                             <i class=\"fa fa-pencil\"></i>
-                        </a>
-                    </td>
+                        </a>";
+            echo "  </td>
                     <td>".$usuario['usuario']."</td>
                     <td>".$usuario['servidor']."</td>
                     <td>".$usuario['directorio_remoto']."</td>
                     <td>".$usuario['tipo_usuario']."</td>
-                    <td>".$usuario['mails']."</td>
+                    <td>".$usuario['ftp'][0]['mails']."</td>
                 </tr>
                 <tr>
                     <td colspan=\"6\">
-                        <div id=\"usuario_".trim($usuario['id'])."\" style=\"display:none\">
+                        <div id=\"conf_usuario_".trim($usuario['id'])."\" style=\"display:none\">
                             <form name=\"editar_usuario\" method=\"post\" action=\"index.php\">
-                                <input type=\"hidden\" name=\"id_usuario\" value=\"".$usuario['id']."\">
-                                <table id=\"tabla-edicion-usuario\">
+                                <input type=\"hidden\" name=\"id_usuario\" value=\"".$usuario['id']."\">";
+            if(isset($usuario['ftp'][0]['id']))
+            {
+                echo "          <input type=\"hidden\" name=\"id_ftp\" value=\"".$usuario['ftp'][0]['id']."\">";
+            }
+            if(isset($usuario['mysql'][0]['id']))
+            {
+                echo "          <input type=\"hidden\" name=\"id_mysql\" value=\"".$usuario['mysql'][0]['id']."\">";
+            }
+            echo "              <table id=\"tabla-edicion-usuario\">
+                                    <tr>
+                                        <td align=\"2\"><dt>Datos de cuenta Fieldclimate</dt></td>
+                                    </tr>
+                                    <tr>
+                                        <td align=\"right\">Usuario iMetos:&nbsp;</td>
+                                        <td>
+                                            <input type=\"text\" name=\"usuario_imetos\" value=\"".$usuario['usuario']."\" size=\"80\" maxlength=\"255\">&nbsp;
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align=\"right\">Password iMetos:&nbsp;</td>
+                                        <td>
+                                            <input type=\"text\" name=\"Password_imetos\" value=\"\" size=\"80\" maxlength=\"255\">&nbsp;
+                                            <button name=\"verificar_usuario_imetos\">Verificar</button>    
+                                        </td>
+                                    </tr>";
+            if(isset($usuario['ftp'][0]))
+            {
+                echo "              <tr>
+                                        <td colspan=\"2\"><hr></td>
+                                    </tr>
+                                    <tr>
+                                        <td align=\"2\">
+                                            <dt>Datos FTP para el informe de alerta</dt>
+                                            <button name=\"realizar_informe_ahora\">Verificar sondas detenidas</button>
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td align=\"right\">Usuario FTP:&nbsp;</td>
                                         <td>
-                                            <input type=\"text\" name=\"usuario\" value=\"".$usuario['usuario']."\" size=\"80\" maxlength=\"255\">
+                                            <input type=\"text\" name=\"usuario_ftp\" value=\"".$usuario['ftp'][0]['usuario']."\" size=\"80\" maxlength=\"255\">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td align=\"right\">Password FTP:&nbsp;</td>
                                         <td>
-                                            <input type=\"password\" name=\"password\" value=\"".$usuario['password']."\" size=\"80\" maxlength=\"255\">
+                                            <input type=\"password\" name=\"password_ftp\" value=\"".$usuario['ftp'][0]['password']."\" size=\"80\" maxlength=\"255\">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td align=\"right\">Servidor FTP:&nbsp;</td>
                                         <td>
-                                            <input type=\"text\" name=\"servidor\" value=\"".$usuario['servidor']."\" size=\"80\" maxlength=\"1000\">
+                                            <input type=\"text\" name=\"servidor_ftp\" value=\"".$usuario['ftp'][0]['servidor']."\" size=\"80\" maxlength=\"1000\">
                                         </td>
                                     </tr>
                                     <tr>
@@ -773,35 +732,46 @@ function listado_usuarios_ftp($es_admin=false)
                                         <td>
                                             <input type=\"text\" name=\"directorio_remoto\" value=\"".$usuario['directorio_remoto']."\" size=\"80\" maxlength=\"1000\">
                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <td align=\"right\">
+                                            Mails para el env&iacute;o de alertas:&nbsp;<br>
+                                            <h6>Para varios mails sep&aacute;relos por coma</h6>
+                                        </td>
+                                        <td>
+                                            <textarea name=\"mails\" rows=\"3\" cols=\"80\">".$usuario['mails']."</textarea>
+                                        </td>
                                     </tr>";
-            if($es_admin)
+            }
+            // agrego usuario mysql
+            if(isset($usuario['mysql'][0]))
             {
                 echo "              <tr>
-                                        <td align=\"right\">Tipo de usuario:&nbsp;</td>
+                                        <td colspan=\"2\"><hr></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan=\"2\"><dt>Datos de conexión a la base de datos iMetos</dt></td>
+                                    </tr>
+                                    <tr>
+                                        <td align=\"right\">Usuario Mysql:&nbsp;</td>
                                         <td>
-                                            <select name=\"tipo_usuario\">";
-                foreach($enum_tipos_usuarios as $key_enum => $enum_tipo_usuario)
-                {
-                    if($usuario['tipo_usuario']==$enum_tipo_usuario)
-                    {
-                        echo "                  <option value=\"".$key_enum."\" selected>".$enum_tipo_usuario."</option>";
-                    }else
-                    {
-                        echo "                  <option value=\"".$key_enum."\">".$enum_tipo_usuario."</option>";
-                    }
-                }
-                echo "                      </select>
+                                            <input type=\"text\" name=\"usuario_mysql\" value=\"".$usuario['mysql'][0]['usuario']."\" size=\"80\" maxlength=\"255\">&nbsp;
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align=\"right\">Password Mysql:&nbsp;</td>
+                                        <td>
+                                            <input type=\"text\" name=\"password_mysql\" value=\"".$usuario['mysql'][0]['password']."\" size=\"80\" maxlength=\"255\">&nbsp;
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align=\"right\">Servidor Mysql:&nbsp;</td>
+                                        <td>
+                                            <input type=\"text\" name=\"servidor_mysql\" value=\"".$usuario['mysql'][0]['servidor']."\" size=\"80\" maxlength=\"255\">&nbsp;
                                         </td>
                                     </tr>";
             }
             echo "                  <tr>
-                                        <td valign=\"top\" align=\"right\">Mails:&nbsp;</td>
-                                        <td>
-                                            <h6>Ingrese varios mails separados por coma</h6>
-                                            <textarea name=\"mails\" rows=\"3\" cols=\"80\">".$usuario['mails']."</textarea>
-                                        </td>
-                                    </tr>
-                                    <tr>
                                         <td colspan=\"2\" align=\"right\">
                                             <input type=\"reset\" name=\"cancelar_edicion\" value=\"Cancelar\" onclick=\"mostrar_ocultar('usuario_".trim($usuario['id'])."')\">&nbsp;
                                             <input type=\"submit\" name=\"guardar_edicion_usuario\" value=\"Guardar edici&oacute;n\">
@@ -809,6 +779,9 @@ function listado_usuarios_ftp($es_admin=false)
                                     </tr>
                                 </table>
                             </form>
+                        </div>
+                        <div id=\"conf_csv_".trim($usuario['id'])."\" style=\"display:none\">
+                            Configuracion de estaciones 
                         </div>
                     </td>
                 </tr>";
@@ -821,55 +794,119 @@ function listado_usuarios_ftp($es_admin=false)
 }
 function cargar_usuarios()
 {
-    $sql="SELECT * FROM `usuarios` ORDER BY `fecha_alta` ASC";
-    $obj_BD=new BD();
+    // primero busco el usuario imetos
     $usuarios=array();
-    if(!$obj_BD->sql_select($sql, $consulta))
+    $sql="SELECT * FROM `usuarios` WHERE `tipo_usuario`='imetos'";
+    if(!sql_select($sql, $consulta))
     {
+        unset($consulta);
         return false;
     }
+    $con=0;
     while($usuario = $consulta->fetch(PDO::FETCH_ASSOC))
     {
-        $usuarios[]=$usuario;
+        $usuarios[$con]=$usuario;
+        // ahora busco usuarios ftp
+        $sql="SELECT * FROM `usuarios` WHERE `tipo_usuario`='ftp' AND `id_usuario`=".$usuario['id'];
+        if(sql_select($sql,$consulta2))
+        {
+            while($registro = $consulta2->fetch(PDO::FETCH_ASSOC))
+            {
+                $usuarios[$con]['ftp'][]=$registro;
+            }
+        }
+        $sql="SELECT * FROM `usuarios` WHERE `tipo_usuario`='mysql' AND `id_usuario`=".$usuario['id'];
+        if(sql_select($sql,$consulta3))
+        {
+            while($registro = $consulta3->fetch(PDO::FETCH_ASSOC))
+            {
+                $usuarios[$con]['mysql'][]=$registro;
+            }
+        }
+        $con++;
     }
-    unset($obj_BD);
+    unset($consulta);
+    unset($consulta2);
+    unset($consulta3);
     return $usuarios;
 }
 function actualizar_usuario()
 {
-    $obj_BD=new BD();
-    $enum_tipos_usuarios=$obj_BD->getEnumOptions('usuarios', 'tipo_usuario');
-    //
+    $error=false;
+    // imetos
     $id_usuario=  CCGetFromPost("id_usuario");
-    $usuario=  CCGetFromPost("usuario");
-    $password=  CCGetFromPost("password");
-    $servidor= CCGetFromPost("servidor");
-    $directorio_remoto=  CCGetFromPost("directorio_remoto");
-    $tipo_usuario=  CCGetFromPost("tipo_usuario");
+    $usuario=  CCGetFromPost("usuario"); // usuario iMetos
+    // ftp
+    $id_usuario_ftp=CCGetFromPost("id_ftp");
+    $usuario_ftp= CCGetFromPost("usuario_ftp"); // usuario ftp
+    $password_ftp=  CCGetFromPost("password_ftp"); // password ftp
+    $servidor_ftp= CCGetFromPost("servidor_ftp"); // servidor ftp
+    $directorio_remoto=  CCGetFromPost("directorio_remoto"); 
+    //$tipo_usuario=  CCGetFromPost("tipo_usuario");
     $mails=  CCGetFromPost("mails");
-    $sql="  UPDATE usuarios 
+    // mysql
+    $id_usuario_mysql=  CCGetFromPost("id_mysql");
+    $usuario_mysql=  CCGetFromPost("usuario_mysql");
+    $password_mysql=  CCGetFromPost("password_mysql");
+    $servidor_mysql=  CCGetFromPost("servidor_mysql");
+    //
+    $sql="  UPDATE `usuarios`
             SET `usuario`='".$usuario."',
-                `password`='".$password."',
-                `servidor`='".$servidor."',
-                `directorio_remoto`='".$directorio_remoto."',
-                `tipo_usuario`='".$enum_tipos_usuarios[$tipo_usuario]."',
-                `mails`='".$mails."'
+                `password`='',
+                `servidor`='',
+                `directorio_remoto`='',
+                `es_admin`=0,
+                `tipo_usuario`='imetos',
+                `mails`=''
             WHERE `id`=".$id_usuario;
-    if(!$obj_BD->sql_select($sql, $consulta))
+    if(!sql_select($sql, $consulta))
     {
-        return false;
+        // hubo un error
+        $error=true;
     }
+    // ftp
+    $sql="  UPDATE `usuarios`
+            SET `usuario`='".$usuario_ftp."',
+                `password`='".$password_ftp."',
+                `servidor`='".$servidor_ftp."',
+                `directorio_remoto`='".$directorio_remoto."',
+                `es_admin`=0,
+                `tipo_usuario`='ftp',
+                `mails`='".$mails."'
+            WHERE `id`=".$id_usuario_ftp;
+    if(!sql_select($sql, $consulta2))
+    {
+        // hubo un error
+        $error=true;
+    }
+    // mysql
+    $sql="  UPDATE `usuarios`
+            SET `usuario`='".$usuario_mysql."',
+                `password`='".$password_mysql."',
+                `servidor`='".$servidor_mysql."',
+                `directorio_remoto`='',
+                `es_admin`=0,
+                `tipo_usuario`='mysql',
+                `mails`=''
+            WHERE `id`=".$id_usuario_mysql;
+    if(!sql_select($sql, $consulta3))
+    {
+        // hubo un error
+        $error=true;
+    }
+    if($error) return false;
     return true;
 }
 function borrar_usuario($id_usuario=0)
 {
     if($id_usuario==0) return false;
-    $obj_BD=new BD();
     $sql="DELETE FROM `usuarios` WHERE `id`=".$id_usuario;
-    if(!$obj_BD->sql_select($sql, $consulta))
+    if(!sql_select($sql, $consulta))
     {
+        unset($consulta);
         return false;
     }
+    unset($consulta);
     return true;
 }
 function listado_informes($id_usuario=0)
@@ -892,23 +929,22 @@ function listado_informes($id_usuario=0)
     {
         // es admin y muestro todos los informes
         $sql_demas="
-        FROM    `informes` AS informes, 
+        FROM    `informes_sondas_detenidas` AS informes, 
                 `usuarios` AS usuarios
         WHERE   informes.`id_usuario`=usuarios.`id`
         ORDER BY `fecha` DESC";
     }else
     {
         $sql_demas="
-        FROM    `informes` AS informes,
+        FROM    `informes_sondas_detenidas` AS informes,
                 `usuarios` AS usuarios
         WHERE   informes.`id_usuario`=".$id_usuario."
         ORDER BY `fecha` DESC";
     }
     $sql="$sql_select $sql_demas";
     // muestro tabla con informes para el usuario logeado
-    $obj_BD=new BD();
     $informes=array();
-    if($obj_BD->sql_select($sql, $consulta))
+    if(sql_select($sql, $consulta))
     {
         while($registro = $consulta->fetch(PDO::FETCH_ASSOC))
         {
@@ -917,33 +953,31 @@ function listado_informes($id_usuario=0)
         if(!is_null($informes))
         {
             //echo "--->".count($informes)."<br>";
-            echo presento_informes($informes);
+            echo informes_sondas_detenidas($informes);
         }else
         {
             echo "No hay informes que mostrar<br>";
         }
     }
-    unset($obj_BD);
+    unset($consulta);
 }
 function insertar_usuario()
 {
-    $usuario_ftp=  CCGetFromPost('usuario');
+    $usuario_ftp=   CCGetFromPost('usuario');
     $password_ftp=  CCGetFromPost('password');
     $servidor_ftp=  CCGetFromPost('servidor');
     $directorio_remoto= CCGetFromPost('directorio');
     $mails=  CCGetFromPost('mails');
     $fecha_alta=time();
-    $obj_BD=new BD();
     $sql="  INSERT INTO `usuarios` (`activo`,`fecha_alta`,`usuario`,`password`,`servidor`,
                 `directorio_remoto`,`es_admin`,`tipo_usuario`,`mails`) 
             VALUES (1,".$fecha_alta.",'".$usuario_ftp."','".$password_ftp."','".$servidor_ftp."','".$directorio_remoto."',0,'ftp','".$mails."')";
-    //echo "sql insertar_usuario--->".$sql."<br>";
-    if(!$obj_BD->sql_select($sql, $consulta))
+    if(!sql_select($sql, $consulta))
     {
-        unset($obj_BD);
+        unset($consulta);
         return false;
     }
-    unset($obj_BD);
+    unset($consulta);
     return true;
 }
 function comprobar_conexion()
@@ -954,36 +988,11 @@ function comprobar_conexion()
     $directorio_remoto= CCGetFromPost('directorio');
     if(!$obj_ftp=new FTP($servidor,$usuario,$password,$directorio_remoto))
     {
+        unset($consulta);
         return false;
     }
+    unset($consulta);
     return true;
-}
-function CCGetFromPost($parameter_name, $default_value = "") 
-{
-    return isset($_POST[$parameter_name]) ? CCStrip($_POST[$parameter_name]) : $default_value;
-}
-function CCGetFromGet($parameter_name, $default_value = "") 
-{
-    return isset($_GET[$parameter_name]) ? CCStrip($_GET[$parameter_name]) : $default_value;
-}
-function CCStrip($value) 
-{
-	if(get_magic_quotes_gpc() != 0) 
-	{
-	    if(is_array($value))  
-			foreach($value as $key=>$val)
-				$value[$key] = stripslashes($val);
-		else
-			$value = stripslashes($value);
-  	}
-	return $value;
-}
-function mensaje($texto)
-{
-    echo "<script type=\"text/javascript\">";
-    //echo "alert(\"".html_entity_decode($texto)."\");";
-    echo "alert(\"".$texto."\");";
-    echo "</script>";
 }
 function file_get_contents_utf8($fn)
 {
