@@ -17,12 +17,15 @@ class PAGINA
         . "         <meta name=\"DESCRIPTION\" content=\"Sistema para sondas de humedad de suelo\">"
         . "         <title>".TITULO."</title>"
         . "         <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/estilos.css\"/>"
-        . "         <script src=\"./js/funciones.js\"></script>"
+        . "         <script src=\"./lib/funciones.js\"></script>"
         . "         <!-- bootstrap -->"
         . "         <link rel=\"stylesheet\" type=\"text/css\" href=\"./lib/bootstrap/dist/css/bootstrap.css\"/>"
-        . "         <script src=\"./lib/jquery/jquery.js\"></script>"
+        . "         <script src=\"./lib/jquery/dist/jquery.js\"></script>"
         . "         <!-- font awesome -->"
         . "         <link rel=\"stylesheet\" href=\"./lib/font-awesome-4.5.0/css/font-awesome.min.css\">"
+        . "         <!-- bootstrap-select -->"
+        //. "         <link rel=\"stylesheet\" href=\"./lib/bootstrap-select/dist/css/bootstrap-select.min.css\">"
+        //. "         <script src=\"./lib/bootstrap-select/dist/js/bootstrap-select.js\">"
         . "     </head>"
         . "     <body>";
     }

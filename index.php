@@ -3,15 +3,11 @@ session_start();
 error_reporting(E_ALL);
 ini_set("display_errors",1);
 ini_set('memory_limit','128M');
-
+//
+require 'lib/class_imetos.php';
 require 'lib/class_login2.php';
 require 'lib/class_ftp.php';
 require 'lib/class_pagina.php';
-//
-require 'lib/Station.php';
-require 'lib/Sensor.php';
-// cargo PHPMailer
-require 'lib/PHPMailer-master/PHPMailerAutoload.php';
 //
 include("config.php");
 //
@@ -140,14 +136,16 @@ if($login->getLoginSession())
         }
         // es usuario admin y presento todos los informes ordenados por fecha
         nuevo_usuario();
+        //
         listado_usuarios(true);
         // listado de archivos csv
-        listado_csvs();
+        //listado_csvs();
         // todos los informes
         listado_informes();
     }else
     {
         $id_usuario=$_SESSION['id_usuario'];
+        //
         listado_usuarios(false);
         // solo los informes de usuario ftp $id_usuario
         listado_informes($id_usuario);
@@ -625,6 +623,7 @@ function nuevo_usuario()
             </tr>
         </table>";
 }
+
 function listado_usuarios($es_admin=false, $id_usuario=0)
 {
     $enum_tipos_usuarios=getEnumOptions('usuarios', 'tipo_usuario');
@@ -636,9 +635,11 @@ function listado_usuarios($es_admin=false, $id_usuario=0)
                 <tr>    
                     <th>&nbsp;</th>
                     <th>Usuario</th>
+                    <!--
                     <th>Servidor</th>
                     <th>Directorio remoto</th> 
                     <th>Tipo usuario</th>
+                    -->
                     <th>Mails</th>
                 </tr>";
         foreach($usuarios as $usuario)
@@ -663,9 +664,11 @@ function listado_usuarios($es_admin=false, $id_usuario=0)
                         </a>";
             echo "  </td>
                     <td>".$usuario['usuario']."</td>
+                    <!--
                     <td>".$usuario['servidor']."</td>
                     <td>".$usuario['directorio_remoto']."</td>
                     <td>".$usuario['tipo_usuario']."</td>
+                    -->
                     <td>".$usuario['ftp'][0]['mails']."</td>
                 </tr>
                 <tr>
@@ -765,6 +768,12 @@ function listado_usuarios($es_admin=false, $id_usuario=0)
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td align=\"right\">Base de datos Mysql:&nbsp;</td>
+                                        <td>
+                                            <input type=\"text\" name=\"base_datos_mysql\" value=\"".$usuario['mysql'][0]['base_datos']."\" size=\"80\" maxlength=\"255\">&nbsp;
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td align=\"right\">Servidor Mysql:&nbsp;</td>
                                         <td>
                                             <input type=\"text\" name=\"servidor_mysql\" value=\"".$usuario['mysql'][0]['servidor']."\" size=\"80\" maxlength=\"255\">&nbsp;
@@ -780,9 +789,39 @@ function listado_usuarios($es_admin=false, $id_usuario=0)
                                 </table>
                             </form>
                         </div>
-                        <div id=\"conf_csv_".trim($usuario['id'])."\" style=\"display:none\">
-                            Configuracion de estaciones 
-                        </div>
+                        <div id=\"conf_csv_".trim($usuario['id'])."\" style=\"display:none\">";
+            // obtengo datos de conexion de la base de datos
+            $conexion=buscar_datos_conexion($usuario['id']);
+            //$server=null,$database=null,$username=null,$password=null
+            $BD=new IMETOS($conexion['servidor'],$conexion['base_datos'],$conexion['usuario'],$conexion['password']);
+            $sql="  SELECT  *
+                    FROM    `seedclima_station_info`";
+            $estaciones=array();
+            if($BD->sql_select($sql, $consulta))
+            {
+                while($estacion=$consulta->fetch(PDO::FETCH_ASSOC))
+                {
+                    $estaciones[]=$estacion;
+                }
+            }
+            unset($BD);
+            echo "          <div id=\"estaciones\">
+                                <label class=\"col-xs-3 control-label\">Seleccione estaci&oacute;n:</label>
+                                <select class=\"form-control\" onChange=\"mostrar_ocultar(this.value,'info-estaciones');\">";
+            foreach($estaciones as $estacion)
+            {
+                echo "              <option value=\"".$estacion['f_name']."\">".$estacion['f_name']."</option>";
+            }
+            echo "              </select>
+                            </div>";
+            foreach($estaciones as $estacion)
+            {
+                $info=buscar_informacion_estacion($estacion['f_name']);
+                echo "      <div class=\"info-estaciones\" id=\"".$estacion['f_name']."\" style=\"display:none\">";
+                
+                echo "      </div>";
+            }
+            echo "      </div>
                     </td>
                 </tr>";
         }
@@ -1000,63 +1039,29 @@ function file_get_contents_utf8($fn)
     return mb_convert_encoding($content, 'UTF-8', 
           mb_detect_encoding($content, 'UTF-8, ISO-8859-1', true)); 
 }
-function envio_emails($informe,$usuario,$fecha,$emails)
+function buscar_datos_conexion($id_usuario)
 {
-    $informe_html="
-    <html>
-        <head>
-            <title>Informe de sondas para usuario ".$usuario.", fecha ".$fecha."</title>
-            <meta charset=\"UTF-8\">
-            <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
-        </head>
-        <body>
-            <div align=\"center\">
-                <a href=\"http://www.seedmech.com\"><img src=\"img/seedmech_agrotecnologia.png\" height=\"90\" width=\"340\" alt=\"Seedmech\"></a>
-            </div>";
-    $informe_html.=  presento_informe($informe);
-    $informe_html.="</body></html>";
-    //
-    $mail = new PHPMailer;
-    $mail->isSMTP();
-    //Enable SMTP debugging
-    // 0 = off (for production use)
-    // 1 = client messages
-    // 2 = client and server messages
-    $mail->SMTPDebug = 0;
-    $mail->Debugoutput = 'html';
-    $mail->Host = MAIL_HOST;
-    // use
-    // $mail->Host = gethostbyname('smtp.gmail.com');
-    // if your network does not support SMTP over IPv6
-
-    //Set the SMTP port number - 587 for authenticated TLS, a.k.a. RFC4409 SMTP submission
-    $mail->Port = MAIL_PORT;
-    $mail->SMTPSecure = MAIL_SMTPSecure;
-    $mail->SMTPAuth = true;
-    $mail->Username = MAIL_USERNAME;
-    $mail->Password = MAIL_PASSWORD;
-    $mail->setFrom('sondas.seedmech@gmail.com', 'Sondas Seedmech');
-    foreach($emails as $email)
+    $sql="  SELECT  *
+            FROM    `usuarios`
+            WHERE   `tipo_usuario`='mysql' AND
+                    `id_usuario`=".$id_usuario;
+    //echo "sql-->".$sql."<br>";
+    if(!sql_select($sql,$consulta))
     {
-        if($email<>"")
-        {
-            $mail->addAddress($email, '');
-        }
+        echo "ERROR! No se pudo determinar datos de conexion a la base de datos mysql";
+        return false;
     }
-    $mail->Subject = "Informe de sondas para usuario ".$usuario.", ".$fecha;
-    $mail->msgHTML($informe_html, dirname(__FILE__));
-    $mail->AltBody = 'This is a plain-text message body';
-
-    //Attach an image file
-    $mail->addAttachment('img/seedmech_agrotecnologia.png');
-
-    //send the message, check for errors
-    if(!$mail->send())
+    return $consulta->fetch(PDO::FETCH_ASSOC);
+}
+function buscar_informacion_estacion($f_name)
+{
+    $sql="  SELECT  *
+            FROM    `estaciones`
+            WHERE   `f_name`='".$f_name."'";
+    if(!sql_select($sql, $consulta))
     {
-        echo "Mailer Error: " . $mail->ErrorInfo."\n";
-    }else
-    {
-        //echo "Message sent!\n";
+        return false;
     }
+    return $consulta->fetch(PDO::FETCH_ASSOC);
 }
 ?>

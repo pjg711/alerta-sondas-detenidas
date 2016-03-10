@@ -1,0 +1,23 @@
+{
+  "name": "sondas_humedad",
+  "version": "1.0.0",
+  "description": "Sistema para exportar datos de sondas de humedad y para alerta de fallo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pjg711/alerta-sondas-detenidas.git"
+  },
+  "keywords": [
+    "sondas",
+    "humedad"
+  ],
+  "author": "Pablo García",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pjg711/alerta-sondas-detenidas/issues"
+  },
+  "homepage": "https://github.com/pjg711/alerta-sondas-detenidas#readme"
+}

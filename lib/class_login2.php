@@ -1,6 +1,4 @@
 <?php
-require 'lib/class_imetos.php';
-
 class Login
 {
     private $es_admin=0;
@@ -64,7 +62,6 @@ class Login
                     $_SESSION['user_login_session']=true;
                     $_SESSION['id_usuario']=$registro['id'];
                     $_SESSION['user_active']=$registro['usuario'];
-                    //$_SESSION['tipo_usuario']
                     $_SESSION['password']=$registro['password'];
                     $_SESSION['es_admin']=$registro['es_admin'];
                     return true;

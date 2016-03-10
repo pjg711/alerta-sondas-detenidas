@@ -346,10 +346,10 @@ class Station
                 WHERE
                     `f_station_code` = {$f_station_code}
                 LIMIT 1";
-            
-            if($rowcount=sql_select($sqlQuery, $result))
+
+            if($BD->sql_select($sqlQuery, $result))
             {
-                if($rowcount > 0)
+                if($BD->get_rowCount() > 0)
                 {
                     settype($response, 'array');
                     while($stationInfo = mysql_fetch_assoc($result))
