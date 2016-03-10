@@ -26,7 +26,7 @@ if(isset($argv))
 }
 
 $login=new Login();
-// borrar informe
+
 if($login->getLoginSession())
 {
     if(isset($_POST['confirmado_borrar_informe']))
@@ -793,7 +793,7 @@ function listado_usuarios($es_admin=false, $id_usuario=0)
             // obtengo datos de conexion de la base de datos
             $conexion=buscar_datos_conexion($usuario['id']);
             //$server=null,$database=null,$username=null,$password=null
-            $BD=new IMETOS($conexion['servidor'],$conexion['base_datos'],$conexion['usuario'],$conexion['password']);
+            $BD = new IMETOS($conexion['servidor'],$conexion['base_datos'],$conexion['usuario'],$conexion['password']);
             $sql="  SELECT  *
                     FROM    `seedclima_station_info`";
             $estaciones=array();
@@ -817,8 +817,9 @@ function listado_usuarios($es_admin=false, $id_usuario=0)
             foreach($estaciones as $estacion)
             {
                 $info=buscar_informacion_estacion($estacion['f_name']);
+                $q_estacion = Station::load($estacion['f_name']);
                 echo "      <div class=\"info-estaciones\" id=\"".$estacion['f_name']."\" style=\"display:none\">";
-                
+                configuracion_estacion($estacion,$info);
                 echo "      </div>";
             }
             echo "      </div>
@@ -1063,5 +1064,23 @@ function buscar_informacion_estacion($f_name)
         return false;
     }
     return $consulta->fetch(PDO::FETCH_ASSOC);
+}
+function configuracion_estacion($estacion,$info)
+{
+    /*
+    echo "
+        <form class=\"form-horizontal\" role=\"form\">
+            <div class=\"form-group\">
+                <label class=\"control-label col-sm-2\" for=\"email\">Email:</label>
+                <div class=\"col-sm-10\">
+                    <input type=\"email\" class=\"form-control\" id=\"email\" placeholder=\"Enter email\">
+                </div>
+            </div>
+        </form>";
+    */
+    echo "  <div id=\"sensores\">
+                
+            </div>";
+
 }
 ?>
