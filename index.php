@@ -29,6 +29,13 @@ $login=new Login();
 
 if($login->getLoginSession())
 {
+    /*
+    echo "<pre>";
+    print_r($_POST);
+    echo "</pre>";
+     * 
+     */
+    //
     if(isset($_POST['confirmado_borrar_informe']))
     {
         $id_informe=$_POST['confirmado_borrar_informe'];
@@ -46,6 +53,13 @@ if($login->getLoginSession())
         {
             $id_usuario=$_SESSION['id_usuario'];
             borrar_informes($id_usuario);
+        }
+    }
+    if(isset($_POST['guardar_configuracion']))
+    {
+        if(actualizar_estacion())
+        {
+            
         }
     }
     if(isset($_GET['cambiar_conf']))
@@ -789,7 +803,7 @@ function listado_usuarios($es_admin=false, $id_usuario=0)
                                 </table>
                             </form>
                         </div>
-                        <div id=\"conf_csv_".trim($usuario['id'])."\" style=\"display:none\">";
+                        <div class=\"conf_csv\" id=\"conf_csv_".trim($usuario['id'])."\" style=\"display:none\">";
             // obtengo datos de conexion de la base de datos
             $conexion=buscar_datos_conexion($usuario['id']);
             //
@@ -805,75 +819,149 @@ function listado_usuarios($es_admin=false, $id_usuario=0)
                 }
             }
             unset($BD);
-            echo "          <div id=\"estaciones\">
+            echo "          <div class=\"estaciones\" id=\"estaciones\">
                                 <label class=\"col-xs-3 control-label\">Seleccione estaci&oacute;n:</label>
                                 <select class=\"form-control\" onChange=\"mostrar_ocultar('estacion_'+this.value,'info-sensores');\">";
             foreach($estaciones as $estacion)
             {
-                echo "              <option value=\"".$estacion['f_station_code']."\">".$estacion['f_name']."</option>";
+                echo "              <option value=\"".$estacion['f_station_code']."\">".$estacion['f_name']." - ".$estacion['f_user_station_name']."</option>";
             }
             echo "              </select>
                             </div>";
             foreach($estaciones as $key_est => $estacion)
             {
-                $info=buscar_informacion_estacion($estacion['f_station_code']);
+                //$info=buscar_informacion_estacion($estacion['f_station_code']);
                 $q_estacion = Station::load($estacion['f_station_code']);
                 $q_estacion->loadSensors(1);
                 $stationSensorsList = $q_estacion->getAvailableSensors();
                 if($key_est == 0)
                 {
-                    echo "  <div class=\"info-sensores\" id=\"estacion_".$estacion['f_station_code']."\" style=\"display:block\">";
+                    echo "  <div class=\"info-sensores\" id=\"estacion_".$q_estacion->getStationCode()."\" style=\"display:block\">";
                 }else
                 {
-                    echo "  <div class=\"info-sensores\" id=\"estacion_".$estacion['f_station_code']."\" style=\"display:none\">";
+                    echo "  <div class=\"info-sensores\" id=\"estacion_".$q_estacion->getStationCode()."\" style=\"display:none\">";
                 }
                 echo "          <div class=\"container\">
                                     <hr class=\"\">
-                                    <div class=\"row\">";
-                echo "                  <div class=\"col-md-4\">
-                                            <div class=\"panel panel-default\">
-                                                <div class=\"panel-heading\">
-                                                    <h2 class=\"\">Sensores</h2>
-                                                    <h4 class=\"\">Seleccione que sensores que quiere descargar</h4>
-                                                </div>
-                                                <div class=\"panel-body\">
-                                                    <input type=\"checkbox\" id=\"sensor_todos\" name=\"".$estacion['f_station_code']."\" value=\"-9999\" onClick=\"seleccionar_sensores_todos('".$estacion['f_station_code']."');\">Todos<br>";
+                                    <div class=\"row\">
+                                        <div class=\"col-md-9\">
+                                            <h2>".$q_estacion->getFName()." - ".$q_estacion->getName()."</h2>
+                                        </div>";
+                echo "                  <form class=\"form-horizontal\" role=\"form\" method=\"post\" action=\"index.php\">
+                                            <input type=\"hidden\" name=\"id_usuario\" value=\"".$usuario['id']."\">
+                                            <input type=\"hidden\" name=\"f_station_code\" value=\"".$q_estacion->getStationCode()."\">
+                                            <div class=\"col-md-4\">
+                                                <div class=\"panel panel-default\">
+                                                    <div class=\"panel-heading\">
+                                                        <h2 class=\"\">Sensores</h2>
+                                                        <h4 class=\"\">Seleccione que sensores que quiere descargar</h4>
+                                                    </div>
+                                                    <div class=\"panel-body\">
+                                                        <input type=\"checkbox\" id=\"sensor_todos\" name=\"".$estacion['f_station_code']."\" value=\"-9999\" onClick=\"seleccionar_sensores_todos('".$q_estacion->getStationCode()."');\">Todos<br>";
                 foreach($stationSensorsList['enabled'] as $sensor)
                 {
-                    echo "                          <input type=\"checkbox\" id=\"sensor_todos\" name=\"sensor_".$q_estacion->getStationCode()."\" value=\"".$sensor->getSensorCh()."|".$sensor->getSensorCode()."\">&nbsp;".$sensor->getName()."<br>";
+                    echo "                              <input type=\"checkbox\" id=\"sensor_todos\" name=\"sensor_".$sensor->getSensorCh()."_".$sensor->getSensorCode()."\" value=\"".$sensor->getSensorCh()."|".$sensor->getSensorCode()."\">&nbsp;".$sensor->getName()."<br>";
                 }
-                echo "                           </div>
-                                            </div>
-                                        </div>";
-                echo "                  <div class=\"col-md-4\">
-                                            <div class=\"panel panel-default\">
-                                                <div class=\"panel-heading\">
-                                                    <h2 class=\"\">Configuraci&oacute;n</h2>
+                echo "                              </div>
                                                 </div>
-                                                <div class=\"panel-body\">
-                                                    <input type=\"checkbox\" id=\"descarga_periodo\" name=\"periodo\" value=\"0\">Descarga de datos desde<br>
-                                                    <label for=\"fecha_inicial\">Fecha inicial:</label><input type=\"text\" name=\"fecha_inicial\" id=\"fecha_inicial\" size=\"8\" maxlength=\"8\">
-                                                    <label for=\"fecha_final\">Fecha final:</label><input type=\"text\" name=\"fecha_final\" id=\"fecha_final\" size=\"8\" maxlength=\"8\">
-                                                    <input type=\"checkbox\" id=\"mes_actual\" name=\"periodo\" value=\"1\">Mes actual<br>";
-                echo "                          </div>
-                                            </div>
-                                        </div>";
-                echo "                  <div class=\"col-md-4\">
-                                            <div class=\"panel panel-default\">
-                                                <div class=\"panel-heading\">
-                                                    <h2 class=\"\">Alertas</h2>
+                                            </div>";
+                echo "                      <div class=\"col-md-4\">
+                                                <div class=\"panel panel-default\">
+                                                    <div class=\"panel-heading\">
+                                                        <h2 class=\"\">Configuraci&oacute;n</h2>
+                                                    </div>
+                                                    <div class=\"panel-body\">";
+                // Periodo a descargar  
+                echo "                                  <div class=\"form-group\">
+                                                            <label for=\"tipo_archivo\">Per&iacute;odo a descargar:</label><br>
+                                                            <label class=\"radio-inline\">
+                                                                <input type=\"radio\" name=\"periodo\" id=\"descarga_periodo\" value=\"periodo\" checked=\"\">&nbsp;Descarga de datos desde
+                                                            </label><br>
+                                                            Fecha inicial:&nbsp;<input type=\"text\" class=\"form-control\" name=\"fecha_inicial\" id=\"fecha_inicial\" size=\"8\" maxlength=\"8\">
+                                                            Fecha final:&nbsp;<input type=\"text\" class=\"form-control\" name=\"fecha_final\" id=\"fecha_final\" size=\"8\" maxlength=\"8\">
+                                                            <label class=\"radio-inline\">
+                                                                <input type=\"radio\" name=\"periodo\" id=\"mes_actual\" value=\"mes_actual\">&nbsp;Mes actual
+                                                            </label>
+                                                            <br>
+                                                            <label class=\"radio-inline\">
+                                                                <input type=\"radio\" name=\"periodo\" id=\"todos\" value=\"todos\">&nbsp;Desde el principio
+                                                            </label>
+                                                            <br>
+                                                            <label class=\"radio-inline\">
+                                                                <input type=\"radio\" name=\"periodo\" id=\"fijo\" value=\"fijo\">&nbsp;Per&iacute;odo fijo
+                                                            </label>
+                                                        </div>";
+                // Tipo de archivo a exportar
+                echo "                                  <div class=\"form-group\">
+                                                            <label for=\"tipo_archivo\">Exportar a tipo de archivo:</label><br>
+                                                            <label class=\"radio-inline\">
+                                                                <input type=\"radio\" name=\"tipo_archivo\" id=\"archivo_txt\" value=\"txt\" checked=\"\">TXT
+                                                            </label>
+                                                            <label class=\"radio-inline\">
+                                                                <input type=\"radio\" name=\"tipo_archivo\" id=\"archivo_csv\" value=\"csv\">CSV
+                                                            </label>
+                                                        </div>";
+                // Separador de columnas
+                echo "                                  <div class=\"form-group\">
+                                                            <label for=\"separador\">Separar columnas por:</label><br>
+                                                            <label class=\"radio-inline\">
+                                                                <input type=\"radio\" id=\"coma\" name=\"separador\" value=\"coma\">&nbsp;COMA
+                                                            </label>
+                                                            <br>
+                                                            <label class=\"radio-inline\">
+                                                                <input type=\"radio\" id=\"punto_coma\" name=\"separador\" value=\"punto_coma\" checked=\"\">&nbsp;PUNTO y COMA
+                                                            </label>
+                                                            <br>
+                                                            <label class=\"radio-inline\">
+                                                                <input type=\"radio\" id=\"tab\" name=\"separador\" value=\"tab\">&nbsp;TAB
+                                                            </label>
+                                                            <br>
+                                                            <label class=\"radio-inline\">
+                                                                <input type=\"radio\" id=\"espacio\" name=\"separador\" value=\"espacio\">&nbsp;ESPACIO
+                                                            </label>
+                                                        </div>";
+                // Agregar encabezado                   
+                echo "                                  <div class=\"form-group\">
+                                                            <label for=\"encabezado\">Agregar encabezado:</label><br>
+                                                            <label class=\"radio-inline\">
+                                                                <input type=\"radio\" id=\"encabezado_si\" name=\"encabezado\" value=\"si\" checked=\"\">&nbsp;S&iacute;&nbsp;&nbsp;
+                                                            </label>
+                                                            <label class=\"radio-inline\">
+                                                                <input type=\"radio\" id=\"encabezado_no\" name=\"encabezado\" value=\"no\">&nbsp;No
+                                                            </label>    
+                                                        </div>";
+                // Nombre de archivo dde salida
+                echo "                                  <div class=\"form-group\">
+                                                            <label for=\"archivo\">Nombre de archivo (sin extension):</label><br>
+                                                            <input class=\"form-control\" type=\"text\" id=\"archivo\" name=\"archivo\" size=\"40\" maxlength=\"50\">
+                                                        </div>";
+                echo "                              </div>
                                                 </div>
-                                                <div class=\"panel-body\">
-                                                    Que alertas?";
-                echo "                          </div>
+                                            </div>";
+                echo "                      <div class=\"col-md-4\">
+                                                <div class=\"panel panel-default\">
+                                                    <div class=\"panel-heading\">
+                                                        <h2 class=\"\">Alertas</h2>
+                                                    </div>
+                                                    <div class=\"panel-body\">
+                                                        Que alertas?";
+                echo "                              </div>
+                                                </div>
+                                            </div>";
+                echo "                  </div> <!-- cierre de div row -->";
+                echo "                  <div class=\"row\">
+                                            <div class=\"col-md-9\">
+                                                <div class=\"pull-right\">
+                                                    <button type=\"submit\" name=\"guardar_configuracion\" class=\"btn btn-default\">Guardar configuraci&oacute;n</button>
+                                                </div>
                                             </div>
-                                        </div>";
-                echo "              </div>
-                                </div> <!-- cierre del div container -->
-                            </div> <!-- cierre del div info-sensores -->";
+                                        </div>
+                                    </form>
+                                </div> <!-- cierre de div container -->
+                            </div> <!-- cierre de div info-sensores -->";
                 unset($q_estacion);
             }
-            echo "      </div>
+            echo "      </div> <!-- cierre de div conf_csv -->
                     </td>
                 </tr>";
         }
@@ -1085,6 +1173,57 @@ function comprobar_conexion()
     unset($consulta);
     return true;
 }
+function actualizar_estacion()
+{
+    $info=  json_encode($_POST);
+    if(isset($_POST['id_usuario']))
+    {
+        $id_usuario=  CCGetFromPost('id_usuario');
+    }
+    if(isset($_POST['f_station_code']))
+    {
+        $f_station_code=  CCGetFromPost('f_station_code');
+    }
+    if(isset($id_usuario) AND isset($f_station_code))
+    {
+        // primero verifico que exista
+        $sql="  SELECT  *
+                FROM    `estaciones`
+                WHERE   `id_usuario`=".$id_usuario." AND
+                        `f_station_code`=".$f_station_code." LIMIT 1";
+        //echo "sql--->{$sql}<br>";
+        if($row_count=sql_select($sql,$consulta))
+        {
+        }
+        //echo "row_count--->{$row_count}<br>";
+        //exit;
+        if($row_count==0)
+        {
+            // inserto estacion
+            $sql="  INSERT INTO `estaciones` (`id_usuario`,`f_station_code`,`activa`,`info`)
+                    VALUES (".$id_usuario.",".$f_station_code.",1,'".$info."')";
+            if(!sql_select($sql,$consulta2))
+            {
+                echo "ERROR! No se pudo insertar los datos de la estacion";
+                return false;
+            }
+        }else
+        {
+            $sql="  UPDATE  `estaciones`
+                    SET     `info`='".$configuracion_xml."'
+                    WHERE   `id_usuario`=".$id_usuario.",
+                            `f_station_code`=".$f_station_code;
+            if(!sql_select($sql,$consulta2))
+            {
+                echo "ERROR! No se pudo actualizar los datos de la estacion";
+                return false;
+            }
+        }
+        return true;
+    }
+    echo "ERROR! No esta definido el usuario y/o la estaci&oacute;n";
+    return false;
+}
 function file_get_contents_utf8($fn)
 {
     $content = file_get_contents($fn);
@@ -1097,7 +1236,6 @@ function buscar_datos_conexion($id_usuario)
             FROM    `usuarios`
             WHERE   `tipo_usuario`='mysql' AND
                     `id_usuario`=".$id_usuario;
-    //echo "sql-->".$sql."<br>";
     if(!sql_select($sql,$consulta))
     {
         echo "ERROR! No se pudo determinar datos de conexion a la base de datos mysql";
@@ -1118,20 +1256,5 @@ function buscar_informacion_estacion($f_station_code)
 }
 function configuracion_estacion($estacion,$info)
 {
-    /*
-    echo "
-        <form class=\"form-horizontal\" role=\"form\">
-            <div class=\"form-group\">
-                <label class=\"control-label col-sm-2\" for=\"email\">Email:</label>
-                <div class=\"col-sm-10\">
-                    <input type=\"email\" class=\"form-control\" id=\"email\" placeholder=\"Enter email\">
-                </div>
-            </div>
-        </form>";
-    */
-    echo "  <div id=\"sensores\">
-                
-            </div>";
-
 }
 ?>
