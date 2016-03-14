@@ -1,8 +1,11 @@
 <?php
 define('VERSION','1.0.0');
 define('TITULO','Sondas de humedad');
-define('DIFERENCIA_DIAS',2);
 
+// para el alerta de sondas detenidas
+define('DIFERENCIA_DIAS',2);
+//
+define('AUTENTICAR',false);
 // datos de la cuenta de gmail usada como smtp para el envio de mails
 define('MAIL_HOST','smtp.gmail.com');
 define('MAIL_PORT',587);

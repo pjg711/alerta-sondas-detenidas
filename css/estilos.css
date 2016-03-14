@@ -101,4 +101,26 @@ a.sesion-iniciada:active {
 a.sesion-iniciada {
     text-decoration: none;
 }
+/* Sensores */
+.info-sensores {
+    float: left;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    text-align: left;
+    width: 250px;
+    border: 1px solid #CCC;
+    background-color: #E0E0E0;
+    overflow: hidden 
+}
+.info-configuracion {
+    float: left;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    text-align: left;
+    width: 300px;
+    border: 1px solid #CCC;
+    background-color: #E0E0E0;
+    padding-left: 10px;
+    overflow: hidden     
+}
 

@@ -360,8 +360,6 @@ class Station
                 WHERE
                     `f_station_code` = {$f_station_code}
                 LIMIT 1";
-            
-            echo "sqlQuery-->".$sqlQuery."<br>";
             if($BD->sql_select($sqlQuery, $result))
             {
                 if($BD->get_rowCount() > 0)
@@ -754,16 +752,17 @@ class Station
             FROM
                 `seedclima_station_data_retrieve_info`
             WHERE
-                `f_station_code` = {$this->getStationCode()}
-            ";
-        if($rowcount=sql_select($sqlQuery, $results))
-        if($rowcount > 0)
+                `f_station_code` = {$this->getStationCode()}";
+        if($BD->sql_select($sqlQuery, $results))
         {
-            $row = mysql_fetch_array($results);
-            $this->_lastDataRetrievedTime = $row['last_read_time'];
-        }else
-        {
-            $this->_lastDataRetrievedTime = false;
+            if($BD->get_rowCount() > 0)
+            {
+                $row = $results->fetch(PDO::FETCH_ASSOC);
+                $this->_lastDataRetrievedTime = $row['last_read_time'];
+            }else
+            {
+                $this->_lastDataRetrievedTime = false;
+            }
         }
     }
 
@@ -805,10 +804,9 @@ class Station
                 AND
                     `f_read_time` = (SELECT  MAX(`f_read_time`) FROM `seedclima_sensor_data_retrieve_info_{$tableSuffix}` WHERE `f_station_code` = {$this->_fStationCode} AND `out_of_range` <> 1)
                 AND
-                    `f_station_code` = {$this->_fStationCode}
+                    `f_station_code` = '{$this->_fStationCode}'
                 AND
-                    `f_sensor_code` IN (SELECT `f_sensor_code` FROM `seedclima_sensor_info` WHERE {$filterById} `enable_sensor` = 1 AND `f_station_code` = {$this->_fStationCode})
-            ";
+                    `f_sensor_code` IN (SELECT `f_sensor_code` FROM `seedclima_sensor_info` WHERE {$filterById} `enable_sensor` = 1 AND `f_station_code` = {$this->_fStationCode})";
         if(sql_select($query, $results))
         {
             $response = false;
@@ -881,18 +879,18 @@ class Station
         switch($status)
         {
             case '1':
-            return $this->_sensorsList['enabled'];
-            break;
+                return $this->_sensorsList['enabled'];
+                break;
             case'0':
-            return $this->_sensorsList['disabled'];
-            break;
+                return $this->_sensorsList['disabled'];
+                break;
             case'all':
-            $all = array_merge($this->_sensorsList['enabled'], $this->_sensorsList['disabled']);
-            return $all;
-            break;
+                $all = array_merge($this->_sensorsList['enabled'], $this->_sensorsList['disabled']);
+                return $all;
+                break;
             default:
-            return $this->_sensorsList;
-            break;
+                return $this->_sensorsList;
+                break;
         }
     }
 
@@ -1213,59 +1211,59 @@ class Sensor
         }else
         {
             $sqlQuery = "
-            SELECT
-                `row_id`,
-                `f_station_code`,
-                `f_sensor_ch` ,
-                `f_sensor_code`,
-                `f_chain_code`,
-                `f_group_code`,
-                `f_unit_code`,
-                `f_name`,
-                `f_unit`,
-                `f_div`,
-                `f_mul`,
-                `f_val_neg` ,
-                `f_val_log` ,
-                `f_val_last`,
-                `f_val_sum` ,
-                `f_val_aver`,
-                `f_val_min`,
-                `f_val_max`,
-                `f_val_time`,
-                `f_val_user`,
-                `f_create_time`,
-                `f_val_axilary`,
-                `f_user_app`,
-                `f_color`,
-                `f_sensor_user_name`,
-                `f_user_unit_code`,
-                `graph_type`,
-                `min_expected`,
-                `max_expected` ,
-                `custom_name`,
-                `custom_desc`,
-                `custom_image` ,
-                `enable_sensor` ,
-                `chilling_hours_related` ,
-                `degrees_day_related`,
-                `wind_rose_related`,
-                `priority`,
-                `last_edition_time`,
-                `last_update_date`,
-                `last_editor`
-            FROM
-                `seedclima_sensor_info`
-            WHERE
-                {$whereCondition}
+                SELECT
+                    `row_id`,
+                    `f_station_code`,
+                    `f_sensor_ch` ,
+                    `f_sensor_code`,
+                    `f_chain_code`,
+                    `f_group_code`,
+                    `f_unit_code`,
+                    `f_name`,
+                    `f_unit`,
+                    `f_div`,
+                    `f_mul`,
+                    `f_val_neg` ,
+                    `f_val_log` ,
+                    `f_val_last`,
+                    `f_val_sum` ,
+                    `f_val_aver`,
+                    `f_val_min`,
+                    `f_val_max`,
+                    `f_val_time`,
+                    `f_val_user`,
+                    `f_create_time`,
+                    `f_val_axilary`,
+                    `f_user_app`,
+                    `f_color`,
+                    `f_sensor_user_name`,
+                    `f_user_unit_code`,
+                    `graph_type`,
+                    `min_expected`,
+                    `max_expected` ,
+                    `custom_name`,
+                    `custom_desc`,
+                    `custom_image` ,
+                    `enable_sensor` ,
+                    `chilling_hours_related` ,
+                    `degrees_day_related`,
+                    `wind_rose_related`,
+                    `priority`,
+                    `last_edition_time`,
+                    `last_update_date`,
+                    `last_editor`
+                FROM
+                    `seedclima_sensor_info`
+                WHERE
+                    {$whereCondition}
 
-            LIMIT 1";
+                LIMIT 1";
 
             if($rowcount=sql_select($sqlQuery, $result))
             if($rowcount > 0) 
             {
                 settype($response, 'array');
-                while ($sensorInfo = mysql_fetch_assoc($result))
+                while ($sensorInfo = $result->fetch(PDO::FETCH_ASSOC))
                 {
                     $loadedDataArray = $sensorInfo;
                 }
@@ -1357,19 +1355,17 @@ class Sensor
         }
         $whereCondition = count($filters) > 0 ? 'WHERE ' . implode(' AND ', $filters) : '';
         $sqlQuery = "
-            SELECT
-                *
-            FROM
-                `seedclima_sensor_info`
-                {$whereCondition} 
+            SELECT  *
+            FROM    `seedclima_sensor_info`
+            {$whereCondition} 
             ORDER BY
-                `priority`,`custom_name`,`f_sensor_user_name`
-            ";
-        if($rowcount=sql_select($sqlQuery, $result))
+                `priority`,`custom_name`,`f_sensor_user_name`";
+        $BD=new IMETOS();
+        if($BD->sql_select($sqlQuery, $result))
         {
-            if($rowcount > 0)
+            if($BD->get_rowCount() > 0)
             {
-                while($sensorInfo = mysql_fetch_assoc($result))
+                while($sensorInfo = $result->fetch(PDO::FETCH_ASSOC))
                 {
                     $sensor = Sensor::load(null, $sensorInfo);
                     $response[$sensor->getSensorCode() . '_' . $sensor->getSensorCh()] = $sensor;

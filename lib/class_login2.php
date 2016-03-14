@@ -54,17 +54,29 @@ class Login
         {
             if($registro=$consulta->fetch(PDO::FETCH_ASSOC))
             {
-                // luego verifico el login en iMetos
-                $iMetos=new JSON_IMETOS($usuario,$password);
-                if(!$iMetos->get_error())
+                if(!AUTENTICAR)
                 {
-                    // bien
+                    // sin autenticar
                     $_SESSION['user_login_session']=true;
                     $_SESSION['id_usuario']=$registro['id'];
                     $_SESSION['user_active']=$registro['usuario'];
                     $_SESSION['password']=$registro['password'];
                     $_SESSION['es_admin']=$registro['es_admin'];
                     return true;
+                }else
+                {
+                    // luego verifico el login en iMetos
+                    $iMetos=new JSON_IMETOS($usuario,$password);
+                    if(!$iMetos->get_error() OR !AUTENTICAR)
+                    {
+                        // bien
+                        $_SESSION['user_login_session']=true;
+                        $_SESSION['id_usuario']=$registro['id'];
+                        $_SESSION['user_active']=$registro['usuario'];
+                        $_SESSION['password']=$registro['password'];
+                        $_SESSION['es_admin']=$registro['es_admin'];
+                        return true;
+                    }
                 }
             }
         }

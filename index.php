@@ -792,7 +792,7 @@ function listado_usuarios($es_admin=false, $id_usuario=0)
                         <div id=\"conf_csv_".trim($usuario['id'])."\" style=\"display:none\">";
             // obtengo datos de conexion de la base de datos
             $conexion=buscar_datos_conexion($usuario['id']);
-            //$server=null,$database=null,$username=null,$password=null
+            //
             $BD = new IMETOS($conexion['servidor'],$conexion['base_datos'],$conexion['usuario'],$conexion['password']);
             $sql="  SELECT  *
                     FROM    `seedclima_station_info`";
@@ -807,20 +807,71 @@ function listado_usuarios($es_admin=false, $id_usuario=0)
             unset($BD);
             echo "          <div id=\"estaciones\">
                                 <label class=\"col-xs-3 control-label\">Seleccione estaci&oacute;n:</label>
-                                <select class=\"form-control\" onChange=\"mostrar_ocultar(this.value,'info-estaciones');\">";
+                                <select class=\"form-control\" onChange=\"mostrar_ocultar('estacion_'+this.value,'info-sensores');\">";
             foreach($estaciones as $estacion)
             {
-                echo "              <option value=\"".$estacion['f_name']."\">".$estacion['f_name']."</option>";
+                echo "              <option value=\"".$estacion['f_station_code']."\">".$estacion['f_name']."</option>";
             }
             echo "              </select>
                             </div>";
-            foreach($estaciones as $estacion)
+            foreach($estaciones as $key_est => $estacion)
             {
-                $info=buscar_informacion_estacion($estacion['f_name']);
-                $q_estacion = Station::load($estacion['f_name']);
-                echo "      <div class=\"info-estaciones\" id=\"".$estacion['f_name']."\" style=\"display:none\">";
-                configuracion_estacion($estacion,$info);
-                echo "      </div>";
+                $info=buscar_informacion_estacion($estacion['f_station_code']);
+                $q_estacion = Station::load($estacion['f_station_code']);
+                $q_estacion->loadSensors(1);
+                $stationSensorsList = $q_estacion->getAvailableSensors();
+                if($key_est == 0)
+                {
+                    echo "  <div class=\"info-sensores\" id=\"estacion_".$estacion['f_station_code']."\" style=\"display:block\">";
+                }else
+                {
+                    echo "  <div class=\"info-sensores\" id=\"estacion_".$estacion['f_station_code']."\" style=\"display:none\">";
+                }
+                echo "          <div class=\"container\">
+                                    <hr class=\"\">
+                                    <div class=\"row\">";
+                echo "                  <div class=\"col-md-4\">
+                                            <div class=\"panel panel-default\">
+                                                <div class=\"panel-heading\">
+                                                    <h2 class=\"\">Sensores</h2>
+                                                    <h4 class=\"\">Seleccione que sensores que quiere descargar</h4>
+                                                </div>
+                                                <div class=\"panel-body\">
+                                                    <input type=\"checkbox\" id=\"sensor_todos\" name=\"".$estacion['f_station_code']."\" value=\"-9999\" onClick=\"seleccionar_sensores_todos('".$estacion['f_station_code']."');\">Todos<br>";
+                foreach($stationSensorsList['enabled'] as $sensor)
+                {
+                    echo "                          <input type=\"checkbox\" id=\"sensor_todos\" name=\"sensor_".$q_estacion->getStationCode()."\" value=\"".$sensor->getSensorCh()."|".$sensor->getSensorCode()."\">&nbsp;".$sensor->getName()."<br>";
+                }
+                echo "                           </div>
+                                            </div>
+                                        </div>";
+                echo "                  <div class=\"col-md-4\">
+                                            <div class=\"panel panel-default\">
+                                                <div class=\"panel-heading\">
+                                                    <h2 class=\"\">Configuraci&oacute;n</h2>
+                                                </div>
+                                                <div class=\"panel-body\">
+                                                    <input type=\"checkbox\" id=\"descarga_periodo\" name=\"periodo\" value=\"0\">Descarga de datos desde<br>
+                                                    <label for=\"fecha_inicial\">Fecha inicial:</label><input type=\"text\" name=\"fecha_inicial\" id=\"fecha_inicial\" size=\"8\" maxlength=\"8\">
+                                                    <label for=\"fecha_final\">Fecha final:</label><input type=\"text\" name=\"fecha_final\" id=\"fecha_final\" size=\"8\" maxlength=\"8\">
+                                                    <input type=\"checkbox\" id=\"mes_actual\" name=\"periodo\" value=\"1\">Mes actual<br>";
+                echo "                          </div>
+                                            </div>
+                                        </div>";
+                echo "                  <div class=\"col-md-4\">
+                                            <div class=\"panel panel-default\">
+                                                <div class=\"panel-heading\">
+                                                    <h2 class=\"\">Alertas</h2>
+                                                </div>
+                                                <div class=\"panel-body\">
+                                                    Que alertas?";
+                echo "                          </div>
+                                            </div>
+                                        </div>";
+                echo "              </div>
+                                </div> <!-- cierre del div container -->
+                            </div> <!-- cierre del div info-sensores -->";
+                unset($q_estacion);
             }
             echo "      </div>
                     </td>
@@ -1054,11 +1105,11 @@ function buscar_datos_conexion($id_usuario)
     }
     return $consulta->fetch(PDO::FETCH_ASSOC);
 }
-function buscar_informacion_estacion($f_name)
+function buscar_informacion_estacion($f_station_code)
 {
     $sql="  SELECT  *
             FROM    `estaciones`
-            WHERE   `f_name`='".$f_name."'";
+            WHERE   `f_station_code`=".$f_station_code;
     if(!sql_select($sql, $consulta))
     {
         return false;
