@@ -2126,4 +2126,167 @@ class JSON_IMETOS
         }
     }    
 }
+class Config_Station
+{
+    private $id_usuario;        // id_usuario de la tabla usuarios
+    private $f_station_code;    // f_station_code 
+    private $sensores;          // array con los sensores seleccionados
+    private $periodo;           // opcion de descargar con fecha de inicio y fecha final
+    private $periodo_fecha_inicial;      //
+    private $periodo_fecha_final;
+    private $tipo_archivo;
+    private $separador;
+    private $encabezado;
+    private $nombre_archivo;
+    
+    function __construct($id_usuario='',$f_station_code='',$sensores='',$periodo='',
+                        $periodo_fecha_inicial='',$periodo_fecha_final='',$tipo_archivo='',
+                        $separador='',$encabezado='',$archivo='') 
+    {
+        if($sensores=='')
+        {
+            $this->sensores=array();
+        }else
+        {
+            $this->sensores=$sensores;
+        }
+        $this->id_usuario=$id_usuario;
+        $this->f_station_code=$f_station_code;
+        $this->periodo=$periodo;
+        $this->periodo_fecha_inicial=$periodo_fecha_inicial;
+        $this->periodo_fecha_final=$periodo_fecha_final;
+        $this->tipo_archivo=$tipo_archivo;
+        $this->separador=$separador;
+        $this->encabezado=$encabezado;
+        $this->nombre_archivo=$archivo;
+    }
+    public function getIdUsuario()
+    {
+        return $this->id_usuario;
+    }
+    public function getStationCode()
+    {
+        return $this->f_station_code;
+    }
+    public function getPeriodo()
+    {
+        return $this->periodo;
+    }
+    public function getPeriodoFechaInicial()
+    {
+        return $this->periodo_fecha_inicio;
+    }
+    public function getPeriodoFechaFinal()
+    {
+        return $this->periodo_fecha_final;
+    }
+    public function getTipoArchivo()
+    {
+        return $this->tipo_archivo;
+    }
+    public function getSeparador()
+    {
+        return $this->separador;
+    }
+    public function getEncabezado()
+    {
+        return $this->encabezado;
+    }
+    public function getNombreArchivo()
+    {
+        return $this->nombre_archivo;
+    }
+    public function getSensores()
+    {
+        return $this->sensores;
+    }
+    public static function load($id_usuario="",$f_station_code="")
+    {
+        $sql="  SELECT  `id`,
+                        `id_usuario`,
+                        `f_station_code`,
+                        `activa`,
+                        `info`
+                FROM    `estaciones`
+                WHERE   `f_station_code`={$f_station_code} AND 
+                        `id_usuario`={$id_usuario}";
+        if(!sql_select($sql, $consulta))
+        {
+            return false;
+        }
+        if($info=$consulta->fetch(PDO::FETCH_ASSOC))
+        {
+            $config=json_decode($info['info'],true);
+            // sensores
+            $sensores=array();
+            foreach($config as $key_cfg=>$cfg)
+            {
+                if($cfg=="seleccionado")
+                {
+                    // es sensor selecionado
+                    $partes=explode("_",$key_cfg);
+                    if(count($partes)==3)
+                    {
+                        $sensores[]=$partes[1]."_".$partes[2];
+                    }
+                }
+            }
+            if(isset($config['periodo']))
+            {
+                $periodo=$config['periodo'];
+            }else
+            {
+                $periodo="";
+            }
+            if(isset($config['periodo_fecha_inicial']))
+            {
+                $periodo_fecha_inicial=$config['periodo_fecha_inicial'];
+            }else
+            {
+                $periodo_fecha_inicial="";
+            }
+            if(isset($config['periodo_fecha_final']))
+            {
+                $periodo_fecha_final=$config['periodo_fecha_final'];
+            }else
+            {
+                $periodo_fecha_final="";
+            }
+            if(isset($config['tipo_archivo']))
+            {
+                $tipo_archivo=$config['tipo_archivo'];
+            }else
+            {
+                $tipo_archivo="";
+            }
+            if(isset($config['separador']))
+            {
+                $separador=$config['separador'];
+            }else
+            {
+                $separador="";
+            }
+            if(isset($config['encabezado']))
+            {
+                $encabezado=$config['encabezado'];
+            }else
+            {
+                $encabezado="";
+            }
+            if(isset($config['archivo']))
+            {
+                $archivo=$config['archivo'];
+            }else
+            {
+                $archivo="";
+            }
+            $q_config = new Config_Station($id_usuario,$f_station_code,$sensores,$periodo,
+                    $periodo_fecha_inicial,$periodo_fecha_final,$tipo_archivo,$separador,
+                    $encabezado,$archivo);
+            
+            return $q_config;
+        }
+        return false;
+    }
+}
 ?>

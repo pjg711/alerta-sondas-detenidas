@@ -45,11 +45,14 @@ function sql_select($query, &$rv)
         // para insert
         return $last_id;
     }
+    /*
     if($row_count=$rv->rowCount())
     {
         // para select
         return (int)$row_count;
     }
+     * 
+     */
     return true;
 }
 function getEnumOptions($table, $field) 

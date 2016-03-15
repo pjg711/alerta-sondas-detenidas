@@ -29,12 +29,9 @@ $login=new Login();
 
 if($login->getLoginSession())
 {
-    /*
     echo "<pre>";
     print_r($_POST);
     echo "</pre>";
-     * 
-     */
     //
     if(isset($_POST['confirmado_borrar_informe']))
     {
@@ -830,10 +827,14 @@ function listado_usuarios($es_admin=false, $id_usuario=0)
                             </div>";
             foreach($estaciones as $key_est => $estacion)
             {
-                //$info=buscar_informacion_estacion($estacion['f_station_code']);
                 $q_estacion = Station::load($estacion['f_station_code']);
                 $q_estacion->loadSensors(1);
                 $stationSensorsList = $q_estacion->getAvailableSensors();
+                //$info=cargar_informacion_estacion($q_estacion->getStationCode(),$usuario['id']);
+                $q_configuracion = Config_Station::load($usuario['id'],$q_estacion->getStationCode());
+                echo "<pre>";
+                print_r($q_configuracion);
+                echo "</pre>";
                 if($key_est == 0)
                 {
                     echo "  <div class=\"info-sensores\" id=\"estacion_".$q_estacion->getStationCode()."\" style=\"display:block\">";
@@ -858,9 +859,16 @@ function listado_usuarios($es_admin=false, $id_usuario=0)
                                                     </div>
                                                     <div class=\"panel-body\">
                                                         <input type=\"checkbox\" id=\"sensor_todos\" name=\"".$estacion['f_station_code']."\" value=\"-9999\" onClick=\"seleccionar_sensores_todos('".$q_estacion->getStationCode()."');\">Todos<br>";
-                foreach($stationSensorsList['enabled'] as $sensor)
+                foreach($stationSensorsList['enabled'] as $key_sensor => $sensor)
                 {
-                    echo "                              <input type=\"checkbox\" id=\"sensor_todos\" name=\"sensor_".$sensor->getSensorCh()."_".$sensor->getSensorCode()."\" value=\"".$sensor->getSensorCh()."|".$sensor->getSensorCode()."\">&nbsp;".$sensor->getName()."<br>";
+                    //echo "                              <input type=\"checkbox\" id=\"sensor_todos\" name=\"sensor_".$sensor->getSensorCh()."_".$sensor->getSensorCode()."\" value=\"".$sensor->getSensorCh()."|".$sensor->getSensorCode()."\">&nbsp;".$sensor->getName()."<br>";
+                    if(in_array($key_sensor,$q_configuracion->getSensores()))
+                    {
+                        echo "                          <input type=\"checkbox\" id=\"sensor_todos\" name=\"sensor_".$sensor->getSensorCode()."_".$sensor->getSensorCh()."\" value=\"seleccionado\" checked=\"\">&nbsp;".$sensor->getName()."<br>";
+                    }else
+                    {
+                        echo "                          <input type=\"checkbox\" id=\"sensor_todos\" name=\"sensor_".$sensor->getSensorCode()."_".$sensor->getSensorCh()."\" value=\"seleccionado\">&nbsp;".$sensor->getName()."<br>";
+                    }   
                 }
                 echo "                              </div>
                                                 </div>
@@ -874,39 +882,81 @@ function listado_usuarios($es_admin=false, $id_usuario=0)
                 // Periodo a descargar  
                 echo "                                  <div class=\"form-group\">
                                                             <label for=\"tipo_archivo\">Per&iacute;odo a descargar:</label><br>
-                                                            <label class=\"radio-inline\">
-                                                                <input type=\"radio\" name=\"periodo\" id=\"descarga_periodo\" value=\"periodo\" checked=\"\">&nbsp;Descarga de datos desde
-                                                            </label><br>
-                                                            Fecha inicial:&nbsp;<input type=\"text\" class=\"form-control\" name=\"fecha_inicial\" id=\"fecha_inicial\" size=\"8\" maxlength=\"8\">
-                                                            Fecha final:&nbsp;<input type=\"text\" class=\"form-control\" name=\"fecha_final\" id=\"fecha_final\" size=\"8\" maxlength=\"8\">
-                                                            <label class=\"radio-inline\">
-                                                                <input type=\"radio\" name=\"periodo\" id=\"mes_actual\" value=\"mes_actual\">&nbsp;Mes actual
-                                                            </label>
+                                                            <label class=\"radio-inline\">";
+                if($q_configuracion->getPeriodo()=='periodo')
+                {
+                    echo "                                      <input type=\"radio\" name=\"periodo\" id=\"descarga_periodo\" value=\"periodo\" checked=\"\">&nbsp;Descarga de datos desde";
+                }else
+                {
+                    echo "                                      <input type=\"radio\" name=\"periodo\" id=\"descarga_periodo\" value=\"periodo\">&nbsp;Descarga de datos desde";
+                }
+                echo "                                      </label><br>
+                                                            Fecha inicial:&nbsp;<input type=\"text\" class=\"form-control\" name=\"fecha_inicial\" id=\"fecha_inicial\" value=\"".$q_configuracion->getPeriodoFechaInicial()."\" size=\"8\" maxlength=\"8\">
+                                                            Fecha final:&nbsp;<input type=\"text\" class=\"form-control\" name=\"fecha_final\" id=\"fecha_final\" value=\"".$q_configuracion->getPeriodoFechaFinal()."\" size=\"8\" maxlength=\"8\">
+                                                            <label class=\"radio-inline\">";
+                if($q_configuracion->getPeriodo()=='mes_actual')
+                {
+                    echo "                                      <input type=\"radio\" name=\"periodo\" id=\"mes_actual\" value=\"mes_actual\" checked=\"\">&nbsp;Mes actual";
+                }else
+                {
+                    echo "                                      <input type=\"radio\" name=\"periodo\" id=\"mes_actual\" value=\"mes_actual\">&nbsp;Mes actual";
+                }
+                echo "                                      </label>
                                                             <br>
-                                                            <label class=\"radio-inline\">
-                                                                <input type=\"radio\" name=\"periodo\" id=\"todos\" value=\"todos\">&nbsp;Desde el principio
-                                                            </label>
+                                                            <label class=\"radio-inline\">";
+                if($q_configuracion->getPeriodo()=='todos')
+                {
+                    echo "                                      <input type=\"radio\" name=\"periodo\" id=\"todos\" value=\"todos\" checked=\"\">&nbsp;Desde el principio";
+                }else
+                {
+                    echo "                                      <input type=\"radio\" name=\"periodo\" id=\"todos\" value=\"todos\">&nbsp;Desde el principio";
+                }
+                echo "                                      </label>
                                                             <br>
-                                                            <label class=\"radio-inline\">
-                                                                <input type=\"radio\" name=\"periodo\" id=\"fijo\" value=\"fijo\">&nbsp;Per&iacute;odo fijo
-                                                            </label>
+                                                            <label class=\"radio-inline\">";
+                if($q_configuracion->getPeriodo()=='')
+                {
+                    echo "                                      <input type=\"radio\" name=\"periodo\" id=\"fijo\" value=\"fijo\" checked=\"\">&nbsp;Per&iacute;odo fijo";
+                }else
+                {
+                    echo "                                      <input type=\"radio\" name=\"periodo\" id=\"fijo\" value=\"fijo\">&nbsp;Per&iacute;odo fijo";
+                }
+                echo "                                       </label>
                                                         </div>";
                 // Tipo de archivo a exportar
                 echo "                                  <div class=\"form-group\">
                                                             <label for=\"tipo_archivo\">Exportar a tipo de archivo:</label><br>
-                                                            <label class=\"radio-inline\">
-                                                                <input type=\"radio\" name=\"tipo_archivo\" id=\"archivo_txt\" value=\"txt\" checked=\"\">TXT
-                                                            </label>
-                                                            <label class=\"radio-inline\">
-                                                                <input type=\"radio\" name=\"tipo_archivo\" id=\"archivo_csv\" value=\"csv\">CSV
-                                                            </label>
+                                                            <label class=\"radio-inline\">";
+                if($q_configuracion->getTipoArchivo()=='txt')
+                {
+                    echo "                                      <input type=\"radio\" name=\"tipo_archivo\" id=\"archivo_txt\" value=\"txt\" checked=\"\">TXT";
+                }else
+                {
+                    echo "                                      <input type=\"radio\" name=\"tipo_archivo\" id=\"archivo_txt\" value=\"txt\">TXT";
+                }
+                echo "                                      </label>
+                                                            <label class=\"radio-inline\">";
+                if($q_configuracion->getTipoArchivo()=='csv')
+                {
+                    echo "                                      <input type=\"radio\" name=\"tipo_archivo\" id=\"archivo_csv\" value=\"csv\" checked=\"\">CSV";
+                }else
+                {
+                    echo "                                      <input type=\"radio\" name=\"tipo_archivo\" id=\"archivo_csv\" value=\"csv\">CSV";
+                }
+                echo "                                      </label>
                                                         </div>";
                 // Separador de columnas
                 echo "                                  <div class=\"form-group\">
                                                             <label for=\"separador\">Separar columnas por:</label><br>
-                                                            <label class=\"radio-inline\">
-                                                                <input type=\"radio\" id=\"coma\" name=\"separador\" value=\"coma\">&nbsp;COMA
-                                                            </label>
+                                                            <label class=\"radio-inline\">";
+                if($q_configuracion->getSeparador()=='coma')
+                {
+                    echo "                                     <input type=\"radio\" id=\"coma\" name=\"separador\" value=\"coma\" checked=\"\">&nbsp;COMA";
+                }else
+                {
+                    echo "                                     <input type=\"radio\" id=\"coma\" name=\"separador\" value=\"coma\">&nbsp;COMA";
+                }
+                echo "                                      </label>
                                                             <br>
                                                             <label class=\"radio-inline\">
                                                                 <input type=\"radio\" id=\"punto_coma\" name=\"separador\" value=\"punto_coma\" checked=\"\">&nbsp;PUNTO y COMA
@@ -1175,7 +1225,7 @@ function comprobar_conexion()
 }
 function actualizar_estacion()
 {
-    $info=  json_encode($_POST);
+    $info= json_encode($_POST);
     if(isset($_POST['id_usuario']))
     {
         $id_usuario=  CCGetFromPost('id_usuario');
@@ -1190,14 +1240,26 @@ function actualizar_estacion()
         $sql="  SELECT  *
                 FROM    `estaciones`
                 WHERE   `id_usuario`=".$id_usuario." AND
-                        `f_station_code`=".$f_station_code." LIMIT 1";
-        //echo "sql--->{$sql}<br>";
-        if($row_count=sql_select($sql,$consulta))
+                        `f_station_code`=".$f_station_code;
+        echo "sql--->{$sql}<br>";
+        if(!sql_select($sql,$consulta))
         {
+            echo "ERROR! No se pudo consultar la base de datos";
+            return false;
         }
-        //echo "row_count--->{$row_count}<br>";
-        //exit;
-        if($row_count==0)
+        if($consulta->rowCount() > 0)
+        {
+            // lo actualizo
+            $sql="  UPDATE  `estaciones`
+                    SET     `info`='".$info."'
+                    WHERE   `id_usuario`=".$id_usuario." AND
+                            `f_station_code`=".$f_station_code;
+            if(!sql_select($sql,$consulta2))
+            {
+                echo "ERROR! No se pudo actualizar los datos de la estacion";
+                return false;
+            }
+        }else
         {
             // inserto estacion
             $sql="  INSERT INTO `estaciones` (`id_usuario`,`f_station_code`,`activa`,`info`)
@@ -1205,17 +1267,6 @@ function actualizar_estacion()
             if(!sql_select($sql,$consulta2))
             {
                 echo "ERROR! No se pudo insertar los datos de la estacion";
-                return false;
-            }
-        }else
-        {
-            $sql="  UPDATE  `estaciones`
-                    SET     `info`='".$configuracion_xml."'
-                    WHERE   `id_usuario`=".$id_usuario.",
-                            `f_station_code`=".$f_station_code;
-            if(!sql_select($sql,$consulta2))
-            {
-                echo "ERROR! No se pudo actualizar los datos de la estacion";
                 return false;
             }
         }
@@ -1243,16 +1294,20 @@ function buscar_datos_conexion($id_usuario)
     }
     return $consulta->fetch(PDO::FETCH_ASSOC);
 }
-function buscar_informacion_estacion($f_station_code)
+function cargar_informacion_estacion($f_station_code,$id_usuario)
 {
     $sql="  SELECT  *
             FROM    `estaciones`
-            WHERE   `f_station_code`=".$f_station_code;
+            WHERE   `f_station_code`={$f_station_code} AND 
+                    `id_usuario`={$id_usuario}";
     if(!sql_select($sql, $consulta))
     {
         return false;
     }
-    return $consulta->fetch(PDO::FETCH_ASSOC);
+    if($info=$consulta->fetch(PDO::FETCH_ASSOC))
+    {
+        return $info['info'];
+    }
 }
 function configuracion_estacion($estacion,$info)
 {
