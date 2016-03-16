@@ -830,44 +830,48 @@ function listado_usuarios($es_admin=false, $id_usuario=0)
                 $q_estacion = Station::load($estacion['f_station_code']);
                 $q_estacion->loadSensors(1);
                 $stationSensorsList = $q_estacion->getAvailableSensors();
-                //$info=cargar_informacion_estacion($q_estacion->getStationCode(),$usuario['id']);
                 $q_configuracion = Config_Station::load($usuario['id'],$q_estacion->getStationCode());
-                echo "<pre>";
-                print_r($q_configuracion);
-                echo "</pre>";
                 if($key_est == 0)
                 {
-                    echo "  <div class=\"info-sensores\" id=\"estacion_".$q_estacion->getStationCode()."\" style=\"display:block\">";
+                    echo "  <div id=\"estacion_".$q_estacion->getStationCode()."\" style=\"display:block\">";
                 }else
                 {
-                    echo "  <div class=\"info-sensores\" id=\"estacion_".$q_estacion->getStationCode()."\" style=\"display:none\">";
+                    echo "  <div id=\"estacion_".$q_estacion->getStationCode()."\" style=\"display:none\">";
                 }
                 echo "          <div class=\"container\">
                                     <hr class=\"\">
                                     <div class=\"row\">
-                                        <div class=\"col-md-9\">
-                                            <h2>".$q_estacion->getFName()." - ".$q_estacion->getName()."</h2>
-                                        </div>";
-                echo "                  <form class=\"form-horizontal\" role=\"form\" method=\"post\" action=\"index.php\">
-                                            <input type=\"hidden\" name=\"id_usuario\" value=\"".$usuario['id']."\">
-                                            <input type=\"hidden\" name=\"f_station_code\" value=\"".$q_estacion->getStationCode()."\">
-                                            <div class=\"col-md-4\">
+                                        <form class=\"form-horizontal\" role=\"form\" method=\"post\" action=\"index.php\">
+                                            <input type=\"hidden\" id=\"id_usuario\" name=\"id_usuario\" value=\"".$usuario['id']."\">
+                                            <input type=\"hidden\" id=\"f_station_code\" name=\"f_station_code\" value=\"".$q_estacion->getStationCode()."\">
+                                            <div class=\"col-md-9\">";
+                if($q_configuracion->getActiva())
+                {
+                    echo "                      <input type=\"checkbox\" id=\"activar\" name=\"activar\" checked=\"\" onclick=\"estacion_activa(this,'estacion_".$q_estacion->getStationCode()."');\">Activar Estaci&oacute;n";
+                }else
+                {
+                    echo "                      <input type=\"checkbox\" id=\"activar\" name=\"activar\" onclick=\"estacion_activa(this,'estacion_".$q_estacion->getStationCode()."');\">Activar Estaci&oacute;n";
+                }
+                echo "                      </div>
+                                            <div class=\"col-md-9\">
+                                                <h2>".$q_estacion->getFName()." - ".$q_estacion->getName()."</h2>
+                                            </div>";
+                echo "                      <div class=\"col-md-4\">
                                                 <div class=\"panel panel-default\">
                                                     <div class=\"panel-heading\">
                                                         <h2 class=\"\">Sensores</h2>
                                                         <h4 class=\"\">Seleccione que sensores que quiere descargar</h4>
                                                     </div>
                                                     <div class=\"panel-body\">
-                                                        <input type=\"checkbox\" id=\"sensor_todos\" name=\"".$estacion['f_station_code']."\" value=\"-9999\" onClick=\"seleccionar_sensores_todos('".$q_estacion->getStationCode()."');\">Todos<br>";
+                                                        <input type=\"checkbox\" id=\"sensor_todos\" name=\"".$estacion['f_station_code']."\" value=\"-9999\" onClick=\"seleccionar_sensores_todos('estacion_".$q_estacion->getStationCode()."');\"><label for=\"todos\">Todos</label><br>";
                 foreach($stationSensorsList['enabled'] as $key_sensor => $sensor)
                 {
-                    //echo "                              <input type=\"checkbox\" id=\"sensor_todos\" name=\"sensor_".$sensor->getSensorCh()."_".$sensor->getSensorCode()."\" value=\"".$sensor->getSensorCh()."|".$sensor->getSensorCode()."\">&nbsp;".$sensor->getName()."<br>";
                     if(in_array($key_sensor,$q_configuracion->getSensores()))
                     {
-                        echo "                          <input type=\"checkbox\" id=\"sensor_todos\" name=\"sensor_".$sensor->getSensorCode()."_".$sensor->getSensorCh()."\" value=\"seleccionado\" checked=\"\">&nbsp;".$sensor->getName()."<br>";
+                        echo "                          <input type=\"checkbox\" id=\"sensor_todos\" name=\"sensor_".$sensor->getSensorCode()."_".$sensor->getSensorCh()."\" value=\"seleccionado\" checked=\"\">&nbsp;<label>".$sensor->getName()."</label><br>";
                     }else
                     {
-                        echo "                          <input type=\"checkbox\" id=\"sensor_todos\" name=\"sensor_".$sensor->getSensorCode()."_".$sensor->getSensorCh()."\" value=\"seleccionado\">&nbsp;".$sensor->getName()."<br>";
+                        echo "                          <input type=\"checkbox\" id=\"sensor_todos\" name=\"sensor_".$sensor->getSensorCode()."_".$sensor->getSensorCh()."\" value=\"seleccionado\">&nbsp;<label>".$sensor->getName()."</label><br>";
                     }   
                 }
                 echo "                              </div>
@@ -1158,17 +1162,17 @@ function listado_informes($id_usuario=0)
     {
         // es admin y muestro todos los informes
         $sql_demas="
-        FROM    `informes_sondas_detenidas` AS informes, 
-                `usuarios` AS usuarios
-        WHERE   informes.`id_usuario`=usuarios.`id`
-        ORDER BY `fecha` DESC";
+            FROM    `informes_sondas_detenidas` AS informes, 
+                    `usuarios` AS usuarios
+            WHERE   informes.`id_usuario`=usuarios.`id`
+            ORDER BY `fecha` DESC";
     }else
     {
         $sql_demas="
-        FROM    `informes_sondas_detenidas` AS informes,
-                `usuarios` AS usuarios
-        WHERE   informes.`id_usuario`=".$id_usuario."
-        ORDER BY `fecha` DESC";
+            FROM    `informes_sondas_detenidas` AS informes,
+                    `usuarios` AS usuarios
+            WHERE   informes.`id_usuario`=".$id_usuario."
+            ORDER BY `fecha` DESC";
     }
     $sql="$sql_select $sql_demas";
     // muestro tabla con informes para el usuario logeado
@@ -1241,7 +1245,7 @@ function actualizar_estacion()
                 FROM    `estaciones`
                 WHERE   `id_usuario`=".$id_usuario." AND
                         `f_station_code`=".$f_station_code;
-        echo "sql--->{$sql}<br>";
+        //echo "sql--->{$sql}<br>";
         if(!sql_select($sql,$consulta))
         {
             echo "ERROR! No se pudo consultar la base de datos";
@@ -1293,23 +1297,5 @@ function buscar_datos_conexion($id_usuario)
         return false;
     }
     return $consulta->fetch(PDO::FETCH_ASSOC);
-}
-function cargar_informacion_estacion($f_station_code,$id_usuario)
-{
-    $sql="  SELECT  *
-            FROM    `estaciones`
-            WHERE   `f_station_code`={$f_station_code} AND 
-                    `id_usuario`={$id_usuario}";
-    if(!sql_select($sql, $consulta))
-    {
-        return false;
-    }
-    if($info=$consulta->fetch(PDO::FETCH_ASSOC))
-    {
-        return $info['info'];
-    }
-}
-function configuracion_estacion($estacion,$info)
-{
 }
 ?>

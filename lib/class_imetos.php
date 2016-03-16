@@ -420,8 +420,8 @@ class Station
 			    $loadedDataArray['priority'],
 			    $loadedDataArray['last_update_date'],
 			    $loadedDataArray['last_edition_time'],
-			    $loadedDataArray['last_editor']);
-
+			    $loadedDataArray['last_editor']
+            );
             $station->_setLastDataRetrievedTime();
             $station->_setStatusReport();
             return $station;
@@ -1210,6 +1210,7 @@ class Sensor
             $loadedDataArray = $fromArrayValues;
         }else
         {
+            $BD=new IMETOS();
             $sqlQuery = "
                 SELECT
                     `row_id`,
@@ -1258,14 +1259,16 @@ class Sensor
                     {$whereCondition}
 
                 LIMIT 1";
-
-            if($rowcount=sql_select($sqlQuery, $result))
-            if($rowcount > 0) 
+            
+            if($BD->sql_select($sqlQuery, $result))
             {
-                settype($response, 'array');
-                while ($sensorInfo = $result->fetch(PDO::FETCH_ASSOC))
+                if($BD->rowCount() > 0) 
                 {
-                    $loadedDataArray = $sensorInfo;
+                    settype($response, 'array');
+                    while ($sensorInfo = $result->fetch(PDO::FETCH_ASSOC))
+                    {
+                        $loadedDataArray = $sensorInfo;
+                    }
                 }
             }
         }
@@ -2130,6 +2133,7 @@ class Config_Station
 {
     private $id_usuario;        // id_usuario de la tabla usuarios
     private $f_station_code;    // f_station_code 
+    private $activa;
     private $sensores;          // array con los sensores seleccionados
     private $periodo;           // opcion de descargar con fecha de inicio y fecha final
     private $periodo_fecha_inicial;      //
@@ -2139,7 +2143,7 @@ class Config_Station
     private $encabezado;
     private $nombre_archivo;
     
-    function __construct($id_usuario='',$f_station_code='',$sensores='',$periodo='',
+    function __construct($id_usuario='',$f_station_code='',$activa,$sensores='',$periodo='',
                         $periodo_fecha_inicial='',$periodo_fecha_final='',$tipo_archivo='',
                         $separador='',$encabezado='',$archivo='') 
     {
@@ -2152,6 +2156,7 @@ class Config_Station
         }
         $this->id_usuario=$id_usuario;
         $this->f_station_code=$f_station_code;
+        $this->activa=(int)$activa;
         $this->periodo=$periodo;
         $this->periodo_fecha_inicial=$periodo_fecha_inicial;
         $this->periodo_fecha_final=$periodo_fecha_final;
@@ -2168,13 +2173,18 @@ class Config_Station
     {
         return $this->f_station_code;
     }
+    public function getActiva()
+    {
+        if($this->activa==1) return true;
+        return false;
+    }
     public function getPeriodo()
     {
         return $this->periodo;
     }
     public function getPeriodoFechaInicial()
     {
-        return $this->periodo_fecha_inicio;
+        return $this->periodo_fecha_inicial;
     }
     public function getPeriodoFechaFinal()
     {
@@ -2200,93 +2210,116 @@ class Config_Station
     {
         return $this->sensores;
     }
-    public static function load($id_usuario="",$f_station_code="")
+    public static function load($id_usuario="",$f_station_code="",$fromArrayValues=false)
     {
-        $sql="  SELECT  `id`,
-                        `id_usuario`,
-                        `f_station_code`,
-                        `activa`,
-                        `info`
-                FROM    `estaciones`
-                WHERE   `f_station_code`={$f_station_code} AND 
-                        `id_usuario`={$id_usuario}";
-        if(!sql_select($sql, $consulta))
+        if(is_array($fromArrayValues))
         {
-            return false;
-        }
-        if($info=$consulta->fetch(PDO::FETCH_ASSOC))
+            $loadedDataArray = $fromArrayValues;
+        }else
         {
-            $config=json_decode($info['info'],true);
-            // sensores
-            $sensores=array();
-            foreach($config as $key_cfg=>$cfg)
+            $sql="  SELECT  `id`,
+                            `id_usuario`,
+                            `f_station_code`,
+                            `activa`,
+                            `info`
+                    FROM    `estaciones`
+                    WHERE   `f_station_code`={$f_station_code} AND 
+                            `id_usuario`={$id_usuario}";
+            $loadedDataArray="";
+            if(sql_select($sql, $consulta))
             {
-                if($cfg=="seleccionado")
+                if($consulta->rowCount() > 0)
                 {
-                    // es sensor selecionado
-                    $partes=explode("_",$key_cfg);
-                    if(count($partes)==3)
+                    while($configInfo = $consulta->fetch(PDO::FETCH_ASSOC))
                     {
-                        $sensores[]=$partes[1]."_".$partes[2];
+                        $loadedDataArray = $configInfo;
                     }
                 }
             }
-            if(isset($config['periodo']))
-            {
-                $periodo=$config['periodo'];
-            }else
-            {
-                $periodo="";
-            }
-            if(isset($config['periodo_fecha_inicial']))
-            {
-                $periodo_fecha_inicial=$config['periodo_fecha_inicial'];
-            }else
-            {
-                $periodo_fecha_inicial="";
-            }
-            if(isset($config['periodo_fecha_final']))
-            {
-                $periodo_fecha_final=$config['periodo_fecha_final'];
-            }else
-            {
-                $periodo_fecha_final="";
-            }
-            if(isset($config['tipo_archivo']))
-            {
-                $tipo_archivo=$config['tipo_archivo'];
-            }else
-            {
-                $tipo_archivo="";
-            }
-            if(isset($config['separador']))
-            {
-                $separador=$config['separador'];
-            }else
-            {
-                $separador="";
-            }
-            if(isset($config['encabezado']))
-            {
-                $encabezado=$config['encabezado'];
-            }else
-            {
-                $encabezado="";
-            }
-            if(isset($config['archivo']))
-            {
-                $archivo=$config['archivo'];
-            }else
-            {
-                $archivo="";
-            }
-            $q_config = new Config_Station($id_usuario,$f_station_code,$sensores,$periodo,
-                    $periodo_fecha_inicial,$periodo_fecha_final,$tipo_archivo,$separador,
-                    $encabezado,$archivo);
-            
-            return $q_config;
         }
-        return false;
+        if(is_array($loadedDataArray) && count($loadedDataArray) > 0)
+        {
+            if(isset($loadedDataArray['info']))
+            {
+                $config=json_decode($loadedDataArray['info'],true);
+                if(isset($loadedDataArray['activa']))
+                {
+                    $activa=$loadedDataArray['activa'];
+                }else
+                {
+                    $activa=1;
+                }
+                // sensores
+                $sensores=array();
+                foreach($config as $key_cfg=>$cfg)
+                {
+                    if($cfg=="seleccionado")
+                    {
+                        // es sensor selecionado
+                        $partes=explode("_",$key_cfg);
+                        if(count($partes)==3)
+                        {
+                            $sensores[]=$partes[1]."_".$partes[2];
+                        }
+                    }
+                }
+                if(isset($config['periodo']))
+                {
+                    $periodo=$config['periodo'];
+                }else
+                {
+                    $periodo="";
+                }
+                if(isset($config['periodo_fecha_inicial']))
+                {
+                    $periodo_fecha_inicial=$config['periodo_fecha_inicial'];
+                }else
+                {
+                    $periodo_fecha_inicial="";
+                }
+                if(isset($config['periodo_fecha_final']))
+                {
+                    $periodo_fecha_final=$config['periodo_fecha_final'];
+                }else
+                {
+                    $periodo_fecha_final="";
+                }
+                if(isset($config['tipo_archivo']))
+                {
+                    $tipo_archivo=$config['tipo_archivo'];
+                }else
+                {
+                    $tipo_archivo="";
+                }
+                if(isset($config['separador']))
+                {
+                    $separador=$config['separador'];
+                }else
+                {
+                    $separador="";
+                }
+                if(isset($config['encabezado']))
+                {
+                    $encabezado=$config['encabezado'];
+                }else
+                {
+                    $encabezado="";
+                }
+                if(isset($config['archivo']))
+                {
+                    $archivo=$config['archivo'];
+                }else
+                {
+                    $archivo="";
+                }
+                $q_config = new Config_Station($id_usuario,$f_station_code,$activa,$sensores,$periodo,
+                        $periodo_fecha_inicial,$periodo_fecha_final,$tipo_archivo,$separador,
+                        $encabezado,$archivo);
+                return $q_config;
+            }
+        }
+        $q_config = new Config_Station($id_usuario,$f_station_code,"1");
+        return $q_config;
     }
 }
 ?>
