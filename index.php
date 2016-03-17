@@ -863,7 +863,7 @@ function listado_usuarios($es_admin=false, $id_usuario=0)
                                                         <h4 class=\"\">Seleccione que sensores que quiere descargar</h4>
                                                     </div>
                                                     <div class=\"panel-body\">
-                                                        <input type=\"checkbox\" id=\"sensor_todos\" name=\"".$estacion['f_station_code']."\" value=\"-9999\" onClick=\"seleccionar_sensores_todos('estacion_".$q_estacion->getStationCode()."');\"><label for=\"todos\">Todos</label><br>";
+                                                        <input type=\"checkbox\" id=\"todos\" name=\"".$estacion['f_station_code']."\" value=\"-9999\" onClick=\"seleccionar_sensores_todos('estacion_".$q_estacion->getStationCode()."');\"><label for=\"todos\">Todos</label><br>";
                 foreach($stationSensorsList['enabled'] as $key_sensor => $sensor)
                 {
                     if(in_array($key_sensor,$q_configuracion->getSensores()))
@@ -889,41 +889,41 @@ function listado_usuarios($es_admin=false, $id_usuario=0)
                                                             <label class=\"radio-inline\">";
                 if($q_configuracion->getPeriodo()=='periodo')
                 {
-                    echo "                                      <input type=\"radio\" name=\"periodo\" id=\"descarga_periodo\" value=\"periodo\" checked=\"\">&nbsp;Descarga de datos desde";
+                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"descarga_periodo\" value=\"periodo\" checked=\"\">&nbsp;Descarga de datos desde";
                 }else
                 {
-                    echo "                                      <input type=\"radio\" name=\"periodo\" id=\"descarga_periodo\" value=\"periodo\">&nbsp;Descarga de datos desde";
+                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"descarga_periodo\" value=\"periodo\">&nbsp;Descarga de datos desde";
                 }
                 echo "                                      </label><br>
-                                                            Fecha inicial:&nbsp;<input type=\"text\" class=\"form-control\" name=\"fecha_inicial\" id=\"fecha_inicial\" value=\"".$q_configuracion->getPeriodoFechaInicial()."\" size=\"8\" maxlength=\"8\">
-                                                            Fecha final:&nbsp;<input type=\"text\" class=\"form-control\" name=\"fecha_final\" id=\"fecha_final\" value=\"".$q_configuracion->getPeriodoFechaFinal()."\" size=\"8\" maxlength=\"8\">
+                                                            <label>Fecha inicial:&nbsp;</label><input type=\"text\" class=\"todos\" name=\"fecha_inicial\" id=\"fecha_inicial\" value=\"".$q_configuracion->getPeriodoFechaInicial()."\" size=\"8\" maxlength=\"8\">
+                                                            <label>Fecha final:&nbsp;</label><input type=\"text\" class=\"todos\" name=\"fecha_final\" id=\"fecha_final\" value=\"".$q_configuracion->getPeriodoFechaFinal()."\" size=\"8\" maxlength=\"8\">
                                                             <label class=\"radio-inline\">";
                 if($q_configuracion->getPeriodo()=='mes_actual')
                 {
-                    echo "                                      <input type=\"radio\" name=\"periodo\" id=\"mes_actual\" value=\"mes_actual\" checked=\"\">&nbsp;Mes actual";
+                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"mes_actual\" value=\"mes_actual\" checked=\"\">&nbsp;Mes actual";
                 }else
                 {
-                    echo "                                      <input type=\"radio\" name=\"periodo\" id=\"mes_actual\" value=\"mes_actual\">&nbsp;Mes actual";
+                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"mes_actual\" value=\"mes_actual\">&nbsp;Mes actual";
                 }
                 echo "                                      </label>
                                                             <br>
                                                             <label class=\"radio-inline\">";
                 if($q_configuracion->getPeriodo()=='todos')
                 {
-                    echo "                                      <input type=\"radio\" name=\"periodo\" id=\"todos\" value=\"todos\" checked=\"\">&nbsp;Desde el principio";
+                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"todos\" value=\"todos\" checked=\"\">&nbsp;Desde el principio";
                 }else
                 {
-                    echo "                                      <input type=\"radio\" name=\"periodo\" id=\"todos\" value=\"todos\">&nbsp;Desde el principio";
+                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"todos\" value=\"todos\">&nbsp;Desde el principio";
                 }
                 echo "                                      </label>
                                                             <br>
                                                             <label class=\"radio-inline\">";
                 if($q_configuracion->getPeriodo()=='')
                 {
-                    echo "                                      <input type=\"radio\" name=\"periodo\" id=\"fijo\" value=\"fijo\" checked=\"\">&nbsp;Per&iacute;odo fijo";
+                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"fijo\" value=\"fijo\" checked=\"\">&nbsp;Per&iacute;odo fijo";
                 }else
                 {
-                    echo "                                      <input type=\"radio\" name=\"periodo\" id=\"fijo\" value=\"fijo\">&nbsp;Per&iacute;odo fijo";
+                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"fijo\" value=\"fijo\">&nbsp;Per&iacute;odo fijo";
                 }
                 echo "                                       </label>
                                                         </div>";
@@ -933,19 +933,19 @@ function listado_usuarios($es_admin=false, $id_usuario=0)
                                                             <label class=\"radio-inline\">";
                 if($q_configuracion->getTipoArchivo()=='txt')
                 {
-                    echo "                                      <input type=\"radio\" name=\"tipo_archivo\" id=\"archivo_txt\" value=\"txt\" checked=\"\">TXT";
+                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"tipo_archivo\" id=\"archivo_txt\" value=\"txt\" checked=\"\">TXT";
                 }else
                 {
-                    echo "                                      <input type=\"radio\" name=\"tipo_archivo\" id=\"archivo_txt\" value=\"txt\">TXT";
+                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"tipo_archivo\" id=\"archivo_txt\" value=\"txt\">TXT";
                 }
                 echo "                                      </label>
                                                             <label class=\"radio-inline\">";
                 if($q_configuracion->getTipoArchivo()=='csv')
                 {
-                    echo "                                      <input type=\"radio\" name=\"tipo_archivo\" id=\"archivo_csv\" value=\"csv\" checked=\"\">CSV";
+                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"tipo_archivo\" id=\"archivo_csv\" value=\"csv\" checked=\"\">CSV";
                 }else
                 {
-                    echo "                                      <input type=\"radio\" name=\"tipo_archivo\" id=\"archivo_csv\" value=\"csv\">CSV";
+                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"tipo_archivo\" id=\"archivo_csv\" value=\"csv\">CSV";
                 }
                 echo "                                      </label>
                                                         </div>";
@@ -955,39 +955,39 @@ function listado_usuarios($es_admin=false, $id_usuario=0)
                                                             <label class=\"radio-inline\">";
                 if($q_configuracion->getSeparador()=='coma')
                 {
-                    echo "                                     <input type=\"radio\" id=\"coma\" name=\"separador\" value=\"coma\" checked=\"\">&nbsp;COMA";
+                    echo "                                     <input class=\"todos\" type=\"radio\" id=\"coma\" name=\"separador\" value=\"coma\" checked=\"\">&nbsp;COMA";
                 }else
                 {
-                    echo "                                     <input type=\"radio\" id=\"coma\" name=\"separador\" value=\"coma\">&nbsp;COMA";
+                    echo "                                     <input class=\"todos\" type=\"radio\" id=\"coma\" name=\"separador\" value=\"coma\">&nbsp;COMA";
                 }
                 echo "                                      </label>
                                                             <br>
                                                             <label class=\"radio-inline\">
-                                                                <input type=\"radio\" id=\"punto_coma\" name=\"separador\" value=\"punto_coma\" checked=\"\">&nbsp;PUNTO y COMA
+                                                                <input class=\"todos\" type=\"radio\" id=\"punto_coma\" name=\"separador\" value=\"punto_coma\" checked=\"\">&nbsp;PUNTO y COMA
                                                             </label>
                                                             <br>
                                                             <label class=\"radio-inline\">
-                                                                <input type=\"radio\" id=\"tab\" name=\"separador\" value=\"tab\">&nbsp;TAB
+                                                                <input class=\"todos\" type=\"radio\" id=\"tab\" name=\"separador\" value=\"tab\">&nbsp;TAB
                                                             </label>
                                                             <br>
                                                             <label class=\"radio-inline\">
-                                                                <input type=\"radio\" id=\"espacio\" name=\"separador\" value=\"espacio\">&nbsp;ESPACIO
+                                                                <input class=\"todos\" type=\"radio\" id=\"espacio\" name=\"separador\" value=\"espacio\">&nbsp;ESPACIO
                                                             </label>
                                                         </div>";
                 // Agregar encabezado                   
                 echo "                                  <div class=\"form-group\">
                                                             <label for=\"encabezado\">Agregar encabezado:</label><br>
                                                             <label class=\"radio-inline\">
-                                                                <input type=\"radio\" id=\"encabezado_si\" name=\"encabezado\" value=\"si\" checked=\"\">&nbsp;S&iacute;&nbsp;&nbsp;
+                                                                <input class=\"todos\" type=\"radio\" id=\"encabezado_si\" name=\"encabezado\" value=\"si\" checked=\"\">&nbsp;S&iacute;&nbsp;&nbsp;
                                                             </label>
                                                             <label class=\"radio-inline\">
-                                                                <input type=\"radio\" id=\"encabezado_no\" name=\"encabezado\" value=\"no\">&nbsp;No
+                                                                <input class=\"todos\" type=\"radio\" id=\"encabezado_no\" name=\"encabezado\" value=\"no\">&nbsp;No
                                                             </label>    
                                                         </div>";
                 // Nombre de archivo dde salida
                 echo "                                  <div class=\"form-group\">
                                                             <label for=\"archivo\">Nombre de archivo (sin extension):</label><br>
-                                                            <input class=\"form-control\" type=\"text\" id=\"archivo\" name=\"archivo\" size=\"40\" maxlength=\"50\">
+                                                            <input class=\"todos\" type=\"text\" id=\"archivo\" name=\"archivo\" size=\"40\" maxlength=\"50\">
                                                         </div>";
                 echo "                              </div>
                                                 </div>
@@ -1040,7 +1040,7 @@ function cargar_usuarios()
     {
         $usuarios[$con]=$usuario;
         // ahora busco usuarios ftp
-        $sql="SELECT * FROM `usuarios` WHERE `tipo_usuario`='ftp' AND `id_usuario`=".$usuario['id'];
+        $sql="SELECT * FROM `usuarios` WHERE `tipo_usuario`='ftp' AND `id_usuario`={$usuario['id']}";
         if(sql_select($sql,$consulta2))
         {
             while($registro = $consulta2->fetch(PDO::FETCH_ASSOC))
@@ -1048,7 +1048,7 @@ function cargar_usuarios()
                 $usuarios[$con]['ftp'][]=$registro;
             }
         }
-        $sql="SELECT * FROM `usuarios` WHERE `tipo_usuario`='mysql' AND `id_usuario`=".$usuario['id'];
+        $sql="SELECT * FROM `usuarios` WHERE `tipo_usuario`='mysql' AND `id_usuario`={$usuario['id']}";
         if(sql_select($sql,$consulta3))
         {
             while($registro = $consulta3->fetch(PDO::FETCH_ASSOC))
@@ -1091,7 +1091,7 @@ function actualizar_usuario()
                 `es_admin`=0,
                 `tipo_usuario`='imetos',
                 `mails`=''
-            WHERE `id`=".$id_usuario;
+            WHERE `id`={$id_usuario}";
     if(!sql_select($sql, $consulta))
     {
         // hubo un error
@@ -1099,14 +1099,14 @@ function actualizar_usuario()
     }
     // ftp
     $sql="  UPDATE `usuarios`
-            SET `usuario`='".$usuario_ftp."',
-                `password`='".$password_ftp."',
-                `servidor`='".$servidor_ftp."',
-                `directorio_remoto`='".$directorio_remoto."',
+            SET `usuario`='{$usuario_ftp}',
+                `password`='{$password_ftp}',
+                `servidor`='{$servidor_ftp}',
+                `directorio_remoto`='{$directorio_remoto}',
                 `es_admin`=0,
                 `tipo_usuario`='ftp',
-                `mails`='".$mails."'
-            WHERE `id`=".$id_usuario_ftp;
+                `mails`='{$mails}'
+            WHERE `id`={$id_usuario_ftp}";
     if(!sql_select($sql, $consulta2))
     {
         // hubo un error
@@ -1114,14 +1114,14 @@ function actualizar_usuario()
     }
     // mysql
     $sql="  UPDATE `usuarios`
-            SET `usuario`='".$usuario_mysql."',
-                `password`='".$password_mysql."',
-                `servidor`='".$servidor_mysql."',
+            SET `usuario`='{$usuario_mysql}',
+                `password`='{$password_mysql}',
+                `servidor`='{$servidor_mysql}',
                 `directorio_remoto`='',
                 `es_admin`=0,
                 `tipo_usuario`='mysql',
                 `mails`=''
-            WHERE `id`=".$id_usuario_mysql;
+            WHERE `id`={$id_usuario_mysql}";
     if(!sql_select($sql, $consulta3))
     {
         // hubo un error
@@ -1133,7 +1133,7 @@ function actualizar_usuario()
 function borrar_usuario($id_usuario=0)
 {
     if($id_usuario==0) return false;
-    $sql="DELETE FROM `usuarios` WHERE `id`=".$id_usuario;
+    $sql="DELETE FROM `usuarios` WHERE `id`={$id_usuario}";
     if(!sql_select($sql, $consulta))
     {
         unset($consulta);
@@ -1171,7 +1171,7 @@ function listado_informes($id_usuario=0)
         $sql_demas="
             FROM    `informes_sondas_detenidas` AS informes,
                     `usuarios` AS usuarios
-            WHERE   informes.`id_usuario`=".$id_usuario."
+            WHERE   informes.`id_usuario`={$id_usuario}
             ORDER BY `fecha` DESC";
     }
     $sql="$sql_select $sql_demas";
@@ -1204,7 +1204,7 @@ function insertar_usuario()
     $fecha_alta=time();
     $sql="  INSERT INTO `usuarios` (`activo`,`fecha_alta`,`usuario`,`password`,`servidor`,
                 `directorio_remoto`,`es_admin`,`tipo_usuario`,`mails`) 
-            VALUES (1,".$fecha_alta.",'".$usuario_ftp."','".$password_ftp."','".$servidor_ftp."','".$directorio_remoto."',0,'ftp','".$mails."')";
+            VALUES (1,{$fecha_alta},'{$usuario_ftp}','{$password_ftp}','{$servidor_ftp}','{$directorio_remoto}',0,'ftp','{$mails}')";
     if(!sql_select($sql, $consulta))
     {
         unset($consulta);
@@ -1229,6 +1229,16 @@ function comprobar_conexion()
 }
 function actualizar_estacion()
 {
+    echo "<pre>";
+    print_r($_POST);
+    echo "</pre>";
+    if(!isset($_POST['activa']) OR $_POST['activa']=='off')
+    {
+        $activa=0;
+    }else
+    {
+        $activa=1;
+    }
     $info= json_encode($_POST);
     if(isset($_POST['id_usuario']))
     {
@@ -1243,9 +1253,8 @@ function actualizar_estacion()
         // primero verifico que exista
         $sql="  SELECT  *
                 FROM    `estaciones`
-                WHERE   `id_usuario`=".$id_usuario." AND
-                        `f_station_code`=".$f_station_code;
-        //echo "sql--->{$sql}<br>";
+                WHERE   `id_usuario`={$id_usuario} AND
+                        `f_station_code`={$f_station_code}";
         if(!sql_select($sql,$consulta))
         {
             echo "ERROR! No se pudo consultar la base de datos";
@@ -1255,9 +1264,10 @@ function actualizar_estacion()
         {
             // lo actualizo
             $sql="  UPDATE  `estaciones`
-                    SET     `info`='".$info."'
-                    WHERE   `id_usuario`=".$id_usuario." AND
-                            `f_station_code`=".$f_station_code;
+                    SET     `info`='{$info}',
+                            `activa`={$activa}
+                    WHERE   `id_usuario`={$id_usuario} AND
+                            `f_station_code`={$f_station_code}";
             if(!sql_select($sql,$consulta2))
             {
                 echo "ERROR! No se pudo actualizar los datos de la estacion";
@@ -1267,7 +1277,7 @@ function actualizar_estacion()
         {
             // inserto estacion
             $sql="  INSERT INTO `estaciones` (`id_usuario`,`f_station_code`,`activa`,`info`)
-                    VALUES (".$id_usuario.",".$f_station_code.",1,'".$info."')";
+                    VALUES ({$id_usuario},{$f_station_code},{$activa},'{$info}')";
             if(!sql_select($sql,$consulta2))
             {
                 echo "ERROR! No se pudo insertar los datos de la estacion";
@@ -1290,7 +1300,7 @@ function buscar_datos_conexion($id_usuario)
     $sql="  SELECT  *
             FROM    `usuarios`
             WHERE   `tipo_usuario`='mysql' AND
-                    `id_usuario`=".$id_usuario;
+                    `id_usuario`={$id_usuario}";
     if(!sql_select($sql,$consulta))
     {
         echo "ERROR! No se pudo determinar datos de conexion a la base de datos mysql";

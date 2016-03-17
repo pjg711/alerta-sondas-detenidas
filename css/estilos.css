@@ -101,3 +101,9 @@ a.sesion-iniciada:active {
 a.sesion-iniciada {
     text-decoration: none;
 }
+
+label {
+    color: #000000;
+    font-weight: normal !important;
+    display: block;
+}
