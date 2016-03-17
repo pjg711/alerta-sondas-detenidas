@@ -199,7 +199,7 @@ function hago_informes($argv,$lo_guardo=false)
     {
         $sql="SELECT    *
               FROM      `usuarios` 
-              WHERE     `activo`=1 AND `tipo_usuario`='ftp' AND `usuario`='".$usuario."' LIMIT 1";
+              WHERE     `activo`=1 AND `tipo_usuario`='ftp' AND `usuario`='{$usuario}' LIMIT 1";
     }
     if(sql_select($sql, $consulta))
     {
@@ -230,7 +230,7 @@ function hago_informe($registro,$lo_guardo=false)
             {
                 // y lo guardo en la base de datos
                 $fecha_actual=date("Y-m-d H:i:s");
-                $sql="INSERT INTO `informes_sondas_detenidas` (`id_usuario`,`informe`,`fecha`) VALUES (".$registro['id'].",'".$informe."','".$fecha_actual."')";
+                $sql="INSERT INTO `informes_sondas_detenidas` (`id_usuario`,`informe`,`fecha`) VALUES ({$registro['id']},'{$informe}','{$fecha_actual}')";
                 if(sql_select($sql, $consulta))
                 {
                     //echo "Se inserto informe\n";
@@ -270,19 +270,19 @@ function informes_sondas_detenidas($informes)
     {
         $cadena.="<tr>
                 <td align=\"right\">
-                    <a class=\"link-tabla\" href=\"javascript:mostrar_ocultar('informe_".$informe['id_informe']."');\" title=\"Ver informe\">
+                    <a class=\"link-tabla\" href=\"javascript:mostrar_ocultar('informe_{$informe['id_informe']}');\" title=\"Ver informe\">
                         <i class=\"fa fa-eye\"></i>
                     </a>&nbsp;&nbsp;
-                    <a class=\"link-tabla\" href=\"javascript:borrar_informe('".$informe['id_informe']."');\" title=\"Borrar informe\">
+                    <a class=\"link-tabla\" href=\"javascript:borrar_informe('{$informe['id_informe']}');\" title=\"Borrar informe\">
                         <i class=\"fa fa-trash-o\"></i>
                     </a>&nbsp;&nbsp;
                 </td>";
         if($_SESSION['es_admin'])
         {
             $cadena.="
-                <td>".$informe['usuario']."</td>";
+                <td>{$informe['usuario']}</td>";
         }
-        $cadena.="  <td>".$informe['fecha']."</td>
+        $cadena.="  <td>{$informe['fecha']}</td>
             </tr>
             <tr>";
         if($_SESSION['es_admin'])
@@ -292,7 +292,7 @@ function informes_sondas_detenidas($informes)
         {
             $cadena.="<td colspan=\"2\">";
         }
-        $cadena.="      <div id=\"informe_".$informe['id_informe']."\" style=\"display:none\">";
+        $cadena.="      <div id=\"informe_{$informe['id_informe']}\" style=\"display:none\">";
         if($texto_informe=presento_informe(trim($informe['informe'])))
         {
             $cadena.=$texto_informe;
@@ -334,15 +334,15 @@ function presento_informe($xml_informe)
             {
                 $cadena.="<tr bgcolor=\"#A6D490\">";
             }
-            $cadena.="  <td>".$sonda->nombre."</td>
-                        <td align=\"center\">".$sonda->nro_archivos."</td>
+            $cadena.="  <td>{$sonda->nombre}</td>
+                        <td align=\"center\">{$sonda->nro_archivos}</td>
                         <td align=\"center\">".proceso_fecha($sonda->ultima_fecha)."</td>";
             if($sonda->mas_info<>"")
             {
                 $cadena.=
                     "<td align=\"center\">
                         <div style=\"display:block\">
-                            <a href=\"javascript:mostrar_ocultar('sonda_".$sonda->nombre."');\" title=\"M&aacute;s informaci&oacute;n\">
+                            <a href=\"javascript:mostrar_ocultar('sonda_{$sonda->nombre}');\" title=\"M&aacute;s informaci&oacute;n\">
                                 <i class=\"fa fa-info\"></i>
                             </a>
                         </div>
@@ -359,15 +359,15 @@ function presento_informe($xml_informe)
                 $contenido_archivo=str_replace("\n","<br>",file_get_contents("temp/".$sonda->mas_info));
                 $cadena.="
                     <td colspan=\"4\">
-                        <div id=\"sonda_".$sonda->nombre."\" style='display:none'>
-                            Archivo  :".$sonda->mas_info."<br>";
+                        <div id=\"sonda_{$sonda->nombre}\" style='display:none'>
+                            Archivo  :{$sonda->mas_info}<br>";
                 if($sonda->fecha_mas_info<>"")
                 {
                     //$cadena.="Fecha    :".date("d-m-Y H:i:s",$sonda->fecha_mas_info)."<br>";
                     $fecha=intval($sonda->fecha_mas_info);
                     $cadena.="Fecha    :".date("d-m-Y H:i:s",$fecha)."<br>";
                 }
-                $cadena.="  Contenido:<br><hr><div id=\"contenido-txt\">".$contenido_archivo."<hr></div><br>
+                $cadena.="  Contenido:<br><hr><div id=\"contenido-txt\">{$contenido_archivo}<hr></div><br>
                         </div>
                     </td>
                 </tr>";
@@ -479,14 +479,14 @@ function analizo_sondas($sondas)
         {
             $cadena.="<fuera_fecha>No</fuera_fecha>";
         }
-        $cadena.="<nombre>".$key."</nombre>";
-        $cadena.="<nro_archivos>".$cantidad."</nro_archivos>";
-        $cadena.="<ultima_fecha>".$q_sondas[$key][count($q_sondas[$key])-1]['fecha']."</ultima_fecha>";
-        $cadena.="<mas_info>".$contenido_archivo_comunicacion2."</mas_info>";
-        $cadena.="<fecha_mas_info>".$fecha_comunicacion2."</fecha_mas_info>";
+        $cadena.="<nombre>{$key}</nombre>";
+        $cadena.="<nro_archivos>{$cantidad}</nro_archivos>";
+        $cadena.="<ultima_fecha>{$q_sondas[$key][count($q_sondas[$key])-1]['fecha']}</ultima_fecha>";
+        $cadena.="<mas_info>{$contenido_archivo_comunicacion2}</mas_info>";
+        $cadena.="<fecha_mas_info>{$fecha_comunicacion2}</fecha_mas_info>";
         $cadena.="</sonda>";
     }
-    $cadena.="<cantidad_sondas_fuera_fecha>".$sonda_fuera."</cantidad_sondas_fuera_fecha></sondas>";
+    $cadena.="<cantidad_sondas_fuera_fecha>{$sonda_fuera}</cantidad_sondas_fuera_fecha></sondas>";
     return trim($cadena);
 }
 function fecha_vencida($dato)
@@ -526,7 +526,7 @@ function dateTimeDiff($date1, $date2)
 function borrar_informe($id_informe=0)
 {
     if($id_informe==0) return false;
-    $sql="DELETE FROM `informes_sondas_detenidas` WHERE `id`=".$id_informe;
+    $sql="DELETE FROM `informes_sondas_detenidas` WHERE `id`={$id_informe}";
     if(sql_select($sql, $consulta))
     {
         unset($consulta);
@@ -538,7 +538,7 @@ function borrar_informe($id_informe=0)
 function borrar_informes($id_usuario=0)
 {
     if($id_usuario==0) return false;
-    $sql="DELETE FROM `informes_sondas_detenidas` WHERE `id_usuario`=".$id_usuario;
+    $sql="DELETE FROM `informes_sondas_detenidas` WHERE `id_usuario`={$id_usuario}";
     if(sql_select($sql, $consulta))
     {
         unset($consulta);
@@ -593,31 +593,31 @@ function nuevo_usuario()
                                     <td>Usuario:</td>
                                 </tr>
                                 <tr>
-                                    <td><input type=\"text\" name=\"usuario\" value=\"".$usuario."\" size=\"70\" maxlength=\"255\"></td>
+                                    <td><input type=\"text\" name=\"usuario\" value=\"{$usuario}\" size=\"70\" maxlength=\"255\"></td>
                                 </tr>
                                 <tr>
                                     <td>Password:</td>
                                 </tr>
                                 <tr>
-                                    <td><input type=\"password\" name=\"password\" value=\"".$password."\" size=\"70\" maxlength=\"255\"></td>
+                                    <td><input type=\"password\" name=\"password\" value=\"{$password}\" size=\"70\" maxlength=\"255\"></td>
                                 </tr>
                                 <tr>
                                     <td>Servidor FTP:</td>
                                 </tr>
                                 <tr>
-                                    <td><input type=\"text\" name=\"servidor\" value=\"".$servidor."\" size=\"70\" maxlength=\"1000\"></td>
+                                    <td><input type=\"text\" name=\"servidor\" value=\"{$servidor}\" size=\"70\" maxlength=\"1000\"></td>
                                 </tr>
                                 <tr>
                                     <td>Directorio remoto:</td>
                                 </tr>
                                 <tr>
-                                    <td><input type=\"text\" name=\"directorio\" value=\"".$directorio."\" size=\"70\" maxlength=\"1000\"></td>
+                                    <td><input type=\"text\" name=\"directorio\" value=\"{$directorio}\" size=\"70\" maxlength=\"1000\"></td>
                                 </tr>
                                 <tr>
                                     <td>Mails: (separados por coma)</td>
                                 </tr>
                                 <tr>
-                                    <td><input type=\"text\" name=\"mails\" value=\"".$mails."\" size=\"70\" maxlength=\"1000\"></td>
+                                <td><input type=\"text\" name=\"mails\" value=\"{$mails}\" size=\"70\" maxlength=\"1000\"></td>
                                 </tr>
                                 <tr><td>&nbsp;</td></tr>
                                 <tr>
@@ -658,42 +658,37 @@ function listado_usuarios($es_admin=false, $id_usuario=0)
             echo "
                 <tr>
                     <td align=\"center\">
-                        <a class=\"link-tabla\" href=\"javascript:borrar_usuario('".$usuario['id']."');\">
+                        <a class=\"link-tabla\" href=\"javascript:borrar_usuario('{$usuario['id']}');\">
                             <i class=\"fa fa-trash\"></i>
                         </a>&nbsp;";
             if($usuario['tipo_usuario']=="ftp")
             {
-                echo "  <a class=\"link-tabla\" href=\"javascript:realizar_informe('".$usuario['usuario']."');\" title=\"Realizar informe\">
+                echo "  <a class=\"link-tabla\" href=\"javascript:realizar_informe('{$usuario['usuario']}');\" title=\"Realizar informe\">
                             <i class=\"fa fa-terminal\"></i>
                         </a>&nbsp;&nbsp;";
             }
-            echo "      <a class=\"link-tabla\" href=\"javascript:mostrar_ocultar('conf_usuario_".trim($usuario['id'])."');\" title=\"Editar usuario\">
+            echo "      <a class=\"link-tabla\" href=\"javascript:mostrar_ocultar('conf_usuario_{$usuario['id']}');\" title=\"Editar usuario\">
                             <i class=\"fa fa-user\"></i>
                         </a>&nbsp;&nbsp;";
-            echo "      <a class=\"link-tabla\" href=\"javascript:mostrar_ocultar('conf_csv_".trim($usuario['id'])."');\" title=\"Configuraci&oacute;n de estaciones\">
+            echo "      <a class=\"link-tabla\" href=\"javascript:mostrar_ocultar('conf_csv_{$usuario['id']}');\" title=\"Configuraci&oacute;n de estaciones\">
                             <i class=\"fa fa-pencil\"></i>
                         </a>";
             echo "  </td>
-                    <td>".$usuario['usuario']."</td>
-                    <!--
-                    <td>".$usuario['servidor']."</td>
-                    <td>".$usuario['directorio_remoto']."</td>
-                    <td>".$usuario['tipo_usuario']."</td>
-                    -->
-                    <td>".$usuario['ftp'][0]['mails']."</td>
+                    <td>{$usuario['usuario']}</td>
+                    <td>{$usuario['ftp'][0]['mails']}</td>
                 </tr>
                 <tr>
                     <td colspan=\"6\">
-                        <div id=\"conf_usuario_".trim($usuario['id'])."\" style=\"display:none\">
+                        <div id=\"conf_usuario_{$usuario['id']}\" style=\"display:none\">
                             <form name=\"editar_usuario\" method=\"post\" action=\"index.php\">
-                                <input type=\"hidden\" name=\"id_usuario\" value=\"".$usuario['id']."\">";
+                                <input type=\"hidden\" name=\"id_usuario\" value=\"{$usuario['id']}\">";
             if(isset($usuario['ftp'][0]['id']))
             {
-                echo "          <input type=\"hidden\" name=\"id_ftp\" value=\"".$usuario['ftp'][0]['id']."\">";
+                echo "          <input type=\"hidden\" name=\"id_ftp\" value=\"{$usuario['ftp'][0]['id']}\">";
             }
             if(isset($usuario['mysql'][0]['id']))
             {
-                echo "          <input type=\"hidden\" name=\"id_mysql\" value=\"".$usuario['mysql'][0]['id']."\">";
+                echo "          <input type=\"hidden\" name=\"id_mysql\" value=\"{$usuario['mysql'][0]['id']}\">";
             }
             echo "              <table id=\"tabla-edicion-usuario\">
                                     <tr>
@@ -702,7 +697,7 @@ function listado_usuarios($es_admin=false, $id_usuario=0)
                                     <tr>
                                         <td align=\"right\">Usuario iMetos:&nbsp;</td>
                                         <td>
-                                            <input type=\"text\" name=\"usuario_imetos\" value=\"".$usuario['usuario']."\" size=\"80\" maxlength=\"255\">&nbsp;
+                                            <input type=\"text\" name=\"usuario_imetos\" value=\"{$usuario['usuario']}\" size=\"80\" maxlength=\"255\">&nbsp;
                                         </td>
                                     </tr>
                                     <tr>
@@ -726,25 +721,25 @@ function listado_usuarios($es_admin=false, $id_usuario=0)
                                     <tr>
                                         <td align=\"right\">Usuario FTP:&nbsp;</td>
                                         <td>
-                                            <input type=\"text\" name=\"usuario_ftp\" value=\"".$usuario['ftp'][0]['usuario']."\" size=\"80\" maxlength=\"255\">
+                                            <input type=\"text\" name=\"usuario_ftp\" value=\"{$usuario['ftp'][0]['usuario']}\" size=\"80\" maxlength=\"255\">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td align=\"right\">Password FTP:&nbsp;</td>
                                         <td>
-                                            <input type=\"password\" name=\"password_ftp\" value=\"".$usuario['ftp'][0]['password']."\" size=\"80\" maxlength=\"255\">
+                                            <input type=\"password\" name=\"password_ftp\" value=\"{$usuario['ftp'][0]['password']}\" size=\"80\" maxlength=\"255\">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td align=\"right\">Servidor FTP:&nbsp;</td>
                                         <td>
-                                            <input type=\"text\" name=\"servidor_ftp\" value=\"".$usuario['ftp'][0]['servidor']."\" size=\"80\" maxlength=\"1000\">
+                                            <input type=\"text\" name=\"servidor_ftp\" value=\"{$usuario['ftp'][0]['servidor']}\" size=\"80\" maxlength=\"1000\">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td align=\"right\">Directorio remoto:&nbsp;</td>
                                         <td>
-                                            <input type=\"text\" name=\"directorio_remoto\" value=\"".$usuario['directorio_remoto']."\" size=\"80\" maxlength=\"1000\">
+                                            <input type=\"text\" name=\"directorio_remoto\" value=\"{$usuario['directorio_remoto']}\" size=\"80\" maxlength=\"1000\">
                                         </td>
                                     </tr>
                                     <tr>
@@ -753,7 +748,7 @@ function listado_usuarios($es_admin=false, $id_usuario=0)
                                             <h6>Para varios mails sep&aacute;relos por coma</h6>
                                         </td>
                                         <td>
-                                            <textarea name=\"mails\" rows=\"3\" cols=\"80\">".$usuario['mails']."</textarea>
+                                            <textarea name=\"mails\" rows=\"3\" cols=\"80\">{$usuario['mails']}</textarea>
                                         </td>
                                     </tr>";
             }
@@ -769,38 +764,38 @@ function listado_usuarios($es_admin=false, $id_usuario=0)
                                     <tr>
                                         <td align=\"right\">Usuario Mysql:&nbsp;</td>
                                         <td>
-                                            <input type=\"text\" name=\"usuario_mysql\" value=\"".$usuario['mysql'][0]['usuario']."\" size=\"80\" maxlength=\"255\">&nbsp;
+                                            <input type=\"text\" name=\"usuario_mysql\" value=\"{$usuario['mysql'][0]['usuario']}\" size=\"80\" maxlength=\"255\">&nbsp;
                                         </td>
                                     </tr>
                                     <tr>
                                         <td align=\"right\">Password Mysql:&nbsp;</td>
                                         <td>
-                                            <input type=\"text\" name=\"password_mysql\" value=\"".$usuario['mysql'][0]['password']."\" size=\"80\" maxlength=\"255\">&nbsp;
+                                            <input type=\"text\" name=\"password_mysql\" value=\"{$usuario['mysql'][0]['password']}\" size=\"80\" maxlength=\"255\">&nbsp;
                                         </td>
                                     </tr>
                                     <tr>
                                         <td align=\"right\">Base de datos Mysql:&nbsp;</td>
                                         <td>
-                                            <input type=\"text\" name=\"base_datos_mysql\" value=\"".$usuario['mysql'][0]['base_datos']."\" size=\"80\" maxlength=\"255\">&nbsp;
+                                            <input type=\"text\" name=\"base_datos_mysql\" value=\"{$usuario['mysql'][0]['base_datos']}\" size=\"80\" maxlength=\"255\">&nbsp;
                                         </td>
                                     </tr>
                                     <tr>
                                         <td align=\"right\">Servidor Mysql:&nbsp;</td>
                                         <td>
-                                            <input type=\"text\" name=\"servidor_mysql\" value=\"".$usuario['mysql'][0]['servidor']."\" size=\"80\" maxlength=\"255\">&nbsp;
+                                            <input type=\"text\" name=\"servidor_mysql\" value=\"{$usuario['mysql'][0]['servidor']}\" size=\"80\" maxlength=\"255\">&nbsp;
                                         </td>
                                     </tr>";
             }
             echo "                  <tr>
                                         <td colspan=\"2\" align=\"right\">
-                                            <input type=\"reset\" name=\"cancelar_edicion\" value=\"Cancelar\" onclick=\"mostrar_ocultar('usuario_".trim($usuario['id'])."')\">&nbsp;
+                                            <input type=\"reset\" name=\"cancelar_edicion\" value=\"Cancelar\" onclick=\"mostrar_ocultar('usuario_{$usuario['id']}')\">&nbsp;
                                             <input type=\"submit\" name=\"guardar_edicion_usuario\" value=\"Guardar edici&oacute;n\">
                                         </td>
                                     </tr>
                                 </table>
                             </form>
                         </div>
-                        <div class=\"conf_csv\" id=\"conf_csv_".trim($usuario['id'])."\" style=\"display:none\">";
+                        <div class=\"conf_csv\" id=\"conf_csv_{$usuario['id']}\" style=\"display:none\">";
             // obtengo datos de conexion de la base de datos
             $conexion=buscar_datos_conexion($usuario['id']);
             //
@@ -821,7 +816,7 @@ function listado_usuarios($es_admin=false, $id_usuario=0)
                                 <select class=\"form-control\" onChange=\"mostrar_ocultar('estacion_'+this.value,'info-sensores');\">";
             foreach($estaciones as $estacion)
             {
-                echo "              <option value=\"".$estacion['f_station_code']."\">".$estacion['f_name']." - ".$estacion['f_user_station_name']."</option>";
+                echo "              <option value=\"{$estacion['f_station_code']}\">{$estacion['f_name']} - {$estacion['f_user_station_name']}</option>";
             }
             echo "              </select>
                             </div>";
@@ -833,28 +828,34 @@ function listado_usuarios($es_admin=false, $id_usuario=0)
                 $q_configuracion = Config_Station::load($usuario['id'],$q_estacion->getStationCode());
                 if($key_est == 0)
                 {
-                    echo "  <div id=\"estacion_".$q_estacion->getStationCode()."\" style=\"display:block\">";
+                    echo "  <div class=\"info-sensores\" id=\"estacion_{$q_estacion->getStationCode()}\" style=\"display:block\">";
                 }else
                 {
-                    echo "  <div id=\"estacion_".$q_estacion->getStationCode()."\" style=\"display:none\">";
+                    echo "  <div class=\"info-sensores\" id=\"estacion_{$q_estacion->getStationCode()}\" style=\"display:none\">";
                 }
                 echo "          <div class=\"container\">
                                     <hr class=\"\">
                                     <div class=\"row\">
                                         <form class=\"form-horizontal\" role=\"form\" method=\"post\" action=\"index.php\">
-                                            <input type=\"hidden\" id=\"id_usuario\" name=\"id_usuario\" value=\"".$usuario['id']."\">
-                                            <input type=\"hidden\" id=\"f_station_code\" name=\"f_station_code\" value=\"".$q_estacion->getStationCode()."\">
+                                            <input type=\"hidden\" id=\"id_usuario\" name=\"id_usuario\" value=\"{$usuario['id']}\">
+                                            <input type=\"hidden\" id=\"f_station_code\" name=\"f_station_code\" value=\"{$q_estacion->getStationCode()}\">
                                             <div class=\"col-md-9\">";
                 if($q_configuracion->getActiva())
                 {
-                    echo "                      <input type=\"checkbox\" id=\"activar\" name=\"activar\" checked=\"\" onclick=\"estacion_activa(this,'estacion_".$q_estacion->getStationCode()."');\">Activar Estaci&oacute;n";
+                    // estacion activa
+                    $disabled="";
+                    $label="label-enabled";
+                    echo "                      <input class=\"nadas\" type=\"checkbox\" id=\"activar\" name=\"activar\" checked=\"\" onclick=\"estacion_activa(this,'estacion_{$q_estacion->getStationCode()}');\">&nbsp;Activar Estaci&oacute;n";
                 }else
                 {
-                    echo "                      <input type=\"checkbox\" id=\"activar\" name=\"activar\" onclick=\"estacion_activa(this,'estacion_".$q_estacion->getStationCode()."');\">Activar Estaci&oacute;n";
+                    // estacion desactivada
+                    $disabled="disabled";
+                    $label="label-disabled";
+                    echo "                      <input class=\"nadas\" type=\"checkbox\" id=\"activar\" name=\"activar\" onclick=\"estacion_activa(this,'estacion_{$q_estacion->getStationCode()}');\">&nbsp;Activar Estaci&oacute;n";
                 }
                 echo "                      </div>
                                             <div class=\"col-md-9\">
-                                                <h2>".$q_estacion->getFName()." - ".$q_estacion->getName()."</h2>
+                                                <h2>{$q_estacion->getFName()} - {$q_estacion->getName()}</h2>
                                             </div>";
                 echo "                      <div class=\"col-md-4\">
                                                 <div class=\"panel panel-default\">
@@ -863,15 +864,15 @@ function listado_usuarios($es_admin=false, $id_usuario=0)
                                                         <h4 class=\"\">Seleccione que sensores que quiere descargar</h4>
                                                     </div>
                                                     <div class=\"panel-body\">
-                                                        <input type=\"checkbox\" id=\"todos\" name=\"".$estacion['f_station_code']."\" value=\"-9999\" onClick=\"seleccionar_sensores_todos('estacion_".$q_estacion->getStationCode()."');\"><label for=\"todos\">Todos</label><br>";
+                                                        <input class=\"sensores\" type=\"checkbox\" id=\"sensor-todos-{$q_estacion->getStationCode()}\" name=\"{$q_estacion->getStationCode()}\" value=\"-9999\" onClick=\"seleccionar_sensores_todos('{$q_estacion->getStationCode()}');\"><label for=\"{$label}\" {$disabled}>&nbsp;Todos</label><br>";
                 foreach($stationSensorsList['enabled'] as $key_sensor => $sensor)
                 {
                     if(in_array($key_sensor,$q_configuracion->getSensores()))
                     {
-                        echo "                          <input type=\"checkbox\" id=\"sensor_todos\" name=\"sensor_".$sensor->getSensorCode()."_".$sensor->getSensorCh()."\" value=\"seleccionado\" checked=\"\">&nbsp;<label>".$sensor->getName()."</label><br>";
+                        echo "                          <input class=\"sensores-todos\" type=\"checkbox\" id=\"sensor-{$q_estacion->getStationCode()}\" name=\"sensor_".$sensor->getSensorCode()."_".$sensor->getSensorCh()."\" value=\"seleccionado\" checked=\"\">&nbsp;<label for=\"{$label}\">{$sensor->getName()}</label><br>";
                     }else
                     {
-                        echo "                          <input type=\"checkbox\" id=\"sensor_todos\" name=\"sensor_".$sensor->getSensorCode()."_".$sensor->getSensorCh()."\" value=\"seleccionado\">&nbsp;<label>".$sensor->getName()."</label><br>";
+                        echo "                          <input class=\"sensores-todos\" type=\"checkbox\" id=\"sensor-{$q_estacion->getStationCode()}\" name=\"sensor_".$sensor->getSensorCode()."_".$sensor->getSensorCh()."\" value=\"seleccionado\">&nbsp;<label for=\"{$label}\">{$sensor->getName()}</label><br>";
                     }   
                 }
                 echo "                              </div>
@@ -885,123 +886,156 @@ function listado_usuarios($es_admin=false, $id_usuario=0)
                                                     <div class=\"panel-body\">";
                 // Periodo a descargar  
                 echo "                                  <div class=\"form-group\">
-                                                            <label for=\"tipo_archivo\">Per&iacute;odo a descargar:</label><br>
+                                                            <label for=\"{$label}\">Per&iacute;odo a descargar:</label><br>
                                                             <label class=\"radio-inline\">";
                 if($q_configuracion->getPeriodo()=='periodo')
                 {
-                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"descarga_periodo\" value=\"periodo\" checked=\"\">&nbsp;Descarga de datos desde";
+                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"descarga_periodo\" value=\"periodo\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">Descarga de datos desde</label>";
                 }else
                 {
-                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"descarga_periodo\" value=\"periodo\">&nbsp;Descarga de datos desde";
+                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"descarga_periodo\" value=\"periodo\" {$disabled}>&nbsp;<label for=\"{$label}\">Descarga de datos desde</label>";
                 }
                 echo "                                      </label><br>
-                                                            <label>Fecha inicial:&nbsp;</label><input type=\"text\" class=\"todos\" name=\"fecha_inicial\" id=\"fecha_inicial\" value=\"".$q_configuracion->getPeriodoFechaInicial()."\" size=\"8\" maxlength=\"8\">
-                                                            <label>Fecha final:&nbsp;</label><input type=\"text\" class=\"todos\" name=\"fecha_final\" id=\"fecha_final\" value=\"".$q_configuracion->getPeriodoFechaFinal()."\" size=\"8\" maxlength=\"8\">
+                                                            <label for=\"{$label}\">Fecha inicial:&nbsp;</label><input type=\"text\" class=\"todos\" name=\"fecha_inicial\" id=\"fecha_inicial\" value=\"{$q_configuracion->getPeriodoFechaInicial()}\" size=\"8\" maxlength=\"8\" {$disabled}><label for=\"{$label}\">(dd/mm/aaaa)</label><br>
+                                                            <label for=\"{$label}\">Fecha final:&nbsp;</label><input type=\"text\" class=\"todos\" name=\"fecha_final\" id=\"fecha_final\" value=\"{$q_configuracion->getPeriodoFechaFinal()}\" size=\"8\" maxlength=\"8\" {$disabled}><label for=\"{$label}\">(dd/mm/aaaa)</label><br>
                                                             <label class=\"radio-inline\">";
                 if($q_configuracion->getPeriodo()=='mes_actual')
                 {
-                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"mes_actual\" value=\"mes_actual\" checked=\"\">&nbsp;Mes actual";
+                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"mes_actual\" value=\"mes_actual\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">Mes actual</label>";
                 }else
                 {
-                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"mes_actual\" value=\"mes_actual\">&nbsp;Mes actual";
+                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"mes_actual\" value=\"mes_actual\" {$disabled}>&nbsp;<label for=\"{$label}\">Mes actual</label>";
                 }
                 echo "                                      </label>
                                                             <br>
                                                             <label class=\"radio-inline\">";
                 if($q_configuracion->getPeriodo()=='todos')
                 {
-                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"todos\" value=\"todos\" checked=\"\">&nbsp;Desde el principio";
+                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"todos2\" value=\"todos\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">Desde el principio</label>";
                 }else
                 {
-                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"todos\" value=\"todos\">&nbsp;Desde el principio";
+                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"todos2\" value=\"todos\" {$disabled}>&nbsp;<label for=\"{$label}\">Desde el principio</label>";
                 }
                 echo "                                      </label>
                                                             <br>
                                                             <label class=\"radio-inline\">";
                 if($q_configuracion->getPeriodo()=='')
                 {
-                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"fijo\" value=\"fijo\" checked=\"\">&nbsp;Per&iacute;odo fijo";
+                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"fijo\" value=\"fijo\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">Per&iacute;odo fijo</label>";
                 }else
                 {
-                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"fijo\" value=\"fijo\">&nbsp;Per&iacute;odo fijo";
+                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"fijo\" value=\"fijo\" {$disabled}>&nbsp;<label for=\"{$label}\">Per&iacute;odo fijo</label>";
                 }
                 echo "                                       </label>
                                                         </div>";
                 // Tipo de archivo a exportar
                 echo "                                  <div class=\"form-group\">
-                                                            <label for=\"tipo_archivo\">Exportar a tipo de archivo:</label><br>
+                                                            <label for=\"{$label}\">Exportar a tipo de archivo:</label><br>
                                                             <label class=\"radio-inline\">";
                 if($q_configuracion->getTipoArchivo()=='txt')
                 {
-                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"tipo_archivo\" id=\"archivo_txt\" value=\"txt\" checked=\"\">TXT";
+                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"tipo_archivo\" id=\"archivo_txt\" value=\"txt\" checked=\"\" {$disabled}><label for=\"{$label}\">TXT</label>";
                 }else
                 {
-                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"tipo_archivo\" id=\"archivo_txt\" value=\"txt\">TXT";
+                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"tipo_archivo\" id=\"archivo_txt\" value=\"txt\" {$disabled}><label for=\"{$label}\">TXT</label>";
                 }
                 echo "                                      </label>
                                                             <label class=\"radio-inline\">";
                 if($q_configuracion->getTipoArchivo()=='csv')
                 {
-                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"tipo_archivo\" id=\"archivo_csv\" value=\"csv\" checked=\"\">CSV";
+                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"tipo_archivo\" id=\"archivo_csv\" value=\"csv\" checked=\"\" {$disabled}><label for=\"{$label}\">CSV</label>";
                 }else
                 {
-                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"tipo_archivo\" id=\"archivo_csv\" value=\"csv\">CSV";
+                    echo "                                      <input class=\"todos\" type=\"radio\" name=\"tipo_archivo\" id=\"archivo_csv\" value=\"csv\" {$disabled}><label for=\"{$label}\">CSV</label>";
                 }
                 echo "                                      </label>
                                                         </div>";
                 // Separador de columnas
                 echo "                                  <div class=\"form-group\">
-                                                            <label for=\"separador\">Separar columnas por:</label><br>
+                                                            <label for=\"{$label}\">Separar columnas por:</label><br>
                                                             <label class=\"radio-inline\">";
                 if($q_configuracion->getSeparador()=='coma')
                 {
-                    echo "                                     <input class=\"todos\" type=\"radio\" id=\"coma\" name=\"separador\" value=\"coma\" checked=\"\">&nbsp;COMA";
+                    echo "                                     <input class=\"todos\" type=\"radio\" id=\"coma\" name=\"separador\" value=\"coma\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">COMA</label>";
                 }else
                 {
-                    echo "                                     <input class=\"todos\" type=\"radio\" id=\"coma\" name=\"separador\" value=\"coma\">&nbsp;COMA";
+                    echo "                                     <input class=\"todos\" type=\"radio\" id=\"coma\" name=\"separador\" value=\"coma\" {$disabled}>&nbsp;<label for=\"{$label}\">COMA</label>";
                 }
                 echo "                                      </label>
                                                             <br>
-                                                            <label class=\"radio-inline\">
-                                                                <input class=\"todos\" type=\"radio\" id=\"punto_coma\" name=\"separador\" value=\"punto_coma\" checked=\"\">&nbsp;PUNTO y COMA
-                                                            </label>
+                                                            <label class=\"radio-inline\">";
+                if($q_configuracion->getSeparador()=='punto_coma')
+                {
+                    echo "                                      <input class=\"todos\" type=\"radio\" id=\"punto_coma\" name=\"separador\" value=\"punto_coma\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">PUNTO y COMA</label>";
+                }else
+                {
+                    echo "                                      <input class=\"todos\" type=\"radio\" id=\"punto_coma\" name=\"separador\" value=\"punto_coma\" {$disabled}>&nbsp;<label for=\"{$label}\">PUNTO y COMA</label>";
+                }
+                echo "                                      </label>
                                                             <br>
-                                                            <label class=\"radio-inline\">
-                                                                <input class=\"todos\" type=\"radio\" id=\"tab\" name=\"separador\" value=\"tab\">&nbsp;TAB
-                                                            </label>
+                                                            <label class=\"radio-inline\">";
+                if($q_configuracion->getSeparador()=='tab')
+                {
+                    echo "                                      <input class=\"todos\" type=\"radio\" id=\"tab\" name=\"separador\" value=\"tab\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">TAB</label>";
+                }else
+                {
+                    echo "                                      <input class=\"todos\" type=\"radio\" id=\"tab\" name=\"separador\" value=\"tab\" {$disabled}>&nbsp;<label for=\"{$label}\">TAB</label>";
+                }
+                echo "                                      </label>
                                                             <br>
-                                                            <label class=\"radio-inline\">
-                                                                <input class=\"todos\" type=\"radio\" id=\"espacio\" name=\"separador\" value=\"espacio\">&nbsp;ESPACIO
-                                                            </label>
+                                                            <label class=\"radio-inline\">";
+                if($q_configuracion->getSeparador()=='espacio')
+                {
+                    echo "                                      <input class=\"todos\" type=\"radio\" id=\"espacio\" name=\"separador\" value=\"espacio\" checked=\"\">&nbsp;<label for=\"{$label}\">ESPACIO</label>";
+                }else
+                {
+                    echo "                                      <input class=\"todos\" type=\"radio\" id=\"espacio\" name=\"separador\" value=\"espacio\">&nbsp;<label for=\"{$label}\">ESPACIO</label>";
+                }
+                                                                
+                echo "                                       </label>
                                                         </div>";
                 // Agregar encabezado                   
                 echo "                                  <div class=\"form-group\">
-                                                            <label for=\"encabezado\">Agregar encabezado:</label><br>
-                                                            <label class=\"radio-inline\">
-                                                                <input class=\"todos\" type=\"radio\" id=\"encabezado_si\" name=\"encabezado\" value=\"si\" checked=\"\">&nbsp;S&iacute;&nbsp;&nbsp;
-                                                            </label>
-                                                            <label class=\"radio-inline\">
-                                                                <input class=\"todos\" type=\"radio\" id=\"encabezado_no\" name=\"encabezado\" value=\"no\">&nbsp;No
-                                                            </label>    
+                                                            <label for=\"{$label}\">Agregar encabezado:</label>
+                                                            <br>
+                                                            <label class=\"radio-inline\">";
+                if($q_configuracion->getEncabezado()=='si')
+                {
+                    echo "                                      <input class=\"todos\" type=\"radio\" id=\"encabezado_si\" name=\"encabezado\" value=\"si\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">S&iacute;</label>&nbsp;&nbsp;";
+                }else
+                {
+                    echo "                                      <input class=\"todos\" type=\"radio\" id=\"encabezado_si\" name=\"encabezado\" value=\"si\" {$disabled}>&nbsp;<label for=\"{$label}\">S&iacute;</label>&nbsp;&nbsp;";
+                }
+                echo "                                      </label>
+                                                            <label class=\"radio-inline\">";
+                if($q_configuracion->getEncabezado()=='no')
+                {
+                    echo "                                      <input class=\"todos\" type=\"radio\" id=\"encabezado_no\" name=\"encabezado\" value=\"no\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">No</label>";
+                }else
+                {
+                    echo "                                      <input class=\"todos\" type=\"radio\" id=\"encabezado_no\" name=\"encabezado\" value=\"no\" {$disabled}>&nbsp;<label for=\"{$label}\">No</label>";
+                }
+                echo "                                      </label>
                                                         </div>";
                 // Nombre de archivo dde salida
                 echo "                                  <div class=\"form-group\">
-                                                            <label for=\"archivo\">Nombre de archivo (sin extension):</label><br>
-                                                            <input class=\"todos\" type=\"text\" id=\"archivo\" name=\"archivo\" size=\"40\" maxlength=\"50\">
+                                                            <label for=\"{$label}\">Nombre de archivo (sin extension):</label><br>
+                                                            <input class=\"todos\" type=\"text\" id=\"archivo\" name=\"archivo\" size=\"40\" maxlength=\"50\" {$disabled}>
                                                         </div>";
                 echo "                              </div>
                                                 </div>
                                             </div>";
+                /*
                 echo "                      <div class=\"col-md-4\">
                                                 <div class=\"panel panel-default\">
                                                     <div class=\"panel-heading\">
                                                         <h2 class=\"\">Alertas</h2>
                                                     </div>
-                                                    <div class=\"panel-body\">
-                                                        Que alertas?";
+                                                    <div class=\"panel-body\">";
                 echo "                              </div>
                                                 </div>
                                             </div>";
+                */
                 echo "                  </div> <!-- cierre de div row -->";
                 echo "                  <div class=\"row\">
                                             <div class=\"col-md-9\">
@@ -1009,8 +1043,8 @@ function listado_usuarios($es_admin=false, $id_usuario=0)
                                                     <button type=\"submit\" name=\"guardar_configuracion\" class=\"btn btn-default\">Guardar configuraci&oacute;n</button>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </form>
+                                        </div>";
+                echo "              </form>
                                 </div> <!-- cierre de div container -->
                             </div> <!-- cierre de div info-sensores -->";
                 unset($q_estacion);
@@ -1229,10 +1263,7 @@ function comprobar_conexion()
 }
 function actualizar_estacion()
 {
-    echo "<pre>";
-    print_r($_POST);
-    echo "</pre>";
-    if(!isset($_POST['activa']) OR $_POST['activa']=='off')
+    if(!isset($_POST['activar']) OR $_POST['activar']=='off')
     {
         $activa=0;
     }else

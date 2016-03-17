@@ -102,8 +102,11 @@ a.sesion-iniciada {
     text-decoration: none;
 }
 
-label {
+label[for=label-disabled] {
+    color: #dadada;
+    font-weight: normal !important;
+}
+label[for=label-enabled] {
     color: #000000;
     font-weight: normal !important;
-    display: block;
 }
