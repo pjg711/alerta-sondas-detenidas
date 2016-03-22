@@ -7,7 +7,7 @@ class FTP
     private $ftp_user;
     private $ftp_password;
     private $directorio_remoto;
-    private $tipo_usuario;
+    private $usertype;
     private $mails;
     
     private $listado=array();

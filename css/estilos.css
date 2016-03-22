@@ -39,6 +39,7 @@ body {
     border-spacing: 0.5em;
 }
 #tabla-edicion-usuario {
+    border: 1px solid black;
     border-collapse: separate;
     border-spacing: 0.2em;
 }
@@ -109,4 +110,14 @@ label[for=label-disabled] {
 label[for=label-enabled] {
     color: #000000;
     font-weight: normal !important;
+}
+/* pie de pagina */
+.pie{
+    border:1px solid gray;
+    background-color: #dadada;
+    color: #000000;
+    font-size: small;
+    font-weight: normal;
+    text-align: center;
+    height: 50px;
 }

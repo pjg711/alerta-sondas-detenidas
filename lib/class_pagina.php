@@ -14,24 +14,35 @@ class PAGINA
         . "         <meta http-equiv=\"pragma\" content=\"no-cache\" />"
         . "         <meta name=\"author\" content=\"Pablo Julián García\">"
         . "         <meta name=\"keywords\" content=\"Seedmech alerta sondas\">"
-        . "         <meta name=\"DESCRIPTION\" content=\"Sistema para sondas de humedad de suelo\">"
-        . "         <title>".TITULO."</title>"
-        . "         <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/estilos.css\"/>"
+        . "         <meta name=\"DESCRIPTION\" content=\"Sistema para sondas de humedad de suelo\">\n"
+        . "         <title>".TITULO."</title>";
+        // cargo las librerias
+        echo "      <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/estilos.css\"/>"
         . "         <script src=\"./lib/funciones.js\"></script>"
         . "         <!-- bootstrap -->"
         . "         <link rel=\"stylesheet\" type=\"text/css\" href=\"./lib/bootstrap/dist/css/bootstrap.css\"/>"
         . "         <script src=\"./lib/jquery/dist/jquery.js\"></script>"
-        . "         <!-- font awesome -->"
+        . "         <!-- fin bootstrap -->"
+        . "         <!-- fontawesome -->"
         . "         <link rel=\"stylesheet\" href=\"./lib/font-awesome-4.5.0/css/font-awesome.min.css\">"
-        . "         <!-- bootstrap-select -->"
+        . "         <!-- fin fontawesome -->"
+        . "         <!-- toastr -->"
+        . "         <link rel=\"stylesheet\" type=\"text/css\" href=\"./lib/toastr/build/toastr.min.css\" />"
+        . "         <script type=\"text/javascript\" src=\"./lib/toastr/build/toastr.min.js\"></script>"
+        . "         <!-- fin toastr -->"                
+        //. "         <!-- bootstrap-select -->"
         //. "         <link rel=\"stylesheet\" href=\"./lib/bootstrap-select/dist/css/bootstrap-select.min.css\">"
         //. "         <script src=\"./lib/bootstrap-select/dist/js/bootstrap-select.js\">"
+        //. "         <!-- fin bootstrap-select -->"
         . "     </head>"
         . "     <body>";
     }
     public function pie()
     {
-        echo "  </body>"
+        echo "      <div class=\"pie\">"
+        . "             Seedmech SRL"
+        . "         </div>"
+        . "     </body>"
         . "   </html>";
     }
 }

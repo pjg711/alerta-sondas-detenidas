@@ -47,15 +47,14 @@ class Login
     
     public function verifico_usuario($usuario,$password)
     {
-        $sql="SELECT * FROM `usuarios` WHERE usuario='".$usuario."' AND password='".$password."' LIMIT 1";
-        if(sql_select($sql, $consulta))
+        $query="SELECT * FROM `usuarios` WHERE usuario='".$usuario."' AND password='".$password."' LIMIT 1";
+        if(sql_select($query, $consulta))
         {
             if($registro=$consulta->fetch(PDO::FETCH_ASSOC))
             {
                 $_SESSION['user_login_session']=true;
                 $_SESSION['id_usuario']=$registro['id'];
                 $_SESSION['user_active']=$registro['usuario'];
-                //$_SESSION['tipo_usuario']
                 $_SESSION['password']=$registro['password'];
                 $_SESSION['es_admin']=$registro['es_admin'];
                 return true;

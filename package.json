@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/pjg711/alerta-sondas-detenidas/issues"
   },
-  "homepage": "https://github.com/pjg711/alerta-sondas-detenidas#readme"
+  "homepage": "https://github.com/pjg711/alerta-sondas-detenidas#readme",
+  "dependencies": {
+    "toastr": "^2.1.2"
+  }
 }

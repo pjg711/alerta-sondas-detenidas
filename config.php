@@ -104,16 +104,22 @@ function CCStrip($value)
 /* ******************************************************************************************
  * Funciones para la redireccion y carteles en pantalla
  */
-function mensaje($texto)
+function mensaje($texto,$enca="",$tipo="success")
 {
     echo "<script type=\"text/javascript\">";
-    echo "alert(\"".$texto."\");";
+    if($enca=="")
+    {
+        echo "toastr.{$tipo}(\"".$texto."\");";
+    }else
+    {
+        echo "toastr.{$tipo}(\"".$texto."\",\"".$enca."\");";
+    }
     echo "</script>";
 }
 function redireccionar($pagina="")
 {
     echo "<script type=\"text/javascript\">";
-    echo " window.location=\"".$pagina."\";";
+    echo "  window.location=\"".$pagina."\";";
     echo "</script>";
 }
 ?>
