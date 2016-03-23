@@ -20,6 +20,9 @@ define('SERVIDOR','localhost');
 define('BASE_DATOS','sondas');
 define('USUARIO','alerta');
 define('PASSWORD','alertasondas932');
+// Pie de pagina
+define('PIE','Seedmech Latinamérica SRL - Buenos Aires 642 - CP 2000 - Rosario - Santa Fe - Argentina<br>Tel. (telfax) +54 +341 4472954 y 4259475');
+//
 //
 global $db_link;
 if(!($db_link = new PDO('mysql:host='.SERVIDOR.';dbname='.BASE_DATOS.';charset=utf8',USUARIO,PASSWORD)))

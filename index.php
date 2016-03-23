@@ -6,6 +6,7 @@ ini_set('memory_limit','128M');
 //
 include("config.php");
 //
+require 'lib/class_page.php';
 require 'lib/class_imetos.php';
 require 'lib/class_station.php';
 require 'lib/class_sensor.php';
@@ -13,11 +14,10 @@ require 'lib/class_config.php';
 
 require 'lib/class_ftp.php';
 require 'lib/class_users.php';
-require 'lib/class_pagina.php';
 //
-$usuario=new User();
+$user=new User();
 //       
-if($usuario->getLoginSession())
+if($user->getLoginSession())
 {
     echo "<pre>";
     print_r($_POST);
@@ -25,8 +25,9 @@ if($usuario->getLoginSession())
     //
     if(isset($_POST['confirmado_borrar_informe']))
     {
+        // borrar informe 
         $id_informe=$_POST['confirmado_borrar_informe'];
-        if($usuario->borrar_informe($id_informe))
+        if($user->borrar_informe($id_informe))
         {
             mensaje("Se borr\u00F3 el informe","Borrar informe");
         }else
@@ -36,20 +37,21 @@ if($usuario->getLoginSession())
     }
     if(isset($_POST['confirmado_borrar_todos']))
     {
+        // borra todos los informes para el usuario 
         if(isset($_SESSION['userid']))
         {
             $userid=$_SESSION['userid'];
-            $usuario->borrar_informes_todos($userid);
+            $user->borrar_informes_todos($userid);
         }
     }
     if(isset($_POST['guardar_configuracion']))
     {
-        if(actualizar_estacion())
+        if(Config_Station::update())
         {
             mensaje("Se guardó la configuración para la estación","Configurar estación");
         }else
         {
-            
+            mensaje("Error ");
         }
     }
     if(isset($_GET['cambiar_conf']))
@@ -59,9 +61,8 @@ if($usuario->getLoginSession())
     
 }
 //
-$pagina=new PAGINA();
-$pagina->encabezado();
-//
+$page=new PAGE();
+$page->header();
 /*
 echo "
     <script language='javascript'>
@@ -71,39 +72,44 @@ echo "
 //
 if(isset($_GET['cerrar_sesion']))
 {
-    $usuario->cerrar_sesion();
+    $user->cerrar_sesion();
 }
-if(!$usuario->getLoginSession())
+if(!$user->getLoginSession())
 {
     if(isset($_POST['usuario']) and isset($_POST['password']))
     {
         $q_usuario=CCGetFromPost("usuario");
         $q_password=CCGetFromPost("password");
         // verifico el usuario
-        if($usuario->verificar($q_usuario, $q_password))
+        if($user->verificar($q_usuario, $q_password))
         {
             // bien
         }else
         {
-            $usuario->cerrar_sesion();
+            $user->cerrar_sesion();
             mensaje("Error en dato de usuario y/o contraseña","","error");
             redireccionar("index.php");
         }
     }else
     {
         //pido usuario y contraseña para el ingreso
-        $usuario->ingreso();
+        $user->ingreso();
     }
 }
-if($usuario->getLoginSession())
+if($user->getLoginSession())
 {
-    $usuario->sesion_iniciada();
-    if($usuario->getIsAdmin())
+    echo "
+    <ul style=\"margin:19px 0 18px 0;\" class=\"nav nav-tabs test2\">
+        <li class=\"active\"><a data-toggle=\"tab\" href=\"#exportacion\">Exportación de datos de sondas</a></li>
+        <li><a data-toggle=\"tab\" href=\"#detenidas\">Informe de detenidas</a></li>
+    </ul>";
+    $user->sesion_iniciada();
+    if($user->getIsAdmin())
     {
         if(isset($_POST['comprobar']))
         {
             //comprobar la conexion al sitio ftp
-            if($usuario->comprobar_conexion())
+            if($user->comprobar_conexion())
             {
                 mensaje("Conexi\u00F3n al servidor con \u00E9xito.","Comprobar conexión");
             }else
@@ -114,7 +120,7 @@ if($usuario->getLoginSession())
         if(isset($_POST['alta_usuario']))
         {
             //inserto usuario nuevo
-            if($usuario->insertar())
+            if($user->insertar())
             {
                 mensaje("Se guard\u00F3 el nuevo usuario","Nuevo usuario");
             }else
@@ -124,7 +130,7 @@ if($usuario->getLoginSession())
         }
         if(isset($_POST['guardar_edicion_usuario']))
         {
-            if($usuario->actualizar())
+            if($user->actualizar())
             {
                 mensaje("Se actualiz\u00F3 el usuario","Editar usuario");
             }else
@@ -135,7 +141,7 @@ if($usuario->getLoginSession())
         if(isset($_POST['confirmado_borrar_usuario']))
         {
             $userid= CCGetFromPost("confirmado_borrar_usuario");
-            if($usuario->borrar_usuario($userid))
+            if($user->borrar_usuario($userid))
             {
                 mensaje("El usuario fue borrado","Borrar usuario");
             }else
@@ -149,22 +155,33 @@ if($usuario->getLoginSession())
             $q_usuario[1]=  CCGetFromPost("realizar_informe");
             hago_informes($q_usuario,true);
         }
+        echo "<div class=\"tab-content\">
+                <div id=\"exportacion\" class=\"tab-pane fade in active\">";
         // solo admin puede crear un nuevo usuario
-        $usuario->formulario_crear();
+        $user->formulario_crear();
         // es usuario admin y presento todos los informes ordenados por fecha
-        $usuario->listar(true);
+        $user->listar(true);
+        echo "  </div>
+                <div id=\"detenidas\" class=\"tab-pane fade\">";
         // listado de archivos csv
         //listado_csvs();
         // todos los informes
-        $usuario->listado_informes();
+        $user->listado_informes();
+        echo "  </div>
+              </div>";
     }else
     {
         $userid=$_SESSION['userid'];
+        echo "<div class=\"tab-content\">
+                <div id=\"exportacion\" class=\"tab-pane fade in active\">";
         //
-        $usuario->listar(false);
+        $user->listar(false);
+        echo "  </div>
+                <div id=\"detenidas\" class=\"tab-pane fade\">";
         // solo los informes de usuario ftp $userid
-        $usuario->listado_informes($userid);
-        $pagina->pie();
+        $user->listado_informes($userid);
+        echo "  </div>
+              </div>";
     }
     if(isset($_POST['comprobar']))
     {
@@ -175,84 +192,6 @@ if($usuario->getLoginSession())
         </script>
         <?php
     }
-    $pagina->pie();
-}
-exit;
-/*******************************************************/
-/* ------------------FUNCIONES ------------------------*/
-/*******************************************************/
-
-
-
-
-
-
-
-
-
-
-
-
-
-function actualizar_estacion()
-{
-    if(!isset($_POST['activar']) OR $_POST['activar']=='off')
-    {
-        $activa=0;
-    }else
-    {
-        $activa=1;
-    }
-    $info= json_encode($_POST);
-    if(isset($_POST['userid']))
-    {
-        $userid=  CCGetFromPost('userid');
-    }
-    if(isset($_POST['f_station_code']))
-    {
-        $f_station_code=  CCGetFromPost('f_station_code');
-    }
-    if(isset($userid) AND isset($f_station_code))
-    {
-        // primero verifico que exista
-        $query="  SELECT  `id`
-                FROM    `configuraciones`
-                WHERE   `id_usuario`={$id_usuario} AND
-                        `f_station_code`={$f_station_code}";
-        if(!sql_select($query,$consulta))
-        {
-            mensaje("No se pudo consultar la base de datos","","error");
-            return false;
-        }
-        if($consulta->rowCount() > 0)
-        {
-            // lo actualizo
-            $query="  UPDATE  `configuraciones`
-                    SET     `info`='{$info}',
-                            `activa`={$activa}
-                    WHERE   `id_usuario`={$id_usuario} AND
-                            `f_station_code`={$f_station_code}";
-            if(!sql_select($query,$consulta2))
-            {
-                mensaje("No se pudo actualizar los datos de la estacion","","error");
-                return false;
-            }
-        }else
-        {
-            // inserto estacion
-            $query="  INSERT INTO `configuraciones` 
-                        (`id_usuario`,`f_station_code`,`activa`,`info`)
-                    VALUES 
-                        ({$id_usuario},{$f_station_code},{$activa},'{$info}')";
-            if(!sql_select($query,$consulta2))
-            {
-                echo "ERROR! No se pudo insertar los datos de la estacion";
-                return false;
-            }
-        }
-        return true;
-    }
-    echo "ERROR! No esta definido el usuario y/o la estaci&oacute;n";
-    return false;
+    $page->footer();
 }
 ?>

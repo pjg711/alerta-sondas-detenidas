@@ -106,7 +106,7 @@ class Config_Station
                             `f_station_code`,
                             `activa`,
                             `info`
-                    FROM    `configuraciones`
+                    FROM    `configurations`
                     WHERE   `f_station_code`={$f_station_code} AND 
                             `userid`={$userid}";
             $loadedDataArray="";
@@ -208,5 +208,66 @@ class Config_Station
     public function getError()
     {
         return $this->error;
+    }
+    public static function update()
+    {
+        if(!isset($_POST['activar']) OR $_POST['activar']=='off')
+        {
+            $activa=0;
+        }else
+        {
+            $activa=1;
+        }
+        $info= json_encode($_POST);
+        if(isset($_POST['userid']))
+        {
+            $userid=  CCGetFromPost('userid');
+        }
+        if(isset($_POST['f_station_code']))
+        {
+            $f_station_code=  CCGetFromPost('f_station_code');
+        }
+        if(isset($userid) AND isset($f_station_code))
+        {
+            // primero verifico que exista
+            $query="SELECT  `id`
+                    FROM    `configurations`
+                    WHERE   `id_usuario`={$id_usuario} AND
+                            `f_station_code`={$f_station_code}";
+            if(!sql_select($query,$consulta))
+            {
+                mensaje("No se pudo consultar la base de datos","","error");
+                return false;
+            }
+            if($consulta->rowCount() > 0)
+            {
+                // lo actualizo
+                $query="UPDATE  `configurations`
+                        SET     `info`='{$info}',
+                                `activa`={$activa}
+                        WHERE   `id_usuario`={$id_usuario} AND
+                                `f_station_code`={$f_station_code}";
+                if(!sql_select($query,$consulta2))
+                {
+                    mensaje("No se pudo actualizar los datos de la estacion","","error");
+                    return false;
+                }
+            }else
+            {
+                // inserto estacion
+                $query="INSERT INTO `configurations` 
+                            (`id_usuario`,`f_station_code`,`activa`,`info`)
+                        VALUES 
+                            ({$id_usuario},{$f_station_code},{$activa},'{$info}')";
+                if(!sql_select($query,$consulta2))
+                {
+                    echo "ERROR! No se pudo insertar los datos de la estacion";
+                    return false;
+                }
+            }
+            return true;
+        }
+        echo "ERROR! No esta definido el usuario y/o la estaci&oacute;n";
+        return false;
     }
 }

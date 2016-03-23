@@ -1,7 +1,7 @@
 <?php
-class PAGINA
+class PAGE
 {
-    public function encabezado()
+    public function header()
     {
         echo "<html>"
         . "     <head>"
@@ -17,15 +17,17 @@ class PAGINA
         . "         <meta name=\"DESCRIPTION\" content=\"Sistema para sondas de humedad de suelo\">\n"
         . "         <title>".TITULO."</title>";
         // cargo las librerias
-        echo "      <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/estilos.css\"/>"
+        echo "      <!-- estilos propios -->"
+        . "         <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/estilos.css\"/>"
         . "         <script src=\"./lib/funciones.js\"></script>"
-        . "         <!-- bootstrap -->"
-        . "         <link rel=\"stylesheet\" type=\"text/css\" href=\"./lib/bootstrap/dist/css/bootstrap.css\"/>"
-        . "         <script src=\"./lib/jquery/dist/jquery.js\"></script>"
-        . "         <!-- fin bootstrap -->"
         . "         <!-- fontawesome -->"
         . "         <link rel=\"stylesheet\" href=\"./lib/font-awesome-4.5.0/css/font-awesome.min.css\">"
         . "         <!-- fin fontawesome -->"
+        . "         <!-- bootstrap -->"
+        . "         <link rel=\"stylesheet\" type=\"text/css\" href=\"./lib/bootstrap/dist/css/bootstrap.css\"/>"
+        . "         <script src=\"./lib/jquery/dist/jquery.js\"></script>"
+        . "         <script src=\"./lib/bootstrap/dist/js/bootstrap.js\"/>"
+        . "         <!-- fin bootstrap -->"
         . "         <!-- toastr -->"
         . "         <link rel=\"stylesheet\" type=\"text/css\" href=\"./lib/toastr/build/toastr.min.css\" />"
         . "         <script type=\"text/javascript\" src=\"./lib/toastr/build/toastr.min.js\"></script>"
@@ -37,12 +39,26 @@ class PAGINA
         . "     </head>"
         . "     <body>";
     }
-    public function pie()
+    public function footer()
     {
+        echo "<div class=\"navbar navbar-fixed-bottom\">"
+            . " <div class=\"pie\">"
+            . PIE
+            . " </div>"
+            . "</div>";
+        /*
+        echo "<footer class=\"footer\">"
+        . PIE
+        . "</footer>";
+         * 
+         */
+        /*
         echo "      <div class=\"pie\">"
-        . "             Seedmech SRL"
+        . PIE
         . "         </div>"
         . "     </body>"
         . "   </html>";
+         * 
+         */
     }
 }

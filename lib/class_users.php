@@ -510,13 +510,6 @@ class User
                     </tr>
                     <tr>
                         <td colspan=\"6\">";
-                /*
-                if($_SESSION['seleccion_usuario']=='conf_usuario_'.$usuario['id'])
-                {
-
-                }
-                 * 
-                 */
                 echo "      <div id=\"conf_usuario_{$user->getId()}\" style=\"display:none\">
                                 <div class=\"container\">
                                     <div class=\"row\">
@@ -652,6 +645,7 @@ class User
                                                 </tr>
                                             </table>
                                             </form>
+                                            <br><br><br>
                                         </div>
                                     </div>    
                                 </div>
@@ -686,6 +680,7 @@ class User
                         $con=0;
                         foreach($stations as $key_est => $station)
                         {
+                            //echo "key_est---->".$key_est."<br>";
                             //$q_estacion = Station::load($estacion['f_station_code']);
                             //$q_estacion->loadSensors(1);
                             $station->loadSensors(1);
@@ -693,7 +688,7 @@ class User
                             $stationSensorsList = $station->getAvailableSensors();
                             //$q_configuracion = Config_Station::load($usuario['id'],$q_estacion->getStationCode());
                             $q_config = Config_Station::load($user->getId(),$station->getStationCode());
-                            if($key_est == 0)
+                            if($con == 0)
                             {
                                 echo "      <div class=\"info-sensores\" id=\"estacion_{$station->getStationCode()}\" style=\"display:block\">";
                             }else
@@ -734,7 +729,7 @@ class User
                                                                         <input class=\"sensores\" type=\"checkbox\" id=\"sensor-todos-{$station->getStationCode()}\" name=\"{$station->getStationCode()}\" value=\"-9999\" onClick=\"seleccionar_sensores_todos('{$station->getStationCode()}');\"><label for=\"{$label}\" {$disabled}>&nbsp;Todos</label><br>";
                             foreach($stationSensorsList['enabled'] as $key_sensor => $sensor)
                             {
-                                if(in_array($key_sensor,$q_configuracion->getSensores()))
+                                if(in_array($key_sensor,$q_config->getSensores()))
                                 {
                                     echo "                              <input class=\"sensores-todos\" type=\"checkbox\" id=\"sensor-{$station->getStationCode()}\" name=\"sensor_".$sensor->getSensorCode()."_".$sensor->getSensorCh()."\" value=\"seleccionado\" checked=\"\">&nbsp;<label for=\"{$label}\">{$sensor->getName()}</label><br>";
                                 }else
@@ -755,7 +750,7 @@ class User
                             echo "                                      <div class=\"form-group\">
                                                                             <label for=\"{$label}\">Per&iacute;odo a descargar:</label><br>
                                                                             <label class=\"radio-inline\">";
-                            if($q_configuracion->getPeriodo()=='periodo')
+                            if($q_config->getPeriodo()=='periodo')
                             {
                                 echo "                                          <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"descarga_periodo\" value=\"periodo\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">Descarga de datos desde</label>";
                             }else
@@ -763,10 +758,10 @@ class User
                                 echo "                                          <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"descarga_periodo\" value=\"periodo\" {$disabled}>&nbsp;<label for=\"{$label}\">Descarga de datos desde</label>";
                             }
                             echo "                                          </label><br>
-                                                                            <label for=\"{$label}\">Fecha inicial:&nbsp;</label><input type=\"text\" class=\"todos\" name=\"fecha_inicial\" id=\"fecha_inicial\" value=\"{$q_configuracion->getPeriodoFechaInicial()}\" size=\"8\" maxlength=\"8\" {$disabled}><label for=\"{$label}\">(dd/mm/aaaa)</label><br>
-                                                                            <label for=\"{$label}\">Fecha final:&nbsp;</label><input type=\"text\" class=\"todos\" name=\"fecha_final\" id=\"fecha_final\" value=\"{$q_configuracion->getPeriodoFechaFinal()}\" size=\"8\" maxlength=\"8\" {$disabled}><label for=\"{$label}\">(dd/mm/aaaa)</label><br>
+                                                                            <label for=\"{$label}\">Fecha inicial:&nbsp;</label><input type=\"text\" class=\"todos\" name=\"fecha_inicial\" id=\"fecha_inicial\" value=\"{$q_config->getPeriodoFechaInicial()}\" size=\"8\" maxlength=\"8\" {$disabled}><label for=\"{$label}\">(dd/mm/aaaa)</label><br>
+                                                                            <label for=\"{$label}\">Fecha final:&nbsp;</label><input type=\"text\" class=\"todos\" name=\"fecha_final\" id=\"fecha_final\" value=\"{$q_config->getPeriodoFechaFinal()}\" size=\"8\" maxlength=\"8\" {$disabled}><label for=\"{$label}\">(dd/mm/aaaa)</label><br>
                                                                             <label class=\"radio-inline\">";
-                            if($q_configuracion->getPeriodo()=='mes_actual')
+                            if($q_config->getPeriodo()=='mes_actual')
                             {
                                 echo "                                          <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"mes_actual\" value=\"mes_actual\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">Mes actual</label>";
                             }else
@@ -776,7 +771,7 @@ class User
                             echo "                                          </label>
                                                                             <br>
                                                                             <label class=\"radio-inline\">";
-                            if($q_configuracion->getPeriodo()=='todos')
+                            if($q_config->getPeriodo()=='todos')
                             {
                                 echo "                                          <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"todos2\" value=\"todos\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">Desde el principio</label>";
                             }else
@@ -786,7 +781,7 @@ class User
                             echo "                                      </label>
                                                                         <br>
                                                                         <label class=\"radio-inline\">";
-                            if($q_configuracion->getPeriodo()=='')
+                            if($q_config->getPeriodo()=='')
                             {
                                 echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"fijo\" value=\"fijo\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">Per&iacute;odo fijo</label>";
                             }else
@@ -799,7 +794,7 @@ class User
                             echo "                                  <div class=\"form-group\">
                                                                         <label for=\"{$label}\">Exportar a tipo de archivo:</label><br>
                                                                         <label class=\"radio-inline\">";
-                            if($q_configuracion->getTipoArchivo()=='txt')
+                            if($q_config->getTipoArchivo()=='txt')
                             {
                                 echo "                                      <input class=\"todos\" type=\"radio\" name=\"tipo_archivo\" id=\"archivo_txt\" value=\"txt\" checked=\"\" {$disabled}><label for=\"{$label}\">TXT</label>";
                             }else
@@ -808,7 +803,7 @@ class User
                             }
                             echo "                                      </label>
                                                                         <label class=\"radio-inline\">";
-                            if($q_configuracion->getTipoArchivo()=='csv')
+                            if($q_config->getTipoArchivo()=='csv')
                             {
                                 echo "                                      <input class=\"todos\" type=\"radio\" name=\"tipo_archivo\" id=\"archivo_csv\" value=\"csv\" checked=\"\" {$disabled}><label for=\"{$label}\">CSV</label>";
                             }else
@@ -821,42 +816,42 @@ class User
                             echo "                                  <div class=\"form-group\">
                                                                         <label for=\"{$label}\">Separar columnas por:</label><br>
                                                                         <label class=\"radio-inline\">";
-                            if($q_configuracion->getSeparador()=='coma')
+                            if($q_config->getSeparador()=='coma')
                             {
-                                echo "                                     <input class=\"todos\" type=\"radio\" id=\"coma\" name=\"separador\" value=\"coma\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">COMA</label>";
+                                echo "                                     <input class=\"todos\" type=\"radio\" id=\"coma\" name=\"separador\" value=\"coma\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">coma (,)</label>";
                             }else
                             {
-                                echo "                                     <input class=\"todos\" type=\"radio\" id=\"coma\" name=\"separador\" value=\"coma\" {$disabled}>&nbsp;<label for=\"{$label}\">COMA</label>";
+                                echo "                                     <input class=\"todos\" type=\"radio\" id=\"coma\" name=\"separador\" value=\"coma\" {$disabled}>&nbsp;<label for=\"{$label}\">coma (,)</label>";
                             }
                             echo "                                      </label>
                                                                         <br>
                                                                         <label class=\"radio-inline\">";
-                            if($q_configuracion->getSeparador()=='punto_coma')
+                            if($q_config->getSeparador()=='punto_coma')
                             {
-                                echo "                                      <input class=\"todos\" type=\"radio\" id=\"punto_coma\" name=\"separador\" value=\"punto_coma\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">PUNTO y COMA</label>";
+                                echo "                                      <input class=\"todos\" type=\"radio\" id=\"punto_coma\" name=\"separador\" value=\"punto_coma\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">punto y coma (;)</label>";
                             }else
                             {
-                                echo "                                      <input class=\"todos\" type=\"radio\" id=\"punto_coma\" name=\"separador\" value=\"punto_coma\" {$disabled}>&nbsp;<label for=\"{$label}\">PUNTO y COMA</label>";
+                                echo "                                      <input class=\"todos\" type=\"radio\" id=\"punto_coma\" name=\"separador\" value=\"punto_coma\" {$disabled}>&nbsp;<label for=\"{$label}\">punto y coma (;)</label>";
                             }
                             echo "                                      </label>
                                                                         <br>
                                                                         <label class=\"radio-inline\">";
-                            if($q_configuracion->getSeparador()=='tab')
+                            if($q_config->getSeparador()=='tab')
                             {
-                                echo "                                      <input class=\"todos\" type=\"radio\" id=\"tab\" name=\"separador\" value=\"tab\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">TAB</label>";
+                                echo "                                      <input class=\"todos\" type=\"radio\" id=\"tab\" name=\"separador\" value=\"tab\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">tabulaci&oacute;n</label>";
                             }else
                             {
-                                echo "                                      <input class=\"todos\" type=\"radio\" id=\"tab\" name=\"separador\" value=\"tab\" {$disabled}>&nbsp;<label for=\"{$label}\">TAB</label>";
+                                echo "                                      <input class=\"todos\" type=\"radio\" id=\"tab\" name=\"separador\" value=\"tab\" {$disabled}>&nbsp;<label for=\"{$label}\">tabulaci&oacute;n</label>";
                             }
                             echo "                                      </label>
                                                                         <br>
                                                                         <label class=\"radio-inline\">";
-                            if($q_configuracion->getSeparador()=='espacio')
+                            if($q_config->getSeparador()=='espacio')
                             {
-                                echo "                                      <input class=\"todos\" type=\"radio\" id=\"espacio\" name=\"separador\" value=\"espacio\" checked=\"\">&nbsp;<label for=\"{$label}\">ESPACIO</label>";
+                                echo "                                      <input class=\"todos\" type=\"radio\" id=\"espacio\" name=\"separador\" value=\"espacio\" checked=\"\">&nbsp;<label for=\"{$label}\">espacio</label>";
                             }else
                             {
-                                echo "                                      <input class=\"todos\" type=\"radio\" id=\"espacio\" name=\"separador\" value=\"espacio\">&nbsp;<label for=\"{$label}\">ESPACIO</label>";
+                                echo "                                      <input class=\"todos\" type=\"radio\" id=\"espacio\" name=\"separador\" value=\"espacio\">&nbsp;<label for=\"{$label}\">espacio</label>";
                             }
 
                             echo "                                       </label>
@@ -866,7 +861,7 @@ class User
                                                                         <label for=\"{$label}\">Agregar encabezado:</label>
                                                                         <br>
                                                                         <label class=\"radio-inline\">";
-                            if($q_configuracion->getEncabezado()=='si')
+                            if($q_config->getEncabezado()=='si')
                             {
                                 echo "                                      <input class=\"todos\" type=\"radio\" id=\"encabezado_si\" name=\"encabezado\" value=\"si\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">S&iacute;</label>&nbsp;&nbsp;";
                             }else
@@ -875,7 +870,7 @@ class User
                             }
                             echo "                                      </label>
                                                                         <label class=\"radio-inline\">";
-                            if($q_configuracion->getEncabezado()=='no')
+                            if($q_config->getEncabezado()=='no')
                             {
                                 echo "                                      <input class=\"todos\" type=\"radio\" id=\"encabezado_no\" name=\"encabezado\" value=\"no\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">No</label>";
                             }else
@@ -914,6 +909,7 @@ class User
                             echo "              </form>
                                             </div> <!-- cierre de div container -->
                                         </div> <!-- cierre de div info-sensores -->";
+                            $con++;
                         }
                     }
                 }
@@ -1163,9 +1159,7 @@ class User
     {
         // para todos los informes
         $cadena= "
-            <br><br>
-            <!-- <button type=\"submit\" name=\"hago_informe\"><i class=\"fa fa-terminal\"></i>&nbsp;&nbsp;Realizar informe</button> -->
-            <br>
+            <br><br><br>
             <h1>Listado de informes de sondas detenidas</h1>
             <table class=\"table table-striped table-hover table-bordered table-condensed\">
                 <tr>
@@ -1174,7 +1168,7 @@ class User
                             <i class=\"fa fa-trash\"></i>&nbsp;&nbsp;&nbsp;
                         </a>
                     </th>";
-        if($_SESSION['es_admin'])
+        if($_SESSION['is_admin'])
         {
             $cadena.="  <th>Usuario</th>";
         }
@@ -1182,7 +1176,8 @@ class User
                 </tr>";    
         foreach($informes as $informe)
         {
-            $cadena.="<tr>
+            $cadena.="
+                <tr>
                     <td align=\"right\">
                         <a class=\"link-tabla\" href=\"javascript:mostrar_ocultar('informe_{$informe['id_informe']}');\" title=\"Ver informe\">
                             <i class=\"fa fa-eye\"></i>
@@ -1191,7 +1186,7 @@ class User
                             <i class=\"fa fa-trash-o\"></i>
                         </a>&nbsp;&nbsp;
                     </td>";
-            if($_SESSION['es_admin'])
+            if($_SESSION['is_admin'])
             {
                 $cadena.="
                     <td>{$informe['usuario']}</td>";
@@ -1199,7 +1194,7 @@ class User
             $cadena.="  <td>{$informe['fecha']}</td>
                 </tr>
                 <tr>";
-            if($_SESSION['es_admin'])
+            if($_SESSION['is_admin'])
             {
                 $cadena.="<td colspan=\"3\">";
             }else
@@ -1213,10 +1208,12 @@ class User
             }
             $cadena.="      </div>
                     </td>
-                </tr>";
+                </tr>
+            </table>";
         }
         return $cadena;
     }
+    
     private function presento_informe($xml_informe)
     {
         //convierto xml en html

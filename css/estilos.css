@@ -112,12 +112,40 @@ label[for=label-enabled] {
     font-weight: normal !important;
 }
 /* pie de pagina */
+.pie {
+    width: 100%;
+    height: 50px;
+    border:1px solid gray;
+    background-color: #dadada;
+    /* color: #000000; */
+    color: #0086b3;
+    font-size: small;
+    font-weight: normal;
+    text-align: center;
+    vertical-align:middle;
+}
+
+/*
+.pie {
+    position : absolute;
+    bottom : 0;
+    height : 40px;
+    margin-top : 40px;
+}
+*/
+/*
 .pie{
+    margin: 0;
+    clear: both;    
+    
+    width: 100%;
+    height: 50px;
+    
     border:1px solid gray;
     background-color: #dadada;
     color: #000000;
     font-size: small;
     font-weight: normal;
     text-align: center;
-    height: 50px;
 }
+*/
