@@ -24,12 +24,20 @@ class IMETOS
         {
             if(isset($_SESSION['userid']))
             {
-                if($conexion=buscar_datos_conexion($_SESSION['userid']))
+                $userid=$_SESSION['userid'];
+                $query="SELECT  `id`,`username`,`password`,`server`,`database`
+                        FROM    `users`
+                        WHERE   `usertype`='mysql' AND
+                                `userid`={$userid}";
+                if(sql_select($query,$results))
                 {
-                    $this->server_mysql=$conexion['servidor'];
-                    $this->database_mysql=$conexion['base_datos'];
-                    $this->user_mysql=$conexion['usuario'];
-                    $this->passw_mysql=$conexion['password'];
+                    if($connection = $results->fetch(PDO::FETCH_ASSOC))
+                    {
+                        $this->server_mysql=$connection['server'];
+                        $this->database_mysql=$connection['database'];
+                        $this->user_mysql=$connection['username'];
+                        $this->passw_mysql=$connection['password'];
+                    }
                 }
             }
         }

@@ -219,6 +219,75 @@ class Station
         $this->_lastEditor = $last_editor;
     }
 
+    public static function getAll($server="",$database="",$username="",$password="")
+    {
+        $BD = new IMETOS($server, $database, $username, $password);
+        $query="SELECT
+                    `row_id`,
+                    `f_station_code`,
+                    `f_date`,
+                    `f_dev_id`,
+                    `f_name`,
+                    `f_descr`,
+                    `f_info`,
+                    `f_uid`,
+                    `f_status`,
+                    `f_create_time`,
+                    `f_master_name`,
+                    `f_date_min`,
+                    `f_date_max`,
+                    `f_date_last_down`,
+                    `f_date_sens`,
+                    `f_date_data`,
+                    `f_date_conf`,
+                    `f_measure_int`,
+                    `f_data_int`,
+                    `f_timezone`,
+                    `f_latitude`,
+                    `f_longitude`,
+                    `f_altitude`,
+                    `f_hw_ver_major`,
+                    `f_hw_ver_minor`,
+                    `f_sw_ver_major`,
+                    `f_sw_ver_minor`,
+                    `f_sms_warn_numbers`,
+                    `f_sms_warn_values`,
+                    `f_gsm_mcc`,
+                    `f_gsm_mnc`,
+                    `f_gprs_apn`,
+                    `f_gprs_user_id`,
+                    `f_gprs_passw`,
+                    `f_sernum`,
+                    `f_date_comm`,
+                    `f_user_station_name`,
+                    `f_user_name`,
+                    `custom_name`,
+                    `custom_desc`,
+                    `custom_image`,
+                    `enable_station`,
+                    `show_in_home`,
+                    `priority`,
+                    `last_update_date`,
+                    `last_edition_time`,
+                    `last_editor`
+                FROM
+                    `seedclima_station_info`";
+        settype($response, 'array');
+        if($BD->sql_select($query, $result))
+        {
+            if($BD->get_rowCount() > 0)
+            {
+                while($stationInfo = $result->fetch(PDO::FETCH_ASSOC))
+                {
+                    $station = Station::load($stationInfo['f_station_code']);
+                    $response[$stationInfo['f_station_code']]= $station;
+                }
+                return $response;
+            }
+        }
+        return false;
+    }
+
     /**
      *
      * @param Integer $f_station_code
