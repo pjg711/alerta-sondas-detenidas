@@ -122,9 +122,16 @@ label[for=label-enabled] {
     font-size: small;
     font-weight: normal;
     text-align: center;
-    vertical-align:middle;
 }
-
+.footer-images{
+    margin: auto;
+    display: block;
+    position: absolute;
+    bottom: 0;
+}
+.footer-images .copyright{
+    text-align: center;
+}
 /*
 .pie {
     position : absolute;

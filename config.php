@@ -21,7 +21,7 @@ define('BASE_DATOS','sondas');
 define('USUARIO','alerta');
 define('PASSWORD','alertasondas932');
 // Pie de pagina
-define('PIE','Seedmech Latinamérica SRL - Buenos Aires 642 - CP 2000 - Rosario - Santa Fe - Argentina<br>Tel. (telfax) +54 +341 4472954 y 4259475');
+define('PIE','Seedmech Latinamérica SRL - Buenos Aires 642 - CP 2000 - Rosario - Santa Fe - Argentina <br> Tel. (telfax) +54 +341 4472954 y 4259475');
 //
 //
 global $db_link;

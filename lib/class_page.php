@@ -41,24 +41,24 @@ class PAGE
     }
     public function footer()
     {
-        echo "<div class=\"navbar navbar-fixed-bottom\">"
-            . " <div class=\"pie\">"
+        /*
+        echo "  <div class=\"navbar navbar-fixed-bottom\">"
+            . "         <div class=\"row\" style=\"width: 100%; height: 50px; border:1px solid gray; background-color: #dadada; color: #0086b3;\">"
+            . "             <div class=\".col-md-3\"><img src=\"./img/seedmech_agrotecnologia.png\"></div>"
+            . "                 <div class=\".col-md-6\">"
             . PIE
-            . " </div>"
-            . "</div>";
-        /*
-        echo "<footer class=\"footer\">"
-        . PIE
-        . "</footer>";
+            . "                 </div>"
+            . "             </div>"
+            . "         <div class=\".col-md-3\"></div>"                
+            . " </div>";
          * 
          */
-        /*
-        echo "      <div class=\"pie\">"
-        . PIE
-        . "         </div>"
-        . "     </body>"
-        . "   </html>";
-         * 
-         */
+        echo "
+        <div class=\"navbar navbar-fixed-bottom\"
+            <div class=\"row\" style=\"width: 100%; height: 50px; border:1px solid gray; background-color: #dadada; color: #0086b3; vertical-align: middle;\">
+                <div class=\"col-md-4 text-right\"><a href=\"http://www.seedmech.com\"><img src=\"./img/seedmech.png\"></a></div>
+                <div class=\"col-md-8 text-left\">".PIE."</div>
+            </div>
+        </div>";
     }
 }
