@@ -58,6 +58,7 @@ function sql_select($query, &$rv)
      */
     return true;
 }
+/*
 function getEnumOptions($table, $field) 
 {
     global $db_link;
@@ -81,6 +82,8 @@ function getEnumOptions($table, $field)
     }
     return $finalResult; 
 }
+ * 
+ */
 /* ******************************************************************************************
  * Funciones para el manejo de las variables POST y GET
  */
@@ -117,6 +120,12 @@ function mensaje($texto,$enca="",$tipo="success")
     {
         echo "toastr.{$tipo}(\"".$texto."\",\"".$enca."\");";
     }
+    echo "</script>";
+}
+function mensaje2($texto)
+{
+    echo "<script type=\"text/javascript\">";
+    echo "  alert('{$texto}')";
     echo "</script>";
 }
 function redireccionar($pagina="")

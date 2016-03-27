@@ -15,44 +15,27 @@ class PAGE
         . "         <meta name=\"author\" content=\"Pablo Julián García\">"
         . "         <meta name=\"keywords\" content=\"Seedmech alerta sondas\">"
         . "         <meta name=\"DESCRIPTION\" content=\"Sistema para sondas de humedad de suelo\">\n"
-        . "         <title>".TITULO."</title>";
-        // cargo las librerias
-        echo "      <!-- estilos propios -->"
-        . "         <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/estilos.css\"/>"
-        . "         <script src=\"./lib/funciones.js\"></script>"
+        . "         <title>".TITULO."</title>"
+        . "         <!-- estilos propios -->\n"
+        . "         <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/estilos.css\"/>\n"
+        . "         <script src=\"./lib/funciones.js\"></script>\n"
         . "         <!-- fontawesome -->"
-        . "         <link rel=\"stylesheet\" href=\"./lib/font-awesome-4.5.0/css/font-awesome.min.css\">"
+        . "         <link rel=\"stylesheet\" href=\"./lib/font-awesome-4.5.0/css/font-awesome.min.css\">\n"
         . "         <!-- fin fontawesome -->"
         . "         <!-- bootstrap -->"
-        . "         <link rel=\"stylesheet\" type=\"text/css\" href=\"./lib/bootstrap/dist/css/bootstrap.css\"/>"
-        . "         <script src=\"./lib/jquery/dist/jquery.js\"></script>"
-        . "         <script src=\"./lib/bootstrap/dist/js/bootstrap.js\"/>"
+        . "         <link rel=\"stylesheet\" type=\"text/css\" href=\"./lib/bootstrap/dist/css/bootstrap.css\"/>\n"
+        . "         <script src=\"./lib/jquery/dist/jquery.js\"></script>\n"
+        . "         <script src=\"./lib/bootstrap/dist/js/bootstrap.js\"></script>\n"
         . "         <!-- fin bootstrap -->"
-        . "         <!-- toastr -->"
-        . "         <link rel=\"stylesheet\" type=\"text/css\" href=\"./lib/toastr/build/toastr.min.css\" />"
-        . "         <script type=\"text/javascript\" src=\"./lib/toastr/build/toastr.min.js\"></script>"
-        . "         <!-- fin toastr -->"                
-        //. "         <!-- bootstrap-select -->"
-        //. "         <link rel=\"stylesheet\" href=\"./lib/bootstrap-select/dist/css/bootstrap-select.min.css\">"
-        //. "         <script src=\"./lib/bootstrap-select/dist/js/bootstrap-select.js\">"
-        //. "         <!-- fin bootstrap-select -->"
+        . "         <!-- toastr -->"                
+        . "         <link rel=\"stylesheet\" type=\"text/css\" href=\"./lib/toastr/build/toastr.min.css\"/>\n"
+        . "         <script type=\"text/javascript\" src=\"./lib/toastr/build/toastr.min.js\"></script>\n"
+        . "         <!-- fin toastr -->"
         . "     </head>"
         . "     <body>";
     }
     public function footer()
     {
-        /*
-        echo "  <div class=\"navbar navbar-fixed-bottom\">"
-            . "         <div class=\"row\" style=\"width: 100%; height: 50px; border:1px solid gray; background-color: #dadada; color: #0086b3;\">"
-            . "             <div class=\".col-md-3\"><img src=\"./img/seedmech_agrotecnologia.png\"></div>"
-            . "                 <div class=\".col-md-6\">"
-            . PIE
-            . "                 </div>"
-            . "             </div>"
-            . "         <div class=\".col-md-3\"></div>"                
-            . " </div>";
-         * 
-         */
         echo "
         <div class=\"navbar navbar-fixed-bottom\"
             <div class=\"row\" style=\"width: 100%; height: 50px; border:1px solid gray; background-color: #dadada; color: #0086b3; vertical-align: middle;\">

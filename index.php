@@ -15,6 +15,9 @@ require 'lib/class_config.php';
 require 'lib/class_ftp.php';
 require 'lib/class_users.php';
 //
+$page=new PAGE();
+$page->header();
+//
 $user=new User();
 //       
 if($user->getLoginSession())
@@ -23,10 +26,72 @@ if($user->getLoginSession())
     print_r($_POST);
     echo "</pre>";
     //
-    if(isset($_POST['confirmado_borrar_informe']))
+    //
+    if(isset($_POST['check_connection']))
+    {
+        //mensaje("pase por aca");
+        $_SESSION['action']='check_connection';
+        //comprobar la conexion al sitio ftp
+        $username=  CCGetFromPost('username_ftp');
+        $password=  CCGetFromPost('password_ftp');
+        $server=  CCGetFromPost('server_ftp');
+        $remotedir= CCGetFromPost('remotedir');
+        //if($obj_ftp=new FTP($server,$username,$password,$remotedir))
+        //$server=null,$user=null,$passw=null
+        if(FTP::check_connection($server,$username,$password))
+        {
+            mensaje("Conexi\u00F3n al servidor con \u00E9xito.","Comprobar conexión");
+        }else
+        {
+            mensaje("ERROR! Revise los datos de la conexi\u00F3n al servidor","","error");
+        }
+    }
+    // *************************************************
+    // User
+    // *************************************************
+    if(isset($_POST['new_user']))
+    {
+        // grabo nuevo usuario
+        $_SESSION['action']='new_user';
+        if(User::save())
+        {
+            
+        }else
+        {
+            
+        }
+    }
+    if(isset($_POST['edit_user']))
+    {
+        $_SESSION['action']='edit_user';
+        if(User::update())
+        {
+            mensaje("Se actualiz\u00F3 el usuario","Editar usuario");
+        }else
+        {
+            mensaje("ERROR! Problema al actualizar usuario","","error");
+        }
+    }
+    if(isset($_POST['confirmed_delete_user']))
+    {
+        if(User::delete())
+        {
+            
+        }
+    }
+    //
+    if(isset($_POST['data_export']))
+    {
+        $_SESSION['action']='data_export';
+        // exporto los datos
+        $userid=  CCGetFromPost('userid');
+        $f_station_code=  CCGetFromPost('f_station_code');
+    }
+    //
+    if(isset($_POST['confirmed_delete_report']))
     {
         // borrar informe 
-        $id_informe=$_POST['confirmado_borrar_informe'];
+        $id_informe=$_POST['confirmed_delete_report'];
         if($user->borrar_informe($id_informe))
         {
             mensaje("Se borr\u00F3 el informe","Borrar informe");
@@ -44,7 +109,7 @@ if($user->getLoginSession())
             $user->borrar_informes_todos($userid);
         }
     }
-    if(isset($_POST['guardar_configuracion']))
+    if(isset($_POST['save_config']))
     {
         if(Config_Station::update())
         {
@@ -54,15 +119,8 @@ if($user->getLoginSession())
             mensaje("Error ");
         }
     }
-    if(isset($_GET['cambiar_conf']))
-    {
-        
-    }
-    
 }
 //
-$page=new PAGE();
-$page->header();
 /*
 echo "
     <script language='javascript'>
@@ -103,20 +161,10 @@ if($user->getLoginSession())
         <li class=\"active\"><a data-toggle=\"tab\" href=\"#exportacion\">Exportación de datos de sondas</a></li>
         <li><a data-toggle=\"tab\" href=\"#detenidas\">Informe de detenidas</a></li>
     </ul>";
-    $user->sesion_iniciada();
+    $user->logged();
     if($user->getIsAdmin())
     {
-        if(isset($_POST['comprobar']))
-        {
-            //comprobar la conexion al sitio ftp
-            if($user->comprobar_conexion())
-            {
-                mensaje("Conexi\u00F3n al servidor con \u00E9xito.","Comprobar conexión");
-            }else
-            {
-                mensaje("ERROR! Revise los datos de la conexi\u00F3n al servidor","","error");
-            }
-        }
+        // para administradores
         if(isset($_POST['alta_usuario']))
         {
             //inserto usuario nuevo
@@ -126,16 +174,6 @@ if($user->getLoginSession())
             }else
             {
                 mensaje("ERROR! No se pudo guardar el usuario","","error");
-            }
-        }
-        if(isset($_POST['guardar_edicion_usuario']))
-        {
-            if($user->actualizar())
-            {
-                mensaje("Se actualiz\u00F3 el usuario","Editar usuario");
-            }else
-            {
-                mensaje("ERROR! Problema al actualizar usuario","","error");
             }
         }
         if(isset($_POST['confirmado_borrar_usuario']))
@@ -158,10 +196,11 @@ if($user->getLoginSession())
         echo "<div class=\"tab-content\">
                 <div id=\"exportacion\" class=\"tab-pane fade in active\">";
         // solo admin puede crear un nuevo usuario
-        $user->formulario_crear();
+        $user->new_user();
         // es usuario admin y presento todos los informes ordenados por fecha
         $user->listar(true);
-        echo "  </div>
+        echo "      <br><br><br>
+                </div>
                 <div id=\"detenidas\" class=\"tab-pane fade\">";
         // listado de archivos csv
         //listado_csvs();
@@ -176,7 +215,8 @@ if($user->getLoginSession())
                 <div id=\"exportacion\" class=\"tab-pane fade in active\">";
         //
         $user->listar(false);
-        echo "  </div>
+        echo "      <br><br><br>
+                </div>
                 <div id=\"detenidas\" class=\"tab-pane fade\">";
         // solo los informes de usuario ftp $userid
         $user->listado_informes($userid);

@@ -45,6 +45,12 @@ class FTP
         echo "ERROR! No se pudo realizar la conexión\n";
         return false;
     }
+    public static function load($id_user="")
+    {
+        // cargo datos fto 
+        
+    }
+    
     private function lista_detallada($resource, $directorio = '.')
     {
         if(is_array($children = @ftp_rawlist($resource, $directorio))) 
@@ -83,17 +89,23 @@ class FTP
         } 
         return false;
     }
-    public function conexion_exitosa()
+    
+    public static function check_connection($server="",$user="",$passw="")
     {
-        $this->conn_id = ftp_connect($this->ftp_server,21) or die("No es posible la conexión con el servidor $this->ftp_server");
-        if(ftp_login($this->conn_id, $this->ftp_user, $this->ftp_password))
+        if($server=="") return false;
+        /*
+        echo "<pre>";
+        echo "server-->".$server."<br>";
+        echo "user---->".$user."<br>";
+        echo "passwd-->".$passw."<br>";
+        echo "</pre>";
+         * 
+         */
+        $conn_id = ftp_connect($server,21) or die("No es posible la conexión con el servidor $server");
+        if(ftp_login($conn_id, $user, $passw))
         {
             return true;
         }
         return false;
-    }
-    public function cuentas_asociadas()
-    {
-        
     }
 }

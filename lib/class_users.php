@@ -25,8 +25,8 @@ class User
     private $error;
     
     function __construct($id=0,$is_admin=0,$username='',$mails_imetos='',$enable_user='',
-            $id_ftp=0,$user_ftp='',$passw_ftp='',$server_ftp='',$remotedir_ftp='',$mails_ftp='',$enable_ftp=0,
-            $id_mysql=0,$user_mysql='',$passw_mysql='',$server_mysql='',$database_mysql='',$enable_mysql='') 
+            $id_ftp=0,$user_ftp='',$passw_ftp='',$server_ftp='',$remotedir_ftp='',$mails_ftp='',$enable_ftp=1,
+            $id_mysql=0,$user_mysql='',$passw_mysql='',$server_mysql='',$database_mysql='',$enable_mysql=1) 
     {
         $this->id=$id;
         $this->is_admin=$is_admin;
@@ -48,7 +48,7 @@ class User
         $this->server_mysql=$server_mysql;
         $this->database_mysql=$database_mysql;
         $this->enable_mysql=$enable_mysql;
-        
+        //
         $this->error="";
     }
     public function getError()
@@ -166,11 +166,11 @@ class User
         </form>
 		<?php		
 	}
-    
+    //
     public function verificar($usuario,$password)
     {
         // primero verifico que el usuario este en el sistema
-        $query="  SELECT  `id`,`username`,`password`,`is_admin`
+        $query="SELECT  `id`,`username`,`password`,`is_admin`
                 FROM    `users` 
                 WHERE   `username`='{$usuario}' AND 
                         `usertype`='imetos' LIMIT 1";
@@ -206,7 +206,7 @@ class User
         }
         return false;
     }
-    
+    //
     public function getLoginSession() 
 	{
         if(isset($_SESSION['user_login_session']))
@@ -216,7 +216,7 @@ class User
         return false;
     }
     
-    public function sesion_iniciada()
+    public function logged()
     {
 		if($this->getLoginSession())
 		{
@@ -273,9 +273,10 @@ class User
 		}
     }
 
-    public function formulario_crear()
+    public function new_user()
     {
-        if(isset($_POST['comprobar']))
+        // nuevo usuario
+        if(isset($_POST['check_connection']))
         {
             if(isset($_POST['username']))
             {
@@ -285,13 +286,13 @@ class User
             {
                 $password=  CCGetFromPost("password");
             }
-            if(isset($_POST['servidor']))
+            if(isset($_POST['server']))
             {
-                $servidor=  CCGetFromPost("servidor");
+                $server=  CCGetFromPost("server");
             }
-            if(isset($_POST['directorio']))
+            if(isset($_POST['remotedir']))
             {
-                $directorio=  CCGetFromPost("directorio");
+                $remotedir=  CCGetFromPost("remotedir");
             }
             if(isset($_POST['mails']))
             {
@@ -301,8 +302,8 @@ class User
         {
             $username="";
             $password="";
-            $servidor="";
-            $directorio="";
+            $server="";
+            $remotedir="";
             $mails="";
         }
         // agregar nuevo informe
@@ -313,66 +314,11 @@ class User
                 <tr>
                     <td>
                         <div id=\"nuevo_usuario\" style=\"display:none\">";
-            $this->formulario_edicion();
-            echo "      </div>
+        $this->formulario_usuario();
+        echo "          </div>
                     </td>
                 </tr>
             </table>";
-                    
-            /*
-            echo "
-            <table id='tabla-opciones-general'>
-                <tr>
-                    <td>
-                        <div id=\"nuevo_usuario\" style=\"display:none\">
-                            <form name=\"nuevo_informe\" method=\"post\" action=\"index.php\">
-                                <table id=\"tabla-nuevo-usuario\">
-                                    <tr>
-                                        <td>Usuario:</td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type=\"text\" name=\"usuario\" value=\"{$username}\" size=\"70\" maxlength=\"255\"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Password:</td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type=\"password\" name=\"password\" value=\"{$password}\" size=\"70\" maxlength=\"255\"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Servidor FTP:</td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type=\"text\" name=\"servidor\" value=\"{$servidor}\" size=\"70\" maxlength=\"1000\"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Directorio remoto:</td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type=\"text\" name=\"directorio\" value=\"{$directorio}\" size=\"70\" maxlength=\"1000\"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Mails: (separados por coma)</td>
-                                    </tr>
-                                    <tr>
-                                    <td><input type=\"text\" name=\"mails\" value=\"{$mails}\" size=\"70\" maxlength=\"1000\"></td>
-                                    </tr>
-                                    <tr><td>&nbsp;</td></tr>
-                                    <tr>
-                                        <td align=\"right\">
-                                            <input type=\"reset\" name=\"cancelar\" value=\"Cancelar\" onclick=\"mostrar_nuevo_informe()\">&nbsp;&nbsp;
-                                            <input type=\"submit\" name=\"comprobar\" value=\"Comprobar conexión\">&nbsp;&nbsp;
-                                            <input type=\"submit\" name=\"alta_usuario\" value=\"Agregar usuario\">
-                                        </td>
-                                    </tr>
-                                </table>        
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-            </table>";
-             * 
-             */
     }
     
     public static function getAll()
@@ -485,9 +431,31 @@ class User
         }
     }
     
+    public static function save()
+    {
+        // nuevo usuario
+        $usuario_ftp=   CCGetFromPost('usuario');
+        $password_ftp=  CCGetFromPost('password');
+        $servidor_ftp=  CCGetFromPost('servidor');
+        $directorio_remoto= CCGetFromPost('directorio');
+        $mails=  CCGetFromPost('mails');
+        $create_time=time();
+        $query="  INSERT INTO `users` 
+                    (`enable_user`,`create_time`,`username`,`password`,`server`,
+                    `remotedir`,`is_admin`,`usertype`,`mails`) 
+                VALUES (1,{$create_time},'{$usuario_ftp}','{$password_ftp}','{$servidor_ftp}','{$directorio_remoto}',0,'ftp','{$mails}')";
+        if(!sql_select($query, $consulta))
+        {
+            unset($consulta);
+            return false;
+        }
+        unset($consulta);
+        return true;
+    }
+    
     public function listar($is_admin=false, $userid=0)
     {
-        $enum_tipos_usuarios=getEnumOptions('usuarios', 'usertype');
+        //$enum_tipos_usuarios=getEnumOptions('usuarios', 'usertype');
         if($users=User::getAll())
         {
             echo "
@@ -515,7 +483,7 @@ class User
                 echo "      <a class=\"link-tabla\" href=\"javascript:mostrar_ocultar('conf_usuario_{$user->getId()}');\" title=\"Editar usuario\">
                                 <i class=\"fa fa-user\"></i>
                             </a>&nbsp;&nbsp;";
-                echo "      <a class=\"link-tabla\" href=\"javascript:mostrar_ocultar('conf_csv_{$user->getId()}');\" title=\"Configuraci&oacute;n de estaciones\">
+                echo "      <a class=\"link-tabla\" href=\"javascript:mostrar_ocultar('conf_exporta_{$user->getId()}');\" title=\"Configuraci&oacute;n de estaciones\">
                                 <i class=\"fa fa-pencil\"></i>
                             </a>";
                 echo "  </td>
@@ -523,18 +491,16 @@ class User
                         <td>{$user->getEmails()}</td>
                     </tr>
                     <tr>
-                        <td colspan=\"6\">";
-                        
-                $this->formulario_edicion($user);
-                
-                echo "      <div class=\"conf_csv\" id=\"conf_csv_{$user->getId()}\" style=\"display:none\">";
+                        <td colspan=\"6\">
+                            <div id=\"conf_usuario_{$user->getId()}\" style=\"display:none\">";
+                //formulario edicion de usuario
+                $this->formulario_usuario($user);
+                echo "      </div>
+                            <div class=\"conf_exporta\" id=\"conf_exporta_{$user->getId()}\" style=\"display:none\">";
                 // obtengo datos de conexion de la base de datos 
-                //$conexion=$this->buscar_datos_conexion($usuario['id']);
                 // si esta habilitado muestra info de estaciones
                 if($user->getEnableMySQL())
                 {
-                    //$BD = new IMETOS($conexion['servidor'],$conexion['base_datos'],$conexion['usuario'],$conexion['password']);
-                    //$BD = new IMETOS($user->getServerMySQL(),$user->getDatabaseMySQL(),$user->getUserMySQL(),$user->getPasswMySQL());
                     if($stations=Station::getAll($user->getServerMySQL(),$user->getDatabaseMySQL(),$user->getUserMySQL(),$user->getPasswMySQL()))
                     {
                         echo "  <div class=\"estaciones\" id=\"estaciones\">
@@ -557,13 +523,8 @@ class User
                         $con=0;
                         foreach($stations as $key_est => $station)
                         {
-                            //echo "key_est---->".$key_est."<br>";
-                            //$q_estacion = Station::load($estacion['f_station_code']);
-                            //$q_estacion->loadSensors(1);
                             $station->loadSensors(1);
-                            //$stationSensorsList = $q_estacion->getAvailableSensors();
                             $stationSensorsList = $station->getAvailableSensors();
-                            //$q_configuracion = Config_Station::load($usuario['id'],$q_estacion->getStationCode());
                             $q_config = Config_Station::load($user->getId(),$station->getStationCode());
                             if($con == 0)
                             {
@@ -777,9 +738,14 @@ class User
                             */
                             echo "                  </div> <!-- cierre de div row -->";
                             echo "                  <div class=\"row\">
-                                                        <div class=\"col-md-12\">
+                                                        <div class=\"col-md-4 text-right\">
+                                                            
+                                                        </div>
+                                                        <div class=\"col-md-8\">
                                                             <div class=\"pull-right\">
-                                                                <button type=\"submit\" name=\"guardar_configuracion\" class=\"btn btn-default\">Guardar configuraci&oacute;n</button><br><br>
+                                                                <button type=\"submit\" name=\"data_export\" class=\"btn btn-default\">Exportar ahora</button>&nbsp;
+                                                                <button type=\"submit\" name=\"save_config\" class=\"btn btn-default\">Guardar configuraci&oacute;n</button>&nbsp;
+                                                                <button type=\"button\" name=\"close\" class=\"btn btn-default\" onClick=\"javascript:mostrar_ocultar('conf_exporta_{$user->getId()}');\">Cerrar</button>&nbsp;
                                                             </div>
                                                         </div>
                                                     </div>";
@@ -790,7 +756,7 @@ class User
                         }
                     }
                 }
-                echo "      </div> <!-- cierre de div conf_csv -->
+                echo "      </div> <!-- cierre de div conf_exporta -->
                         </td>
                     </tr>";
             }
@@ -801,147 +767,184 @@ class User
         }
     }
 
-    private function formulario_edicion($q_user=null)
+    private function formulario_usuario($q_user=null)
     {
+        $f_new=false;
         if(is_null($q_user))
         {
+            $f_new=true;
             $user=new User();
         }else
         {
             $user=$q_user;
         }
-        echo "      <div id=\"conf_usuario_{$user->getId()}\" style=\"display:none\">
-                        <div class=\"container\">
+        echo "          <div class=\"container\">
                             <div class=\"row\">
-                                <div class=\"col-md-12\" style=\"text-align:center\">
-                                    <h2>Editar usuario</h2>
-                                </div>
+                                <div class=\"col-md-12\" style=\"text-align:center\">";
+        if($f_new)
+        {
+            echo "                  <h2>Nuevo usuario</h2>";
+        }else
+        {
+            echo "                  <h2>Editar usuario</h2>";
+        }
+        echo "                  </div>
                             </div>
                             <div class=\"row\">
                                 <div class=\"col-md-12\">
-                                    <form name=\"editar_usuario\" method=\"post\" action=\"index.php\">
-                                    <input type=\"hidden\" name=\"userid\" value=\"{$user->getId()}\">";
+                                    <form name=\"user_edit\" method=\"post\" action=\"index.php\">
+                                        <input type=\"hidden\" name=\"userid\" value=\"{$user->getId()}\">";
         if($user->getEnableFTP())
         {
-            echo "                  <input type=\"hidden\" name=\"id_ftp\" value=\"{$user->getIdFTP()}\">";
+            echo "                      <input type=\"hidden\" name=\"id_ftp\" value=\"{$user->getIdFTP()}\">";
         }
         if($user->getEnableMySQL())
         {
-            echo "                  <input type=\"hidden\" name=\"id_mysql\" value=\"{$user->getIdMySQL()}\">";
+            echo "                      <input type=\"hidden\" name=\"id_mysql\" value=\"{$user->getIdMySQL()}\">";
         }
-        echo "                      <table id=\"tabla-edicion-usuario\">
-                                        <tr>
-                                            <td align=\"2\"><dt>Datos de cuenta Fieldclimate</dt></td>
-                                        </tr>
-                                        <tr>
-                                            <td align=\"right\">Usuario iMetos:&nbsp;</td>
-                                            <td>
-                                                <input type=\"text\" name=\"usuario_imetos\" value=\"{$user->getUsername()}\" size=\"80\" maxlength=\"255\">&nbsp;
-                                            </td>
-                                        </tr>";
-        echo "                          <tr>
-                                            <td align=\"right\">
-                                                Mails para el env&iacute;o de informes de exportaci&oacute;n:&nbsp;<br>
-                                                <h6>Para varios mails sep&aacute;relos por coma</h6>
-                                            </td>
-                                            <td>
-                                                <textarea name=\"mails\" rows=\"3\" cols=\"80\">{$user->getEmails()}</textarea>
-                                            </td>
-                                        </tr>";
+        /*
+        echo "<pre>";
+        print_r($user);
+        echo "<br><br>";
+        echo "usuario ftp-->".$user->getUserFTP();
+        echo "</pre>";
+        */
+        echo "                          <table id=\"tabla-edicion-usuario\">
+                                            <tr>
+                                                <td colspan=\"2\" align=\"center\"><dt>Datos de cuenta Fieldclimate</dt></td>
+                                            </tr>
+                                            <tr>
+                                                <td align=\"right\">Usuario iMetos:&nbsp;</td>
+                                                <td>
+                                                    <input type=\"text\" name=\"usuario_imetos\" value=\"{$user->getUsername()}\" size=\"80\" maxlength=\"255\">&nbsp;
+                                                </td>
+                                            </tr>";
+        echo "                              <tr>
+                                                <td align=\"right\">
+                                                    Mails para el env&iacute;o de informes de exportaci&oacute;n:&nbsp;<br>
+                                                    <h6>Para varios mails sep&aacute;relos por coma</h6>
+                                                </td>
+                                                <td>
+                                                    <textarea name=\"mails\" rows=\"3\" cols=\"80\">{$user->getEmails()}</textarea>
+                                                </td>
+                                            </tr>";
         if($user->getEnableFTP())
         {
-            echo "                      <tr>
-                                            <td colspan=\"2\"><hr></td>
-                                        </tr>
-                                        <tr>
-                                            <td align=\"2\">
-                                                <dt>Datos FTP para el informe de alerta</dt>
-                                                <button name=\"realizar_informe_ahora\">Verificar sondas detenidas</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td align=\"right\">Usuario FTP:&nbsp;</td>
-                                            <td>
-                                                <input type=\"text\" name=\"usuario_ftp\" value=\"{$user->getUserFTP()}\" size=\"80\" maxlength=\"255\">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td align=\"right\">Password FTP:&nbsp;</td>
-                                            <td>
-                                                <input type=\"password\" name=\"password_ftp\" value=\"{$user->getPasswFTP()}\" size=\"80\" maxlength=\"255\">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td align=\"right\">Servidor FTP:&nbsp;</td>
-                                            <td>
-                                                <input type=\"text\" name=\"servidor_ftp\" value=\"{$user->getServerFTP()}\" size=\"80\" maxlength=\"1000\">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td align=\"right\">Directorio remoto:&nbsp;</td>
-                                            <td>
-                                                <input type=\"text\" name=\"directorio_remoto\" value=\"{$user->getRemoteDirFTP()}\" size=\"80\" maxlength=\"1000\">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td align=\"right\">
-                                                Mails para el env&iacute;o de alertas:&nbsp;<br>
-                                                <h6>Para varios mails sep&aacute;relos por coma</h6>
-                                            </td>
-                                            <td>
-                                                <textarea name=\"mails\" rows=\"3\" cols=\"80\">{$user->getEmailsFTP()}</textarea>
-                                            </td>
-                                        </tr>";
+            echo "                          <tr>
+                                                <td colspan=\"2\"><hr></td>
+                                            </tr>";
+            echo "                          <tr>
+                                                <td colspan=\"2\" align=\"center\">
+                                                    <dt>Datos FTP para el informe de alerta</dt>
+                                                </td>
+                                            </tr>";
+/*
+            echo "                          <tr>
+                                                <td align=\"2\">
+                                                    <button name=\"realizar_informe_ahora\">Verificar sondas detenidas</button>
+                                                </td>
+                                            </tr>";
+ * 
+ */
+            echo "                          <tr>
+                                                <td align=\"right\">Usuario FTP:&nbsp;</td>
+                                                <td>
+                                                    <input type=\"text\" name=\"username_ftp\" value=\"{$user->getUserFTP()}\" size=\"80\" maxlength=\"255\">
+                                                </td>
+                                            </tr>";
+            echo "                          <tr>
+                                                <td align=\"right\">Password FTP:&nbsp;</td>
+                                                <td>
+                                                    <input type=\"password\" name=\"password_ftp\" value=\"{$user->getPasswFTP()}\" size=\"80\" maxlength=\"255\">
+                                                </td>
+                                            </tr>";
+            echo "                          <tr>
+                                                <td align=\"right\">Servidor FTP:&nbsp;</td>
+                                                <td>
+                                                    <input type=\"text\" name=\"server_ftp\" value=\"{$user->getServerFTP()}\" size=\"80\" maxlength=\"1000\">
+                                                </td>
+                                            </tr>";
+            echo "                          <tr>
+                                                <td align=\"right\">Directorio remoto:&nbsp;</td>
+                                                <td>
+                                                    <input type=\"text\" name=\"remotedir\" value=\"{$user->getRemoteDirFTP()}\" size=\"80\" maxlength=\"1000\">
+                                                </td>
+                                            </tr>";
+            echo "                          <tr>
+                                                <td align=\"right\">
+                                                    Mails para el env&iacute;o de alertas:&nbsp;<br>
+                                                    <h6>Para varios mails sep&aacute;relos por coma</h6>
+                                                </td>
+                                                <td>
+                                                    <textarea name=\"mails\" rows=\"3\" cols=\"80\">{$user->getEmailsFTP()}</textarea>
+                                                </td>
+                                            </tr>";
+                echo "                          <tr>
+                                                <td colspan=\"2\" align=\"right\">
+                                                    <button type=\"submit\" name=\"check_connection\" class=\"btn btn-default\">Verificar conexi&oacute;n</button>
+                                                </td>
+                                            </tr>";
         }
         // agrego usuario mysql
         if($user->getEnableMySQL())
         {
-            echo "                      <tr>
-                                            <td colspan=\"2\"><hr></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan=\"2\"><dt>Datos de conexión a la base de datos iMetos</dt></td>
-                                        </tr>
-                                        <tr>
-                                            <td align=\"right\">Usuario Mysql:&nbsp;</td>
-                                            <td>
-                                                <input type=\"text\" name=\"usuario_mysql\" value=\"{$user->getUserMySQL()}\" size=\"80\" maxlength=\"255\">&nbsp;
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td align=\"right\">Password Mysql:&nbsp;</td>
-                                            <td>
-                                                <input type=\"text\" name=\"password_mysql\" value=\"{$user->getPasswMySQL()}\" size=\"80\" maxlength=\"255\">&nbsp;
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td align=\"right\">Base de datos Mysql:&nbsp;</td>
-                                            <td>
-                                                <input type=\"text\" name=\"base_datos_mysql\" value=\"{$user->getDatabaseMySQL()}\" size=\"80\" maxlength=\"255\">&nbsp;
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td align=\"right\">Servidor Mysql:&nbsp;</td>
-                                            <td>
-                                                <input type=\"text\" name=\"servidor_mysql\" value=\"{$user->getServerMySQL()}\" size=\"80\" maxlength=\"255\">&nbsp;
-                                            </td>
-                                        </tr>";
+            echo "                          <tr>
+                                                <td colspan=\"2\"><hr></td>
+                                            </tr>";
+            echo "                          <tr>
+                                                <td colspan=\"2\" align=\"center\">
+                                                    <dt>
+                                                        Datos de conexión a la base de datos iMetos
+                                                    </dt>
+                                                </td>
+                                            </tr>";
+            echo "                          <tr>
+                                                <td align=\"right\">Usuario Mysql:&nbsp;</td>
+                                                <td>
+                                                    <input type=\"text\" name=\"usuario_mysql\" value=\"{$user->getUserMySQL()}\" size=\"80\" maxlength=\"255\">&nbsp;
+                                                </td>
+                                            </tr>";
+            echo "                          <tr>
+                                                <td align=\"right\">Password Mysql:&nbsp;</td>
+                                                <td>
+                                                    <input type=\"text\" name=\"password_mysql\" value=\"{$user->getPasswMySQL()}\" size=\"80\" maxlength=\"255\">&nbsp;
+                                                </td>
+                                            </tr>";
+            echo "                          <tr>
+                                                <td align=\"right\">Base de datos Mysql:&nbsp;</td>
+                                                <td>
+                                                    <input type=\"text\" name=\"base_datos_mysql\" value=\"{$user->getDatabaseMySQL()}\" size=\"80\" maxlength=\"255\">&nbsp;
+                                                </td>
+                                            </tr>";
+            echo "                          <tr>
+                                                <td align=\"right\">Servidor Mysql:&nbsp;</td>
+                                                <td>
+                                                    <input type=\"text\" name=\"servidor_mysql\" value=\"{$user->getServerMySQL()}\" size=\"80\" maxlength=\"255\">&nbsp;
+                                                </td>
+                                            </tr>";
         }
-        echo "                          <tr>
-                                            <td colspan=\"2\" align=\"right\">
-                                                <input type=\"reset\" name=\"cancelar_edicion\" value=\"Cancelar\" onclick=\"mostrar_ocultar('usuario_{$user->getId()}')\">&nbsp;
-                                                <input type=\"submit\" name=\"guardar_edicion_usuario\" value=\"Guardar edici&oacute;n\">
-                                            </td>
-                                        </tr>
-                                    </table>
+        echo "                              <tr>
+                                                <td colspan=\"2\" align=\"right\">";
+        if($f_new)
+        {
+            echo "                                  <button type=\"button\" name=\"cancel\" class=\"btn btn-default\" onClick=\"javascript:mostrar_ocultar('conf_usuario_{$user->getId()}')\">Cancelar</button>&nbsp;
+                                                    <button type=\"submit\" name=\"new_user\" class=\"btn btn-default\">Guardar usuario</button>";
+        }else
+        {
+            echo "                                  <button type=\"button\" name=\"cancel\" class=\"btn btn-default\" onClick=\"javascript:mostrar_ocultar('conf_usuario_{$user->getId()}')\">Cancelar</button>&nbsp;
+                                                    <button type=\"submit\" name=\"update_user\" class=\"btn btn-default\">Guardar edici&oacute;n</button>";
+        }    
+        echo "                                  </td>
+                                            </tr>
+                                        </table>
                                     </form>
                                     <br><br><br>
-                                </div>
-                            </div>    
-                        </div>
-                    </div> <!-- fin de conf_usuario_* -->";
+                                </div><!-- fin de col-md-12 -->
+                            </div><!-- fin de row -->
+                        </div><!-- fin de container -->";
     }
     
+    /*
     public function cargar_todos()
     {
         // primero busco el usuario imetos
@@ -988,30 +991,12 @@ class User
         unset($consulta3);
         return $usuarios;
     }
+     * 
+     */
     
-    public function insertar()
-    {
-        // inserta usuario ftp
-        $usuario_ftp=   CCGetFromPost('usuario');
-        $password_ftp=  CCGetFromPost('password');
-        $servidor_ftp=  CCGetFromPost('servidor');
-        $directorio_remoto= CCGetFromPost('directorio');
-        $mails=  CCGetFromPost('mails');
-        $create_time=time();
-        $query="  INSERT INTO `users` 
-                    (`enable_user`,`create_time`,`username`,`password`,`server`,
-                    `remotedir`,`is_admin`,`usertype`,`mails`) 
-                VALUES (1,{$create_time},'{$usuario_ftp}','{$password_ftp}','{$servidor_ftp}','{$directorio_remoto}',0,'ftp','{$mails}')";
-        if(!sql_select($query, $consulta))
-        {
-            unset($consulta);
-            return false;
-        }
-        unset($consulta);
-        return true;
-    }
+
     
-    public function actualizar()
+    public static function update()
     {
         $error=false;
         // imetos
@@ -1030,22 +1015,23 @@ class User
         $password_mysql=  CCGetFromPost("password_mysql");
         $servidor_mysql=  CCGetFromPost("servidor_mysql");
         //
-        $query="    UPDATE  `users`
-                    SET     `username`='".$usuario."',
+        $query="UPDATE  `users`
+                SET     `username`='".$usuario."',
                         `password`='',
                         `server`='',
                         `directorio_remoto`='',
                         `is_admin`=0,
                         `usertype`='imetos',
                         `mails`=''
-                    WHERE   `id`={$userid}";
-        if(!sql_select($query, $consulta))
+                WHERE   `id`={$userid}";
+        if(!sql_select($query, $results))
         {
             // hubo un error
             $error=true;
         }
+        unset($results);
         // ftp
-        $query="  UPDATE  `users`
+        $query="UPDATE  `users`
                 SET     `username`='{$usuario_ftp}',
                         `password`='{$password_ftp}',
                         `server`='{$servidor_ftp}',
@@ -1054,13 +1040,14 @@ class User
                         `usertype`='ftp',
                         `mails`='{$mails}'
                 WHERE   `id`={$userid_ftp}";
-        if(!sql_select($query, $consulta2))
+        if(!sql_select($query, $results))
         {
             // hubo un error
             $error=true;
         }
+        unset($results);
         // mysql
-        $query="  UPDATE  `users`
+        $query="UPDATE  `users`
                 SET     `username`='{$usuario_mysql}',
                         `password`='{$password_mysql}',
                         `server`='{$servidor_mysql}',
@@ -1074,6 +1061,7 @@ class User
             // hubo un error
             $error=true;
         }
+        unset($results);
         if($error) return false;
         return true;
     }
@@ -1081,7 +1069,7 @@ class User
     public function borrar_usuario($userid=0)
     {
         if($userid==0) return false;
-        $query="  DELETE FROM `users` 
+        $query="DELETE FROM `users` 
                 WHERE `id`={$userid}";
         if(!sql_select($query, $consulta))
         {
@@ -1481,20 +1469,28 @@ class User
         $cadena.="<cantidad_sondas_fuera_fecha>{$sonda_fuera}</cantidad_sondas_fuera_fecha></sondas>";
         return trim($cadena);
     }
-    
-    public function comprobar_conexion()
+    /*
+    public static function check_connection()
     {
-        $usuario=  CCGetFromPost('usuario');
-        $password=  CCGetFromPost('password');
-        $servidor=  CCGetFromPost('servidor');
-        $directorio_remoto= CCGetFromPost('directorio');
-        if(!$obj_ftp=new FTP($servidor,$usuario,$password,$directorio_remoto))
+        echo "<pre>";
+        echo "check_connection<br><br>";
+        print_r($_POST);
+        echo "</pre>";
+        
+        $username=  CCGetFromPost('username_ftp');
+        $password=  CCGetFromPost('password_ftp');
+        $server=  CCGetFromPost('server_ftp');
+        $remotedir= CCGetFromPost('remotedir');
+        if($obj_ftp=new FTP($server,$username,$password,$remotedir))
         {
-            unset($consulta);
-            return false;
+            return true;
         }
-        unset($consulta);
-        return true;
+        return false;
+    }
+    */
+    public function exportar_datos()
+    {
+        
     }
     
     public function borrar_informe($id_informe=0)
