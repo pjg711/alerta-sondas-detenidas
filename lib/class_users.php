@@ -233,9 +233,9 @@ class User
                 FROM    `users` 
                 WHERE   `username`='{$usuario}' AND 
                         (`usertype`='imetos' OR `usertype`='sistema') LIMIT 1";
-        if(sql_select($query, $consulta))
+        if(sql_select($query, $results))
         {
-            if($registro=$consulta->fetch(PDO::FETCH_ASSOC))
+            if($registro=$results->fetch(PDO::FETCH_ASSOC))
             {
                 if(!AUTENTICAR)
                 {
@@ -454,7 +454,6 @@ class User
             $query="SELECT  `id`,`username`
                     FROM    `users`
                     WHERE   `usertype`='imetos'";
-            
         }
         if(!sql_select($query,$results))
         {
@@ -719,11 +718,20 @@ class User
                 $this->formulario_usuario($user);
                 echo "      </div>
                             <div class=\"conf_exporta\" id=\"conf_exporta_{$user->getId()}\" style=\"display:none\">";
-                // obtengo datos de conexion de la base de datos 
                 // si esta habilitado muestra info de estaciones
                 if($user->getEnableMySQL())
                 {
-                    if($stations=Station::getAll($user->getServerMySQL(),$user->getDatabaseMySQL(),$user->getUserMySQL(),$user->getPasswMySQL()))
+                    /*
+                    echo "userid---->{$user->getIdMysql()}<br>";
+                    echo "server---->{$user->getServerMySQL()}<br>";
+                    echo "database-->{$user->getDatabaseMySQL()}<br>";
+                    echo "usuario--->{$user->getUserMySQL()}<br>";
+                    echo "password-->{$user->getPasswMySQL()}<br>";
+                     * 
+                     */
+                    $BD = new IMETOS($user->getIdMySQL(), $user->getServerMySQL(), $user->getDatabaseMySQL(), $user->getUserMySQL(), $user->getPasswMySQL());
+                    //if($stations=Station::getAll($BD,$user->getIdMySQL(),$user->getServerMySQL(),$user->getDatabaseMySQL(),$user->getUserMySQL(),$user->getPasswMySQL()))
+                    if($stations=Station::getAll($BD))
                     {
                         echo "  <div class=\"estaciones\" id=\"estaciones\">
                                     <div class=\"container\">
@@ -745,7 +753,7 @@ class User
                         $con=0;
                         foreach($stations as $key_est => $station)
                         {
-                            $station->loadSensors(1);
+                            $station->loadSensors($BD);
                             $stationSensorsList = $station->getAvailableSensors();
                             $q_config = Config_Station::load($user->getId(),$station->getStationCode());
                             if($con == 0)
@@ -1224,7 +1232,7 @@ class User
                         `usertype`='mysql',
                         `mails`=''
                 WHERE   `id`={$userid_mysql}";
-        if(!sql_select($query, $consulta3))
+        if(!sql_select($query, $results))
         {
             // hubo un error
             $error=true;
@@ -1243,12 +1251,11 @@ class User
         if($userid==0) return false;
         $query="DELETE FROM `users` 
                 WHERE `id`={$userid}";
-        if(!sql_select($query, $consulta))
+        if(!sql_select($query, $results))
         {
-            unset($consulta);
             return false;
         }
-        unset($consulta);
+        unset($results);
         return true;
     }
     
@@ -1287,9 +1294,9 @@ class User
         $query="$query_select $query_demas";
         // muestro tabla con informes para el usuario logeado
         $informes=array();
-        if(sql_select($query, $consulta))
+        if(sql_select($query, $results))
         {
-            while($registro = $consulta->fetch(PDO::FETCH_ASSOC))
+            while($registro = $results->fetch(PDO::FETCH_ASSOC))
             {
                 $informes[]=$registro;
             }
@@ -1301,24 +1308,11 @@ class User
                 echo "No hay informes que mostrar<br>";
             }
         }
-        unset($consulta);
+        unset($results);
     }
-    /*
-    private function buscar_datos_conexion($userid)
-    {
-        $query="  SELECT  *
-                FROM    `users`
-                WHERE   `usertype`='mysql' AND
-                        `userid`={$userid}";
-        if(!sql_select($query,$consulta))
-        {
-            echo "ERROR! No se pudo determinar datos de conexion a la base de datos mysql";
-            return false;
-        }
-        return $consulta->fetch(PDO::FETCH_ASSOC);
-    }
+    /**
      * 
-     */   
+     */
     public function SignOff()
     {
         unset($_SESSION['user_login_session']);
@@ -1500,18 +1494,18 @@ class User
                             `usertype`='ftp' AND 
                             `username`='{$usuario}' LIMIT 1";
         }
-        if(sql_select($query, $consulta))
+        if(sql_select($query, $results))
         {
-            if($consulta->rowCount()==0)
+            if($results->rowCount()==0)
             {
                 echo "ERROR! ".$usuario." no corresponde con un usuario cargado en el sistema.\n";
             }
-            while($registro = $consulta->fetch(PDO::FETCH_ASSOC))
+            while($registro = $results->fetch(PDO::FETCH_ASSOC))
             {
                 hago_informe($registro,$lo_guardo);
             }
         }
-        unset($consulta);
+        unset($results);
     }
     
     private function hago_informe($registro,$lo_guardo=false)
@@ -1534,7 +1528,7 @@ class User
                                 (`userid`,`informe`,`fecha`) 
                             VALUES 
                                 ({$registro['id']},'{$informe}','{$fecha_actual}')";
-                    if(sql_select($query, $consulta))
+                    if(sql_select($query, $results))
                     {
                         // envio mails
                         envio_emails($informe,$usuario,$fecha_actual,$emails);
@@ -1545,7 +1539,7 @@ class User
                 echo "ERROR! Hubo algún problema en la creación del informe.\n";
             }
         }
-        unset($consulta);
+        unset($results);
     }
     
     private function analizo_sondas($sondas)
@@ -1664,33 +1658,39 @@ class User
     {
         
     }
-    
+    /**
+     * 
+     * @param type $id_informe
+     * @return boolean
+     */
     public function borrar_informe($id_informe=0)
     {
         if($id_informe==0) return false;
         $query="  DELETE FROM `informes`
                 WHERE `id`={$id_informe}";
-        if(sql_select($query, $consulta))
+        if(!sql_select($query, $results))
         {
-            unset($consulta);
-            return true;
+            return false;
         }
-        unset($consulta);
-        return false;
+        unset($results);
+        return true;
     }
-    
+    /**
+     * 
+     * @param type $userid
+     * @return boolean
+     */
     public function borrar_informes_todos($userid=0)
     {
         if($userid) return false;
         $query="  DELETE FROM `informes` 
                 WHERE `userid`={$userid}";
-        if(sql_select($query, $consulta))
+        if(!sql_select($query, $results))
         {
-            unset($consulta);
-            return true;
+            return false;
         }
-        unset($consulta);
-        return false;
+        unset($results);
+        return true;
     }    
     
     private function proceso_fecha($fecha)

@@ -104,17 +104,17 @@ class Config_Station
             $query="  SELECT  `id`,
                             `userid`,
                             `f_station_code`,
-                            `activa`,
+                            `enable`,
                             `info`
                     FROM    `configurations`
                     WHERE   `f_station_code`={$f_station_code} AND 
                             `userid`={$userid}";
             $loadedDataArray="";
-            if(sql_select($query, $consulta))
+            if(sql_select($query, $results))
             {
-                if($consulta->rowCount() > 0)
+                if($results->rowCount() > 0)
                 {
-                    while($configInfo = $consulta->fetch(PDO::FETCH_ASSOC))
+                    while($configInfo = $results->fetch(PDO::FETCH_ASSOC))
                     {
                         $loadedDataArray = $configInfo;
                     }
@@ -232,34 +232,36 @@ class Config_Station
             // primero verifico que exista
             $query="SELECT  `id`
                     FROM    `configurations`
-                    WHERE   `id_usuario`={$id_usuario} AND
+                    WHERE   `userid`={$userid} AND
                             `f_station_code`={$f_station_code}";
-            if(!sql_select($query,$consulta))
+            if(!sql_select($query, $results))
             {
                 mensaje("No se pudo consultar la base de datos","","error");
                 return false;
             }
-            if($consulta->rowCount() > 0)
+            if($results->rowCount() > 0)
             {
+                unset($results);
                 // lo actualizo
                 $query="UPDATE  `configurations`
                         SET     `info`='{$info}',
-                                `activa`={$activa}
-                        WHERE   `id_usuario`={$id_usuario} AND
+                                `enable`={$activa}
+                        WHERE   `userid`={$userid} AND
                                 `f_station_code`={$f_station_code}";
-                if(!sql_select($query,$consulta2))
+                if(!sql_select($query, $results))
                 {
                     mensaje("No se pudo actualizar los datos de la estacion","","error");
                     return false;
                 }
             }else
             {
+                unset($results);
                 // inserto estacion
                 $query="INSERT INTO `configurations` 
-                            (`id_usuario`,`f_station_code`,`activa`,`info`)
+                            (`userid`,`f_station_code`,`enable`,`info`)
                         VALUES 
                             ({$id_usuario},{$f_station_code},{$activa},'{$info}')";
-                if(!sql_select($query,$consulta2))
+                if(!sql_select($query,$results))
                 {
                     echo "ERROR! No se pudo insertar los datos de la estacion";
                     return false;

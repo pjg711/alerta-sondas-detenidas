@@ -212,7 +212,7 @@ class Sensor
      * @param Integer $sensorCh
      * @return Sensor
      */
-    public static function load($rowId, $fromArrayValues = false, $stationCode = false, $sensorCode = false, $sensorCh = false)
+    public static function load(IMETOS $BD, $rowId, $fromArrayValues = false, $stationCode = false, $sensorCode = false, $sensorCh = false)
     {
         if($stationCode !== false && $sensorCh !== false && $sensorCode !== false)
         {
@@ -233,8 +233,9 @@ class Sensor
             $loadedDataArray = $fromArrayValues;
         }else
         {
+            echo "pase por aca 1<br>";
             $BD=new IMETOS();
-            $queryQuery = "
+            $query = "
                 SELECT
                     `row_id`,
                     `f_station_code`,
@@ -283,7 +284,7 @@ class Sensor
 
                 LIMIT 1";
             
-            if($BD->sql_select($queryQuery, $result))
+            if($BD->sql_select($query, $result))
             {
                 if($BD->rowCount() > 0) 
                 {
@@ -354,7 +355,7 @@ class Sensor
      * @param Integer $filterByStatus 0|1
      * @return Array
      */
-    public static function getAll($filterByStationCode = null, $filterBySensorCode = null, $filterBySensorChannel = null, $filterByStatus = null, Array $filterById = null)
+    public static function getAll(IMETOS $BD, $filterByStationCode = null, $filterBySensorCode = null, $filterBySensorChannel = null, $filterByStatus = null, Array $filterById = null)
     {
         settype($response, 'array');
         settype($filters, 'array');
@@ -380,19 +381,20 @@ class Sensor
             $filters[] = " `enable_sensor` = '{$filterByStatus}'";
         }
         $whereCondition = count($filters) > 0 ? 'WHERE ' . implode(' AND ', $filters) : '';
-        $queryQuery = "
+        $query = "
             SELECT  *
             FROM    `seedclima_sensor_info`
                 {$whereCondition} 
             ORDER BY `priority`,`custom_name`,`f_sensor_user_name`";
-        $BD=new IMETOS();
-        if($BD->sql_select($queryQuery, $result))
+        //echo "pase por aca 2<br>";
+        //$BD=new IMETOS();
+        if($BD->sql_select($query, $result))
         {
-            if($BD->get_rowCount() > 0)
+            if($BD->getRowCount() > 0)
             {
                 while($sensorInfo = $result->fetch(PDO::FETCH_ASSOC))
                 {
-                    $sensor = Sensor::load(null, $sensorInfo);
+                    $sensor = Sensor::load($BD, null, $sensorInfo);
                     $response[$sensor->getSensorCode() . '_' . $sensor->getSensorCh()] = $sensor;
                 }
             }
@@ -878,7 +880,7 @@ class Sensor
      */
     public function save()
     {
-        $queryQuery = "
+        $query = "
             INSERT IGNORE INTO
                 `seedclima_sensor_info`
             SET
@@ -922,7 +924,7 @@ class Sensor
                 `last_update_date` = UNIX_TIMESTAMP(),
                 `last_editor` = " . check_null_val(process_plain_text($this->_lastEditor)) . "
             ";
-        return sql_select($queryQuery, $results);
+        return sql_select($query, $results);
     }
 
     /**

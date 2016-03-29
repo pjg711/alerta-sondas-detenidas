@@ -72,13 +72,6 @@ if($user->getLoginSession())
             mensaje("ERROR! Problema al actualizar usuario","","error");
         }
     }
-    if(isset($_POST['confirmed_delete_user']))
-    {
-        if(User::delete())
-        {
-            
-        }
-    }
     //
     if(isset($_POST['data_export']))
     {
@@ -176,9 +169,9 @@ if($user->getLoginSession())
                 mensaje("ERROR! No se pudo guardar el usuario","","error");
             }
         }
-        if(isset($_POST['confirmado_borrar_usuario']))
+        if(isset($_POST['confirmed_delete_user']))
         {
-            $userid= req("confirmado_borrar_usuario");
+            $userid= req("confirmed_delete_user");
             if($user->delete_user($userid))
             {
                 mensaje("El usuario fue borrado","Borrar usuario");

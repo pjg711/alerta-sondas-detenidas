@@ -15,7 +15,7 @@ $query="
     FROM    `usuarios`
     WHERE   `enable_user`=1 AND
             `usertype`='imetos'";
-if(sql_select($query,$consulta))
+if(sql_select($query,$results))
 {
     
 }

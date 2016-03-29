@@ -218,10 +218,19 @@ class Station
         $this->_lastEditionTime = $last_edition_time;
         $this->_lastEditor = $last_editor;
     }
-
-    public static function getAll($server="",$database="",$username="",$password="")
+    /**
+     * 
+     * @param type $userid is integer
+     * @param type $server is string
+     * @param type $database is string
+     * @param type $username is string 
+     * @param type $password is string
+     * @return array de objetos Station
+     */
+    //public static function getAll(IMETOS $BD, $userid=0,$server="",$database="",$username="",$password="")
+    public static function getAll(IMETOS $BD)
     {
-        $BD = new IMETOS($server, $database, $username, $password);
+        //$BD = new IMETOS($userid, $server, $database, $username, $password);
         $query="SELECT
                     `row_id`,
                     `f_station_code`,
@@ -275,11 +284,12 @@ class Station
         settype($response, 'array');
         if($BD->sql_select($query, $result))
         {
-            if($BD->get_rowCount() > 0)
+            if($BD->getRowCount() > 0)
             {
                 while($stationInfo = $result->fetch(PDO::FETCH_ASSOC))
                 {
-                    $station = Station::load($stationInfo['f_station_code']);
+                    //echo "pase por aca 3a--->{$stationInfo['f_station_code']}<br>";
+                    $station = Station::load($BD, $stationInfo['f_station_code']);
                     $response[$stationInfo['f_station_code']]= $station;
                 }
                 return $response;
@@ -294,15 +304,16 @@ class Station
      * @param Array $fromArrayValues
      * @return Station
      */
-    public static function load($f_station_code, $fromArrayValues = false)
+    public static function load(IMETOS $BD, $f_station_code, $fromArrayValues = false)
     {
         if(is_array($fromArrayValues))
         {
             $loadedDataArray = $fromArrayValues;
         }else
         {
-            $BD=new IMETOS();
-            $queryQuery = "
+            //echo "pase por aca 3<br>";
+            //$BD=new IMETOS();
+            $query = "
                 SELECT
                     `row_id`,
                     `f_station_code`,
@@ -356,13 +367,14 @@ class Station
                 WHERE
                     `f_station_code` = {$f_station_code}
                 LIMIT 1";
-            if($BD->sql_select($queryQuery, $result))
+            if($BD->sql_select($query, $result))
             {
-                if($BD->get_rowCount() > 0)
+                if($BD->getRowCount() > 0)
                 {
                     settype($response, 'array');
                     while($stationInfo = $result->fetch(PDO::FETCH_ASSOC))
                     {
+                        //echo "bien<br>";
                         $loadedDataArray = $stationInfo;
                     }
                 }
@@ -418,7 +430,7 @@ class Station
 			    $loadedDataArray['last_edition_time'],
 			    $loadedDataArray['last_editor']
             );
-            $station->_setLastDataRetrievedTime();
+            $station->_setLastDataRetrievedTime($BD);
             $station->_setStatusReport();
             return $station;
         }else
@@ -427,37 +439,55 @@ class Station
         }
     }
 
-    /**  @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function getRowId()
     {
         return $this->_rowId;
     }
 
-    /**  @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function getStationCode()
     {
         return $this->_fStationCode;
     }
 
-    /**  @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function getDate()
     {
         return $this->_fDate;
     }
 
-    /**  @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function getDevId()
     {
         return $this->_fDevId;
     }
 
-    /**  @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function getFName()
     {
         return $this->_fName;
     }
 
-    /**  @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function getName()
     {
         if($this->getCustomName())
@@ -473,61 +503,91 @@ class Station
         return $staionName;
     }
 
-    /**  @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function getDescr()
     {
         return $this->_fDescr;
     }
 
-    /**  @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function getInfo()
     {
         return $this->_fInfo;
     }
 
-    /**  @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function getUid()
     {
         return $this->_fUid;
     }
 
-    /**  @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function getStatus()
     {
         return $this->_fStatus;
     }
 
-    /**  @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function getCreateTime()
     {
         return $this->_fCreateTime;
     }
 
-    /**  @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function getMasterName()
     {
         return $this->_fMasterName;
     }
 
-    /**  @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function getDateMin()
     {
         return $this->_fDateMin;
     }
 
-    /**  @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function getDateMax()
     {
         return $this->_fDateMax;
     }
 
-    /**  @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function getDateLastDown()
     {
         return $this->_fDateLastDown;
     }
 
-    /**  @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function getDateSens()
     {
         return $this->_fDateSens;
@@ -641,117 +701,166 @@ class Station
         return $this->_fGprsUserId;
     }
 
-    /**  @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function getGprsPassw()
     {
         return $this->_fGprsPassw;
     }
 
-    /**  @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function getSernum()
     {
         return $this->_fSernum;
     }
 
-    /**  @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function getDateComm()
     {
         return $this->_fDateComm;
     }
 
-    /**  @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function getUserStationName()
     {
         return $this->_fUserStationName;
     }
 
-    /**  @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function getUserName()
     {
         return $this->_fUserName;
     }
 
-    /**  @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function getCustomName()
     {
         return $this->_customName;
     }
 
-    /**  @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function getCustomDesc()
     {
         return $this->_customDesc;
     }
 
-    /**  @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function getCustomImage()
     {
         return $this->_customImage ? $this->_customImage : 'default_station.jpg';
     }
 
-    /**  @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function isEnabled()
     {
         return $this->_enableStation;
     }
 
-    /**  @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function getShowInHome()
     {
         return $this->_showInHome;
     }
 
-    /**  @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function getPriority()
     {
         return $this->_priority;
     }
 
-    /**  @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function getLastUpdateDate()
     {
         return $this->_lastUpdateDate;
     }
 
-    /**  @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function getLastEditionTime()
     {
         return $this->_lastEditionTime;
     }
 
-    /**  @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function getLastEditor()
     {
         return $this->_lastEditor;
     }
 
-    /** @return <type> */
+    /**
+     * 
+     * @return type
+     */
     public function getStationStatusReport()
     {
         return $this->_statusReport;
     }
-
+    /**
+     * 
+     * @return type
+     */
     public function getStationStatus()
     {
         return $this->_status;
     }
-
+    
     /**
      * 
      */
-    private function _setLastDataRetrievedTime()
+    private function _setLastDataRetrievedTime(IMETOS $BD)
     {
-        $BD=new IMETOS();
-        $queryQuery = "
+        //echo "pase por aca 4<br>";
+        //$BD=new IMETOS();
+        $query = "
             SELECT
                 MAX(`last_read_time`)  as 'last_read_time'
             FROM
                 `seedclima_station_data_retrieve_info`
             WHERE
                 `f_station_code` = {$this->getStationCode()}";
-        if($BD->sql_select($queryQuery, $results))
+        if($BD->sql_select($query, $results))
         {
-            if($BD->get_rowCount() > 0)
+            if($BD->getRowCount() > 0)
             {
                 $row = $results->fetch(PDO::FETCH_ASSOC);
                 $this->_lastDataRetrievedTime = $row['last_read_time'];
@@ -848,8 +957,11 @@ class Station
      * @param Integer $status 0|1
      * @param Array $filterById
      */
-    public function loadSensors($status = null, Array $filterById = null)
+    //public function loadSensors($status = null, Array $filterById = null)
+    public function loadSensors(IMETOS $BD, Array $filterById = null)
     {
+        $this->_sensorsList['enabled'] = Sensor::getAll($BD, $this->getStationCode(), null, null, 1, $filterById);
+        /*
         switch($status)
         {
             case '1':
@@ -863,6 +975,8 @@ class Station
                 $this->_sensorsList['disabled'] = Sensor::getAll($this->getStationCode(), null, null, 0, $filterById);
                 break;
         }
+         * 
+         */
     }
 
     /**
@@ -924,7 +1038,7 @@ class Station
      */
     public function save()
     {
-        $queryQuery = "
+        $query = "
             INSERT IGNORE INTO
                 `seedclima_station_info`
             SET
@@ -976,9 +1090,12 @@ class Station
                 `last_editor` = " . check_null_val(process_plain_text($this->_lastEditor)) . "
                  ";
 
-        return sql_select($queryQuery, $results);
+        return sql_select($query, $results);
     }
-
+    /**
+     * 
+     * @return type
+     */
     public function __toString()
     {
         return $this->getName();

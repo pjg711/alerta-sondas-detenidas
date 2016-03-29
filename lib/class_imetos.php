@@ -1,11 +1,12 @@
 <?php
-// requisitos:
-// CURL
-//
+/**
+ * 
+ */
 class IMETOS
 {
     public $dblink;
     
+    private $userid;
     private $server_mysql;
     private $database_mysql;
     private $user_mysql;
@@ -13,31 +14,37 @@ class IMETOS
     //
     private $rowCount=0;
     //
-    function __construct($server=null,$database=null,$username=null,$password=null)
+    function __construct($userid=0,$server="",$database="",$username="",$password="")
     {
+        $this->userid=$userid;
         $this->server_mysql=$server;
         $this->user_mysql=$username;
         $this->passw_mysql=$password;
         $this->database_mysql=$database;
         //
-        if(is_null($server) OR is_null($database) OR is_null($username) OR is_null($password))
+        if($server=="" OR $database=="" OR $username=="" OR $password=="")
         {
-            if(isset($_SESSION['userid']))
+            // busca datos de conexion
+            echo "<pre>";
+            echo "server_mysql----->{$this->server_mysql}<br>";
+            echo "database_mysql--->{$this->database_mysql}<br>";
+            echo "user_mysql------->{$this->user_mysql}<br>";
+            echo "pass_mysql------->{$this->passw_mysql}<br>";
+            echo "</pre>";
+            //
+            $query="SELECT  `id`,`username`,`password`,`server`,`database`
+                    FROM    `users`
+                    WHERE   `usertype`='mysql' AND
+                            `userid`={$userid}";
+            echo "query---->{$query}<br>";
+            if(sql_select($query,$results))
             {
-                $userid=$_SESSION['userid'];
-                $query="SELECT  `id`,`username`,`password`,`server`,`database`
-                        FROM    `users`
-                        WHERE   `usertype`='mysql' AND
-                                `userid`={$userid}";
-                if(sql_select($query,$results))
+                if($connection = $results->fetch(PDO::FETCH_ASSOC))
                 {
-                    if($connection = $results->fetch(PDO::FETCH_ASSOC))
-                    {
-                        $this->server_mysql=$connection['server'];
-                        $this->database_mysql=$connection['database'];
-                        $this->user_mysql=$connection['username'];
-                        $this->passw_mysql=$connection['password'];
-                    }
+                    $this->server_mysql=$connection['server'];
+                    $this->database_mysql=$connection['database'];
+                    $this->user_mysql=$connection['username'];
+                    $this->passw_mysql=$connection['password'];
                 }
             }
         }
@@ -48,23 +55,27 @@ class IMETOS
             return false;
         }
     }
-    public function get_user()
+    public function getId()
+    {
+        return $this->userid;
+    }
+    public function getUser()
     {
         return $this->user_mysql;
     }
-    public function get_pass()
+    public function getPass()
     {
         return $this->passw_mysql;
     }
-    public function get_database()
+    public function getDatabase()
     {
         return $this->database_mysql;
     }
-    public function get_server()
+    public function getServer()
     {
         return $this->server_mysql;
     }
-    public function get_rowCount()
+    public function getRowCount()
     {
         return $this->rowCount;
     }
