@@ -87,6 +87,7 @@ function getEnumOptions($table, $field)
 /* ******************************************************************************************
  * Funciones para el manejo de las variables POST y GET
  */
+/*
 function CCGetFromPost($parameter_name, $default_value = "") 
 {
     return isset($_POST[$parameter_name]) ? CCStrip($_POST[$parameter_name]) : $default_value;
@@ -106,6 +107,32 @@ function CCStrip($value)
 			$value = stripslashes($value);
   	}
 	return $value;
+}
+ * 
+ */
+function req($varreq, $method = "REQUEST", $sanitise = true)
+{
+    if((isset($_REQUEST[$varreq])) && ($_REQUEST[$varreq] <> ""))
+    {
+        // PREVENT SQL INJECTION
+        switch ($method):
+            case'POST':
+                $return_string = ((isset($_POST[$varreq])) ? trim($_POST[$varreq]) : NULL);
+                break;
+
+            case'GET':
+                $return_string = ((isset($_GET[$varreq])) ? trim($_GET[$varreq]) : NULL);
+                break;
+
+            default: //REQUEST
+                $return_string = trim($_REQUEST[$varreq]);
+                break;
+        endswitch;
+    }else
+    {
+        $return_string = null;
+    }
+    return (($sanitise === true) ? (str_replace(array("--", "'", "\'", "`", "<", ">"), "", $return_string . '')) : $return_string . '');
 }
 /* ******************************************************************************************
  * Funciones para la redireccion y carteles en pantalla

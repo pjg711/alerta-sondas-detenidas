@@ -15,7 +15,7 @@ class PAGE
         . "         <meta name=\"author\" content=\"Pablo Julián García\">"
         . "         <meta name=\"keywords\" content=\"Seedmech alerta sondas\">"
         . "         <meta name=\"DESCRIPTION\" content=\"Sistema para sondas de humedad de suelo\">\n"
-        . "         <title>".TITULO."</title>"
+        . "         <title>".TITULO."</title>\n"
         . "         <!-- estilos propios -->\n"
         . "         <link rel=\"stylesheet\" type=\"text/css\" href=\"./css/estilos.css\"/>\n"
         . "         <script src=\"./lib/funciones.js\"></script>\n"

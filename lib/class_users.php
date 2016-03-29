@@ -24,6 +24,27 @@ class User
     
     private $error;
     
+    /**
+     * 
+     * @param type $id is integer
+     * @param type $is_admin is integer
+     * @param type $username
+     * @param type $mails_imetos
+     * @param type $enable_user
+     * @param type $id_ftp
+     * @param type $user_ftp
+     * @param type $passw_ftp
+     * @param type $server_ftp
+     * @param type $remotedir_ftp
+     * @param type $mails_ftp
+     * @param type $enable_ftp
+     * @param type $id_mysql
+     * @param type $user_mysql
+     * @param type $passw_mysql
+     * @param type $server_mysql
+     * @param type $database_mysql
+     * @param type $enable_mysql
+     */
     function __construct($id=0,$is_admin=0,$username='',$mails_imetos='',$enable_user='',
             $id_ftp=0,$user_ftp='',$passw_ftp='',$server_ftp='',$remotedir_ftp='',$mails_ftp='',$enable_ftp=1,
             $id_mysql=0,$user_mysql='',$passw_mysql='',$server_mysql='',$database_mysql='',$enable_mysql=1) 
@@ -51,19 +72,35 @@ class User
         //
         $this->error="";
     }
+    /**
+     * 
+     * @return type
+     */
     public function getError()
     {
         return $this->error;
     }
+    /**
+     * 
+     * @return type
+     */
     public function getId()
     {
         return $this->id;
     }
+    /**
+     * 
+     * @return type boolean
+     */
     public function getIsAdmin()
     {
         if(isset($_SESSION['is_admin'])) return $_SESSION['is_admin'];
         return $this->is_admin;
     }
+    /**
+     * 
+     * @return type
+     */
     public function getUsername()
     {
         return $this->user_name;
@@ -126,11 +163,19 @@ class User
     {
         return $this->database_mysql;
     }
+    /**
+     * 
+     * @return type
+     */
     public function getEnableMySQL()
     {
         return $this->enable_mysql;
     }
-    public function ingreso($action="index.php") 
+    /**
+     * 
+     * @param type $action is string
+     */
+    public function getInto($action="index.php") 
 	{
 		?>
         <br>
@@ -166,14 +211,28 @@ class User
         </form>
 		<?php		
 	}
-    //
-    public function verificar($usuario,$password)
+    /**
+     * Verifica usuario y crear variables de sesion si es true con la informacion de:
+     * user_login_session, userid, user_active, password, is_admin
+     * 
+     * @param type $usuario is string
+     * @param type $password is string
+     * @return boolean
+     */
+    public function verify_user($usuario="",$password="")
     {
         // primero verifico que el usuario este en el sistema
+        /*
         $query="SELECT  `id`,`username`,`password`,`is_admin`
                 FROM    `users` 
                 WHERE   `username`='{$usuario}' AND 
                         `usertype`='imetos' LIMIT 1";
+         * 
+         */
+        $query="SELECT  `id`,`username`,`password`,`is_admin`
+                FROM    `users` 
+                WHERE   `username`='{$usuario}' AND 
+                        (`usertype`='imetos' OR `usertype`='sistema') LIMIT 1";
         if(sql_select($query, $consulta))
         {
             if($registro=$consulta->fetch(PDO::FETCH_ASSOC))
@@ -206,7 +265,10 @@ class User
         }
         return false;
     }
-    //
+    /**
+     * retorna si esta abierta una sesion o no
+     * @return boolean
+     */
     public function getLoginSession() 
 	{
         if(isset($_SESSION['user_login_session']))
@@ -215,8 +277,11 @@ class User
         }
         return false;
     }
-    
-    public function logged()
+    /**
+     * Muestra informacion de la sesion iniciada
+     * @param type $isAdmin is boolean
+     */
+    public function logged($isAdmin=false)
     {
 		if($this->getLoginSession())
 		{
@@ -229,50 +294,80 @@ class User
                             <b>".utf8_encode($_SESSION['user_active'])."</b>
                         </td>
                     </tr>";
-            /*
-            echo "  <tr>
+            if($isAdmin)
+            {
+                echo "  
+                    <tr>
                         <td align=\"right\">
-                            <a class=\"sesion-iniciada\" href=\"#\" onclick=\"mostrar_ocultar('configurar-usuario')\"><i class=\"fa fa-user-md\"></i>&nbsp;Configurar usuario</a>
+                            <a class=\"sesion-iniciada\" data-toggle=\"modal\" data-target=\"#configurarUsuario\"><i class=\"fa fa-user-md\"></i>&nbsp;Configuraci&oacute;n usuario</a>
                         </td>
                     </tr>";
-             * 
-             */
+            }
             echo "  <tr>
                         <td align=\"right\">
-                            <a class=\"sesion-iniciada\" href=\"index.php?cerrar_sesion\"><i class=\"fa fa-sign-out\"></i>&nbsp;Cerrar sesion</a>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div id=\"configurar-usuario\" style=\"display:none\">
-                <h3>Cambiar contraseña</h3>
-                <table>
-                    <tr>
-                        <td>Ingrese la contraseña actual:</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type=\"text\" name=\"password_anterior\" value=\"\">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Ingrese la contraseña nueva:</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type=\"text\" name=\"password_nuevo\" value=\"\">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            
+                            <a class=\"sesion-iniciada\" href=\"index.php?sign_off\"><i class=\"fa fa-sign-out\"></i>&nbsp;Cerrar sesion</a>
                         </td>
                     </tr>
                 </table>
             </div>";
+            if($isAdmin)
+            {
+                echo "  <!-- Modal -->
+                    <div id=\"configurarUsuario\" class=\"modal modal-wide fade\" role=\"dialog\">
+                        <div class=\"modal-dialog\">
+                            <!-- Modal content-->
+                            <div class=\"modal-content\">
+                                <div class=\"modal-header\">
+                                    <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>
+                                    <h4 class=\"modal-title\">Cambiar contraseña</h4>
+                                </div>
+                                <div class=\"modal-body\">
+                                    <form class=\"form-horizontal\" role=\"form\" method=\"post\" action=\"index.php\">
+                                        <table width=\"99%\">
+                                            <tr>
+                                                <td>Ingrese la contraseña actual:</td>
+                                                <td>
+                                                    <input type=\"text\" name=\"password_anterior\" value=\"\" size=\"40\" maxlength=\"255\">
+                                                </td>
+                                            </tr>
+                                            <tr><td colspan=\"2\">&nbsp;</td></tr>
+                                            <tr>
+                                                <td>Ingrese la contraseña nueva:</td>
+                                                <td>
+                                                    <input type=\"text\" name=\"password_nuevo\" value=\"\" size=\"40\" maxlength=\"255\">
+                                                </td>
+                                            </tr>
+                                            <tr><td colspan=\"2\">&nbsp;</td></tr>
+                                            <tr>
+                                                <td>Repita la contraseña nueva:</td>
+                                                <td>
+                                                    <input type=\"text\" name=\"password_nuevo2\" value=\"\" size=\"40\" maxlength=\"255\">
+                                                </td>
+                                            </tr>
+                                            <!--
+                                            <tr><td colspan=\"2\">&nbsp;</td></tr>
+                                            <tr>
+                                                <td colspan=\"2\" align=\"right\">
+                                                    <button type=\"submit\" name=\"config_admin\" class=\"btn btn-default\">Guardar nueva contraseña</button>&nbsp;
+                                                </td>
+                                            </tr>
+                                            -->
+                                        </table>
+                                    </form>
+                                </div>
+                                <div class=\"modal-footer\">
+                                    <button type=\"submit\" name=\"config_admin\" class=\"btn btn-default\">Guardar nueva contraseña</button>&nbsp;
+                                    <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>";
+            }
 		}
     }
-
+    /**
+     * formulario nuevo usuario
+     */
     public function new_user()
     {
         // nuevo usuario
@@ -280,23 +375,23 @@ class User
         {
             if(isset($_POST['username']))
             {
-                $username=  CCGetFromPost("username");
+                $username=  req("username");
             }
             if(isset($_POST['password']))
             {
-                $password=  CCGetFromPost("password");
+                $password=  req("password");
             }
             if(isset($_POST['server']))
             {
-                $server=  CCGetFromPost("server");
+                $server=  req("server");
             }
             if(isset($_POST['remotedir']))
             {
-                $remotedir=  CCGetFromPost("remotedir");
+                $remotedir=  req("remotedir");
             }
             if(isset($_POST['mails']))
             {
-                $mails=  CCGetFromPost("mails");
+                $mails=  req("mails");
             }
         }else
         {
@@ -309,24 +404,58 @@ class User
         // agregar nuevo informe
         echo "
             <br><br><br><br><br>
-            <a class=\"nuevo-usuario\" href=\"javascript:mostrar_ocultar('nuevo_usuario');\"><i class=\"fa fa-user-plus\"></i>&nbsp;Nuevo usuario iMetos</a>
-            <table id='tabla-opciones-general'>
-                <tr>
-                    <td>
-                        <div id=\"nuevo_usuario\" style=\"display:none\">";
-        $this->formulario_usuario();
+            <div class=\"container\">
+                <div class=\"row\">
+                    <div class=\"center-block\">                          
+                        <a class=\"nuevo-usuario\" data-toggle=\"modal\" data-target=\"#nuevoUsuario\"><i class=\"fa fa-user-plus fa-4x\"></i>&nbsp;Nuevo usuario iMetos</a>
+                    </div>
+                </div>
+            </div>";
+        echo "  <!-- Modal -->
+            <div id=\"nuevoUsuario\" class=\"modal fade\" role=\"dialog\">
+                <div class=\"modal-dialog\">
+                    <!-- Modal content-->
+                    <div class=\"modal-content\">
+                        <div class=\"modal-header\">
+                            <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>
+                            <h4 class=\"modal-title\">Agregar usuario</h4>
+                        </div>
+                        <div class=\"modal-body\">";
+                            $this->formulario_usuario();
         echo "          </div>
-                    </td>
-                </tr>
-            </table>";
+                        <div class=\"modal-footer\">
+                            <button type=\"submit\" name=\"config_admin\" class=\"btn btn-default\">Guardar nueva contraseña</button>&nbsp;
+                            <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>";
     }
-    
-    public static function getAll()
+    /**
+     * Carga todos los usuarios (segun sea admin o no)
+     * @param type $is_admin is boolean
+     * @return boolean
+     */
+    public static function getAll($is_admin=false)
     {
         //cargar todos los usuarios
-        $query="    SELECT  `id`
+        if(!$is_admin)
+        {
+            if(isset($_SESSION['user_active']))
+            {
+                $username=$_SESSION['user_active'];
+                $query="SELECT  `id`,`username`
+                        FROM    `users`
+                        WHERE   `usertype`='imetos' AND
+                                `username`='{$username}'";
+            }
+        }else
+        {
+            $query="SELECT  `id`,`username`
                     FROM    `users`
                     WHERE   `usertype`='imetos'";
+            
+        }
         if(!sql_select($query,$results))
         {
             $this->error="No se pudo leer la tabla Users";
@@ -340,7 +469,12 @@ class User
         }
         return $response;
     }
-
+    /**
+     * Carga informacion de usuario 
+     * @param type $userid is integer
+     * @param type $fromArrayValues is array
+     * @return \User|boolean
+     */
     public static function load($userid=0, $fromArrayValues = false)
     {
         // cargo usuario 
@@ -409,54 +543,142 @@ class User
             unset($results2);
             unset($results3);
             //
-            $n_user= new User($user['id'],
-                    $user['is_admin'],
-                    $user['username'],
-                    $user['mails'],
-                    $user['enable_user'],
-                    $user['ftp']['id'],
-                    $user['ftp']['username'],
-                    $user['ftp']['password'],
-                    $user['ftp']['server'],
-                    $user['ftp']['remotedir'],
-                    $user['ftp']['mails'],
-                    $user['ftp']['enable_user'],
-                    $user['mysql']['id'],
-                    $user['mysql']['username'],
-                    $user['mysql']['password'],
-                    $user['mysql']['server'],
-                    $user['mysql']['database'],
-                    $user['mysql']['enable_user']);
+            $userid=0;
+            $user_isadmin=0;
+            $username="";
+            $mails="";
+            $enable_user=0;
+            //
+            $userFtpId=0;
+            $userFtpUsername="";
+            $userFtpPassword="";
+            $userFtpServer="";
+            $userFtpRemotedir="";
+            $userFtpMails="";
+            $userFtpEnable=0;
+            //
+            $userMysqlId=0;
+            $userMysqlUsername="";
+            $userMysqlPassword="";
+            $userMysqlServer="";
+            $userMysqlDatabase="";
+            $userMysqlEnable=0;
+            //
+            if(isset($user['id'])) $userid=$user['id'];
+            if(isset($user['is_admin'])) $user_isadmin=$user['is_admin'];
+            if(isset($user['username'])) $username=$user['username'];
+            if(isset($user['mails'])) $mails=$user['mails'];
+            if(isset($user['enable_user'])) $enable_user=$user['enable_user'];
+            //
+            if(isset($user['ftp']['id'])) $userFtpId=$user['ftp']['id'];
+            if(isset($user['ftp']['username'])) $userFtpUsername=$user['ftp']['username'];
+            if(isset($user['ftp']['password'])) $userFtpPassword=$user['ftp']['password'];
+            if(isset($user['ftp']['server'])) $userFtpServer=$user['ftp']['server'];
+            if(isset($user['ftp']['remotedir'])) $userFtpRemotedir=$user['ftp']['remotedir'];
+            if(isset($user['ftp']['mails'])) $userFtpMails=$user['ftp']['mails'];
+            if(isset($user['ftp']['enable_user'])) $userFtpEnable=$user['ftp']['enable_user'];
+            //
+            if(isset($user['mysql']['id'])) $userMysqlId=$user['mysql']['id'];
+            if(isset($user['mysql']['username'])) $userMysqlUsername=$user['mysql']['username'];
+            if(isset($user['mysql']['password'])) $userMysqlPassword=$user['mysql']['password'];
+            if(isset($user['mysql']['server']))  $userMysqlServer=$user['mysql']['server'];
+            if(isset($user['mysql']['database'])) $userMysqlDatabase=$user['mysql']['database'];
+            if(isset($user['mysql']['enable_user'])) $userMysqlEnable=$user['mysql']['enable_user'];
+            //
+            $n_user= new User($userid,
+                    $user_isadmin,
+                    $username,
+                    $mails,
+                    $enable_user,
+                    $userFtpId,
+                    $userFtpUsername,
+                    $userFtpPassword,
+                    $userFtpServer,
+                    $userFtpRemotedir,
+                    $userFtpMails,
+                    $userFtpEnable,
+                    $userMysqlId,
+                    $userMysqlUsername,
+                    $userMysqlPassword,
+                    $userMysqlServer,
+                    $userMysqlDatabase,
+                    $userMysqlEnable);
             return $n_user;
         }
     }
-    
+    /**
+     * Guarda nuevo usuario
+     * @return boolean
+     */
     public static function save()
     {
+        /*
+        [userid] => 0
+        [id_ftp] => 0
+        [id_mysql] => 0
+        [usuario_imetos] => usuario_metos
+        [mails] => 22222@asdasd.com
+        [username_ftp] => usuario_ftp
+        [password_ftp] => password_ftp
+        [server_ftp] => servidor_ftp
+        [remotedir] => directorio remote
+        [usuario_mysql] => adasd
+        [password_mysql] => adasd
+        [base_datos_mysql] => asdasd
+        [servidor_mysql] => asdasd
+        [new_user] => 
+         * 
+        */
         // nuevo usuario
-        $usuario_ftp=   CCGetFromPost('usuario');
-        $password_ftp=  CCGetFromPost('password');
-        $servidor_ftp=  CCGetFromPost('servidor');
-        $directorio_remoto= CCGetFromPost('directorio');
-        $mails=  CCGetFromPost('mails');
+        $username_imetos=  req('username_imetos');
+        $mails=  req('mails');
+        //
+        $username_ftp=   req('username_ftp');
+        $password_ftp=  req('password_ftp');
+        $server_ftp=  req('server_ftp');
+        $remotedir= req('remotedir');
+        $mails_ftp=  req('mails_ftp');
+        //
+        $username_mysql=  req('username_mysql');
+        $password_mysql=  req('password_mysql');
+        $database_mysql=  req('database_mysql');
+        $server_mysql=  req('server_mysql');
+        
         $create_time=time();
-        $query="  INSERT INTO `users` 
-                    (`enable_user`,`create_time`,`username`,`password`,`server`,
-                    `remotedir`,`is_admin`,`usertype`,`mails`) 
-                VALUES (1,{$create_time},'{$usuario_ftp}','{$password_ftp}','{$servidor_ftp}','{$directorio_remoto}',0,'ftp','{$mails}')";
-        if(!sql_select($query, $consulta))
+        $query="INSERT INTO `users` 
+                    (`enable_user`,`create_time`,`username`,`password`,`server`,`remotedir`,`is_admin`,`usertype`,`mails`)
+                VALUES (1,{$create_time},'{$username_imetos}','','','',0,'imetos','{$mails}')";
+        if($lastid=sql_select($query, $results))
         {
-            unset($consulta);
-            return false;
+            //echo "ultimo id--->{$lastid}<br>";
+            unset($results);
+            $query="INSERT INTO `users`
+                        (`enable_user`,`create_time`,`username`,`password`,`server`,`remotedir`,`is_admin`,`userid`,`usertype`,`mails`)
+                    VALUES (1,{$create_time},'{$username_ftp}','{$password_ftp}','{$server_ftp}','{$remotedir}',0,{$lastid},'ftp','{$mails_ftp}')";
+            if(sql_select($query,$results))
+            {
+            }
+            unset($results);
+            $query="INSERT INTO `users`
+                        (`enable_user`,`create_time`,`username`,`password`,`server`,`remotedir`,`is_admin`,`userid`,`usertype`,`mails`)
+                    VALUES (1,{$create_time},'{$username_mysql}','{$password_mysql}','{$server_mysql}','',0,{$lastid},'mysql','')";
+            if(sql_select($query,$results))
+            {
+            }
+            unset($results);
+            return true;
         }
-        unset($consulta);
-        return true;
+        return false;
     }
-    
+    /**
+     * Listado de usuarios imetos
+     * @param type $is_admin is boolean
+     * @param type $userid is number
+     */
     public function listar($is_admin=false, $userid=0)
     {
         //$enum_tipos_usuarios=getEnumOptions('usuarios', 'usertype');
-        if($users=User::getAll())
+        if($users=User::getAll($is_admin))
         {
             echo "
                 <h1>Listado de usuarios iMetos</h1>
@@ -766,7 +988,10 @@ class User
             echo "No se pudo cargar los usuarios<br>";
         }
     }
-
+    /**
+     * Formulario para crear/editar usuario
+     * @param type $q_user is Object User
+     */
     private function formulario_usuario($q_user=null)
     {
         $f_new=false;
@@ -781,10 +1006,7 @@ class User
         echo "          <div class=\"container\">
                             <div class=\"row\">
                                 <div class=\"col-md-12\" style=\"text-align:center\">";
-        if($f_new)
-        {
-            echo "                  <h2>Nuevo usuario</h2>";
-        }else
+        if(!$f_new)
         {
             echo "                  <h2>Editar usuario</h2>";
         }
@@ -802,13 +1024,6 @@ class User
         {
             echo "                      <input type=\"hidden\" name=\"id_mysql\" value=\"{$user->getIdMySQL()}\">";
         }
-        /*
-        echo "<pre>";
-        print_r($user);
-        echo "<br><br>";
-        echo "usuario ftp-->".$user->getUserFTP();
-        echo "</pre>";
-        */
         echo "                          <table id=\"tabla-edicion-usuario\">
                                             <tr>
                                                 <td colspan=\"2\" align=\"center\"><dt>Datos de cuenta Fieldclimate</dt></td>
@@ -816,7 +1031,7 @@ class User
                                             <tr>
                                                 <td align=\"right\">Usuario iMetos:&nbsp;</td>
                                                 <td>
-                                                    <input type=\"text\" name=\"usuario_imetos\" value=\"{$user->getUsername()}\" size=\"80\" maxlength=\"255\">&nbsp;
+                                                    <input type=\"text\" name=\"username_imetos\" value=\"{$user->getUsername()}\" size=\"80\" maxlength=\"255\">&nbsp;
                                                 </td>
                                             </tr>";
         echo "                              <tr>
@@ -876,7 +1091,7 @@ class User
                                                     <h6>Para varios mails sep&aacute;relos por coma</h6>
                                                 </td>
                                                 <td>
-                                                    <textarea name=\"mails\" rows=\"3\" cols=\"80\">{$user->getEmailsFTP()}</textarea>
+                                                    <textarea name=\"mails_ftp\" rows=\"3\" cols=\"80\">{$user->getEmailsFTP()}</textarea>
                                                 </td>
                                             </tr>";
                 echo "                          <tr>
@@ -923,6 +1138,7 @@ class User
                                                 </td>
                                             </tr>";
         }
+        /*
         echo "                              <tr>
                                                 <td colspan=\"2\" align=\"right\">";
         if($f_new)
@@ -936,84 +1152,36 @@ class User
         }    
         echo "                                  </td>
                                             </tr>
-                                        </table>
+        */
+        echo "                          </table>
                                     </form>
                                     <br><br><br>
                                 </div><!-- fin de col-md-12 -->
                             </div><!-- fin de row -->
                         </div><!-- fin de container -->";
     }
-    
-    /*
-    public function cargar_todos()
-    {
-        // primero busco el usuario imetos
-        $usuarios=array();
-        $query="    SELECT  * 
-                    FROM    `users` 
-                    WHERE   `usertype`='imetos'";
-        if(!sql_select($query, $consulta))
-        {
-            unset($consulta);
-            return false;
-        }
-        $con=0;
-        while($usuario = $consulta->fetch(PDO::FETCH_ASSOC))
-        {
-            $usuarios[$con]=$usuario;
-            // ahora busco usuarios ftp
-            $query="  SELECT  * 
-                    FROM    `users` 
-                    WHERE   `usertype`='ftp' AND 
-                            `userid`={$usuario['id']}";
-            if(sql_select($query,$consulta2))
-            {
-                while($registro = $consulta2->fetch(PDO::FETCH_ASSOC))
-                {
-                    $usuarios[$con]['ftp'][]=$registro;
-                }
-            }
-            $query="  SELECT  * 
-                    FROM    `users` 
-                    WHERE   `usertype`='mysql' AND 
-                            `userid`={$usuario['id']}";
-            if(sql_select($query,$consulta3))
-            {
-                while($registro = $consulta3->fetch(PDO::FETCH_ASSOC))
-                {
-                    $usuarios[$con]['mysql'][]=$registro;
-                }
-            }
-            $con++;
-        }
-        unset($consulta);
-        unset($consulta2);
-        unset($consulta3);
-        return $usuarios;
-    }
-     * 
+    /**
+     * Actualiza datos del usuario
+     * @return boolean
      */
-    
-
-    
     public static function update()
     {
         $error=false;
         // imetos
-        $userid=  CCGetFromPost("userid");
-        $usuario=  CCGetFromPost("username"); // usuario iMetos
+        $userid=  req("userid");
+        $usuario=  req("username"); // usuario iMetos
         // ftp
-        $userid_ftp=CCGetFromPost("id_ftp");
-        $usuario_ftp= CCGetFromPost("usuario_ftp"); // usuario ftp
-        $password_ftp=  CCGetFromPost("password_ftp"); // password ftp
-        $servidor_ftp= CCGetFromPost("servidor_ftp"); // servidor ftp
-        $directorio_remoto=  CCGetFromPost("directorio_remoto"); 
-        $mails=  CCGetFromPost("mails");
+        $userid_ftp=req("id_ftp");
+        $usuario_ftp= req("usuario_ftp"); // usuario ftp
+        $password_ftp=  req("password_ftp"); // password ftp
+        $servidor_ftp= req("servidor_ftp"); // servidor ftp
+        $directorio_remoto=  req("directorio_remoto"); 
+        $mails=  req("mails");
         // mysql
-        $userid_mysql=  CCGetFromPost("id_mysql");
-        $usuario_mysql=  CCGetFromPost("usuario_mysql");
-        $password_mysql=  CCGetFromPost("password_mysql");
-        $servidor_mysql=  CCGetFromPost("servidor_mysql");
+        $userid_mysql=  req("id_mysql");
+        $usuario_mysql=  req("usuario_mysql");
+        $password_mysql=  req("password_mysql");
+        $servidor_mysql=  req("servidor_mysql");
         //
         $query="UPDATE  `users`
                 SET     `username`='".$usuario."',
@@ -1065,8 +1233,12 @@ class User
         if($error) return false;
         return true;
     }
-            
-    public function borrar_usuario($userid=0)
+    /**
+     * 
+     * @param type $userid
+     * @return boolean
+     */
+    public function delete_user($userid=0)
     {
         if($userid==0) return false;
         $query="DELETE FROM `users` 
@@ -1147,7 +1319,7 @@ class User
     }
      * 
      */   
-    public function cerrar_sesion()
+    public function SignOff()
     {
         unset($_SESSION['user_login_session']);
         unset($_SESSION['password']);
@@ -1477,10 +1649,10 @@ class User
         print_r($_POST);
         echo "</pre>";
         
-        $username=  CCGetFromPost('username_ftp');
-        $password=  CCGetFromPost('password_ftp');
-        $server=  CCGetFromPost('server_ftp');
-        $remotedir= CCGetFromPost('remotedir');
+        $username=  req('username_ftp');
+        $password=  req('password_ftp');
+        $server=  req('server_ftp');
+        $remotedir= req('remotedir');
         if($obj_ftp=new FTP($server,$username,$password,$remotedir))
         {
             return true;

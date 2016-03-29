@@ -221,11 +221,11 @@ class Config_Station
         $info= json_encode($_POST);
         if(isset($_POST['userid']))
         {
-            $userid=  CCGetFromPost('userid');
+            $userid=  req('userid');
         }
         if(isset($_POST['f_station_code']))
         {
-            $f_station_code=  CCGetFromPost('f_station_code');
+            $f_station_code=  req('f_station_code');
         }
         if(isset($userid) AND isset($f_station_code))
         {

@@ -32,10 +32,10 @@ if($user->getLoginSession())
         //mensaje("pase por aca");
         $_SESSION['action']='check_connection';
         //comprobar la conexion al sitio ftp
-        $username=  CCGetFromPost('username_ftp');
-        $password=  CCGetFromPost('password_ftp');
-        $server=  CCGetFromPost('server_ftp');
-        $remotedir= CCGetFromPost('remotedir');
+        $username=  req('username_ftp');
+        $password=  req('password_ftp');
+        $server=  req('server_ftp');
+        $remotedir= req('remotedir');
         //if($obj_ftp=new FTP($server,$username,$password,$remotedir))
         //$server=null,$user=null,$passw=null
         if(FTP::check_connection($server,$username,$password))
@@ -55,10 +55,10 @@ if($user->getLoginSession())
         $_SESSION['action']='new_user';
         if(User::save())
         {
-            
+            mensaje("El usuario se guard\u00F3 con \u00E9xito","Nuevo usuario");
         }else
         {
-            
+            mensaje("ERROR. No se pudo guardar el nuevo usuario","","error");
         }
     }
     if(isset($_POST['edit_user']))
@@ -84,8 +84,8 @@ if($user->getLoginSession())
     {
         $_SESSION['action']='data_export';
         // exporto los datos
-        $userid=  CCGetFromPost('userid');
-        $f_station_code=  CCGetFromPost('f_station_code');
+        $userid=  req('userid');
+        $f_station_code=  req('f_station_code');
     }
     //
     if(isset($_POST['confirmed_delete_report']))
@@ -128,30 +128,30 @@ echo "
     </script>";
 */
 //
-if(isset($_GET['cerrar_sesion']))
+if(isset($_GET['sign_off']))
 {
-    $user->cerrar_sesion();
+    $user->SignOff();
 }
 if(!$user->getLoginSession())
 {
     if(isset($_POST['usuario']) and isset($_POST['password']))
     {
-        $q_usuario=CCGetFromPost("usuario");
-        $q_password=CCGetFromPost("password");
+        $q_usuario = req("usuario");
+        $q_password = req("password");
         // verifico el usuario
-        if($user->verificar($q_usuario, $q_password))
+        if($user->verify_user($q_usuario, $q_password))
         {
             // bien
         }else
         {
-            $user->cerrar_sesion();
+            $user->SignOff();
             mensaje("Error en dato de usuario y/o contraseña","","error");
             redireccionar("index.php");
         }
     }else
     {
         //pido usuario y contraseña para el ingreso
-        $user->ingreso();
+        $user->getInto();
     }
 }
 if($user->getLoginSession())
@@ -161,7 +161,7 @@ if($user->getLoginSession())
         <li class=\"active\"><a data-toggle=\"tab\" href=\"#exportacion\">Exportación de datos de sondas</a></li>
         <li><a data-toggle=\"tab\" href=\"#detenidas\">Informe de detenidas</a></li>
     </ul>";
-    $user->logged();
+    $user->logged($user->getIsAdmin());
     if($user->getIsAdmin())
     {
         // para administradores
@@ -178,8 +178,8 @@ if($user->getLoginSession())
         }
         if(isset($_POST['confirmado_borrar_usuario']))
         {
-            $userid= CCGetFromPost("confirmado_borrar_usuario");
-            if($user->borrar_usuario($userid))
+            $userid= req("confirmado_borrar_usuario");
+            if($user->delete_user($userid))
             {
                 mensaje("El usuario fue borrado","Borrar usuario");
             }else
@@ -190,8 +190,12 @@ if($user->getLoginSession())
         if(isset($_POST['realizar_informe']))
         {
             $q_usuario=array();
-            $q_usuario[1]=  CCGetFromPost("realizar_informe");
+            $q_usuario[1]=  req("realizar_informe");
             hago_informes($q_usuario,true);
+        }
+        if(isset($_POST['cambiar_configuracion']))
+        {
+            
         }
         echo "<div class=\"tab-content\">
                 <div id=\"exportacion\" class=\"tab-pane fade in active\">";

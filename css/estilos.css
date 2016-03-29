@@ -57,23 +57,25 @@ body {
 #contenido-txt { border-style: dotted; border-width: 1px; }
 
 /* formato link nuevo usuario */
-a.nuevo-usuario:link {
-    //background-color: #00FF00;
-    color: #006699;
+a.nuevo-usuario {
     text-decoration: none;
+    cursor: hand;
+}
+a.nuevo-usuario:link {
+    text-decoration: none;
+    color: #006699;
 }
 a.nuevo-usuario:visited {
+    text-decoration: none;
     color: #006699;
 }
 a.nuevo-usuario:active {
-    color:#bbb;
     text-decoration: none;
+    color:#bbb;
 }
 a.nuevo-usuario:hover {
-    background-color: #ffffff;
-}
-a.nuevo-usuario {
     text-decoration: none;
+    background-color: #ffffff;
 }
 /* formato link en las tablas */
 a.link-tabla:link {
@@ -132,27 +134,8 @@ label[for=label-enabled] {
 .footer-images .copyright{
     text-align: center;
 }
-/*
-.pie {
-    position : absolute;
-    bottom : 0;
-    height : 40px;
-    margin-top : 40px;
+
+#nuevoUsuario .modal-dialog
+{
+  width: 90%;
 }
-*/
-/*
-.pie{
-    margin: 0;
-    clear: both;    
-    
-    width: 100%;
-    height: 50px;
-    
-    border:1px solid gray;
-    background-color: #dadada;
-    color: #000000;
-    font-size: small;
-    font-weight: normal;
-    text-align: center;
-}
-*/
