@@ -104,7 +104,7 @@ a.sesion-iniciada:active {
 a.sesion-iniciada {
     text-decoration: none;
 }
-
+/* label de configuracion de estacion activa/desactiva */
 label[for=label-disabled] {
     color: #dadada;
     font-weight: normal !important;

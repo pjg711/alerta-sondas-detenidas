@@ -29,7 +29,6 @@ if($user->getLoginSession())
     //
     if(isset($_POST['check_connection']))
     {
-        //mensaje("pase por aca");
         $_SESSION['action']='check_connection';
         //comprobar la conexion al sitio ftp
         $username=  req('username_ftp');
@@ -79,6 +78,7 @@ if($user->getLoginSession())
         // exporto los datos
         $userid=  req('userid');
         $f_station_code=  req('f_station_code');
+        
     }
     //
     if(isset($_POST['confirmed_delete_report']))
@@ -93,7 +93,7 @@ if($user->getLoginSession())
             mensaje("ERROR! No se pudo borrar el informe","","error");
         }
     }
-    if(isset($_POST['confirmado_borrar_todos']))
+    if(isset($_POST['confirmed_erase_all']))
     {
         // borra todos los informes para el usuario 
         if(isset($_SESSION['userid']))

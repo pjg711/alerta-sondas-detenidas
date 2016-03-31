@@ -13,13 +13,16 @@
  */
 class Config_Station
 {
-    private $userid;        // userid de la tabla usuarios
-    private $f_station_code;    // f_station_code 
-    private $activa;
-    private $sensores;          // array con los sensores seleccionados
-    private $periodo;           // opcion de descargar con fecha de inicio y fecha final
-    private $periodo_fecha_inicial;      //
-    private $periodo_fecha_final;
+    private $userid;                // userid de la tabla usuarios
+    private $f_station_code;        // f_station_code 
+    private $enable;
+    private $sensores;              // array con los sensores seleccionados
+    private $periodo;               // opcion de descargar con fecha de inicio y fecha final
+    private $periodo_fecha_inicial; //
+    private $periodo_mkfecha_inicial;
+    private $periodo_fecha_final;   //
+    private $periodo_mkfecha_final;
+    private $periodo_dias;          //
     private $tipo_archivo;
     private $separador;
     private $encabezado;
@@ -27,9 +30,11 @@ class Config_Station
     //
     private $error;
     
-    function __construct($userid='',$f_station_code='',$activa,$sensores='',$periodo='',
-                        $periodo_fecha_inicial='',$periodo_fecha_final='',$tipo_archivo='',
-                        $separador='',$encabezado='',$archivo='') 
+    function __construct($userid='',$f_station_code='',$enable,$sensores='',$periodo='',
+                        $periodo_fecha_inicial='',
+                        $periodo_fecha_final='',
+                        $periodo_dias='',
+                        $tipo_archivo='',$separador='',$encabezado='',$archivo='') 
     {
         if($sensores=='')
         {
@@ -40,14 +45,37 @@ class Config_Station
         }
         $this->userid=$userid;
         $this->f_station_code=$f_station_code;
-        $this->activa=(int)$activa;
+        $this->enable=(int)$enable;
         $this->periodo=$periodo;
         $this->periodo_fecha_inicial=$periodo_fecha_inicial;
         $this->periodo_fecha_final=$periodo_fecha_final;
+        $this->periodo_dias=$periodo_dias;
         $this->tipo_archivo=$tipo_archivo;
         $this->separador=$separador;
         $this->encabezado=$encabezado;
         $this->nombre_archivo=$archivo;
+        if($periodo_fecha_inicial<>"")
+        {
+            $partes=explode('/',$periodo_fecha_inicial);
+            if(count($partes)==3)
+            {
+                $this->periodo_mkfecha_inicial=mktime(0, 0, 0, (int)$partes[1], (int)$partes[0], (int)$partes[2]);
+            }else
+            {
+                $this->periodo_mkfecha_inicial=0;
+            }
+        }
+        if($periodo_fecha_final<>"")
+        {
+            $partes=explode('/',$periodo_fecha_final);
+            if(count($partes)==3)
+            {
+                $this->periodo_mkfecha_final=mktime(0, 0, 0, (int)$partes[1], (int)$partes[0], (int)$partes[2]);
+            }else
+            {
+                $this->periodo_mkfecha_final=0;
+            }
+        }
     }
     public function getIdUsuario()
     {
@@ -57,9 +85,9 @@ class Config_Station
     {
         return $this->f_station_code;
     }
-    public function getActiva()
+    public function getEnable()
     {
-        if($this->activa==1) return true;
+        if($this->enable==1) return true;
         return false;
     }
     public function getPeriodo()
@@ -70,9 +98,21 @@ class Config_Station
     {
         return $this->periodo_fecha_inicial;
     }
+    public function getPeriodoMkFechaInicial()
+    {
+        return $this->periodo_mkfecha_inicial;
+    }
     public function getPeriodoFechaFinal()
     {
         return $this->periodo_fecha_final;
+    }
+    public function getPeriodoMkFechaFinal()
+    {
+        return $this->periodo_mkfecha_final;
+    }
+    public function getPeriodoDias()
+    {
+        return $this->periodo_dias;
     }
     public function getTipoArchivo()
     {
@@ -101,7 +141,7 @@ class Config_Station
             $loadedDataArray = $fromArrayValues;
         }else
         {
-            $query="  SELECT  `id`,
+            $query="SELECT  `id`,
                             `userid`,
                             `f_station_code`,
                             `enable`,
@@ -126,12 +166,12 @@ class Config_Station
             if(isset($loadedDataArray['info']))
             {
                 $config=json_decode($loadedDataArray['info'],true);
-                if(isset($loadedDataArray['activa']))
+                if(isset($loadedDataArray['enable']))
                 {
-                    $activa=$loadedDataArray['activa'];
+                    $enable=$loadedDataArray['enable'];
                 }else
                 {
-                    $activa=1;
+                    $enable=1;
                 }
                 // sensores
                 $sensores=array();
@@ -154,19 +194,48 @@ class Config_Station
                 {
                     $periodo="";
                 }
-                if(isset($config['periodo_fecha_inicial']))
+                if(isset($config['fecha_inicial']))
                 {
-                    $periodo_fecha_inicial=$config['periodo_fecha_inicial'];
+                    $periodo_fecha_inicial=$config['fecha_inicial'];
+                    if($periodo_fecha_inicial<>"")
+                    {
+                        $partes=explode('/',$periodo_fecha_inicial);
+                        if(count($partes)==3)
+                        {
+                            $periodo_mkfecha_inicial=mktime(0, 0, 0, (int)$partes[1], (int)$partes[0], (int)$partes[2]);
+                        }else
+                        {
+                            $periodo_mkfecha_inicial=0;
+                        }
+                    }
                 }else
                 {
                     $periodo_fecha_inicial="";
                 }
-                if(isset($config['periodo_fecha_final']))
+                if(isset($config['fecha_final']))
                 {
-                    $periodo_fecha_final=$config['periodo_fecha_final'];
+                    $periodo_fecha_final=$config['fecha_final'];
+                    if($periodo_fecha_final<>"")
+                    {
+                        $partes=explode('/',$periodo_fecha_final);
+                        if(count($partes)==3)
+                        {
+                            $periodo_mkfecha_final=mktime(0, 0, 0, (int)$partes[1], (int)$partes[0], (int)$partes[2]);
+                        }else
+                        {
+                            $periodo_mkfecha_final=0;
+                        }
+                    }
                 }else
                 {
                     $periodo_fecha_final="";
+                }
+                if(isset($config['periodo_dias']))
+                {
+                    $periodo_dias=$config['periodo_dias'];
+                }else
+                {
+                    $periodo_dias="";
                 }
                 if(isset($config['tipo_archivo']))
                 {
@@ -196,9 +265,10 @@ class Config_Station
                 {
                     $archivo="";
                 }
-                $q_config = new Config_Station($userid,$f_station_code,$activa,$sensores,$periodo,
-                        $periodo_fecha_inicial,$periodo_fecha_final,$tipo_archivo,$separador,
-                        $encabezado,$archivo);
+                $q_config = new Config_Station($userid,$f_station_code,$enable,$sensores,$periodo,
+                        $periodo_fecha_inicial,
+                        $periodo_fecha_final,
+                        $periodo_dias,$tipo_archivo,$separador,$encabezado,$archivo);
                 return $q_config;
             }
         }
@@ -211,12 +281,12 @@ class Config_Station
     }
     public static function update()
     {
-        if(!isset($_POST['activar']) OR $_POST['activar']=='off')
+        if(!isset($_POST['enable']) OR $_POST['enable']=='off')
         {
-            $activa=0;
+            $enable=0;
         }else
         {
-            $activa=1;
+            $enable=1;
         }
         $info= json_encode($_POST);
         if(isset($_POST['userid']))
@@ -245,7 +315,7 @@ class Config_Station
                 // lo actualizo
                 $query="UPDATE  `configurations`
                         SET     `info`='{$info}',
-                                `enable`={$activa}
+                                `enable`={$enable}
                         WHERE   `userid`={$userid} AND
                                 `f_station_code`={$f_station_code}";
                 if(!sql_select($query, $results))
@@ -260,7 +330,7 @@ class Config_Station
                 $query="INSERT INTO `configurations` 
                             (`userid`,`f_station_code`,`enable`,`info`)
                         VALUES 
-                            ({$id_usuario},{$f_station_code},{$activa},'{$info}')";
+                            ({$id_usuario},{$f_station_code},{$enable},'{$info}')";
                 if(!sql_select($query,$results))
                 {
                     echo "ERROR! No se pudo insertar los datos de la estacion";
@@ -271,5 +341,39 @@ class Config_Station
         }
         echo "ERROR! No esta definido el usuario y/o la estaci&oacute;n";
         return false;
+    }
+    
+    public function runQuery(IMETOS $BD)
+    {
+        // valores: periodo, mes_actual, todos, fijo
+        switch($this->getPeriodo())
+        {
+            case 'periodo':
+                // fecha inicial 
+                $fecha_inicial=$this->getPeriodoMkFechaInicial();
+                $fecha_final=$this->getPeriodoMkFechaFinal();
+                break;
+            case 'mes_actual':
+                $mes_actual=date('n');
+                $anio_actual=date('Y');
+                $days_number=cal_days_in_month(CAL_GREGORIAN, $mes_actual, $anio_actual);
+                $fecha_inicial=mktime(0,0,0,$mes_actual,1,$anio_actual);
+                $fecha_final=mktime(0,0,0,$mes_actual,$days_number,$anio_actual);
+                break;
+            case 'todos':
+                
+                break;
+            case 'fijo':
+                $dias_fijos=$this->getPeriodoDias();
+                
+                $fecha= new DateTime('2000-01-01');
+                
+                $dia_actual=date('j');
+                $mes_actual=date('n');
+                $anio_actual=date('Y');
+                $fecha_final=mktime(0,0,0,$mes_actual,$dia_actual,$anio_actual);
+                $fecha_inicial=mktime(0,0,0,)
+                break;
+        }
     }
 }

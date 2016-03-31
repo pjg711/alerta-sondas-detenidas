@@ -721,14 +721,6 @@ class User
                 // si esta habilitado muestra info de estaciones
                 if($user->getEnableMySQL())
                 {
-                    /*
-                    echo "userid---->{$user->getIdMysql()}<br>";
-                    echo "server---->{$user->getServerMySQL()}<br>";
-                    echo "database-->{$user->getDatabaseMySQL()}<br>";
-                    echo "usuario--->{$user->getUserMySQL()}<br>";
-                    echo "password-->{$user->getPasswMySQL()}<br>";
-                     * 
-                     */
                     $BD = new IMETOS($user->getIdMySQL(), $user->getServerMySQL(), $user->getDatabaseMySQL(), $user->getUserMySQL(), $user->getPasswMySQL());
                     //if($stations=Station::getAll($BD,$user->getIdMySQL(),$user->getServerMySQL(),$user->getDatabaseMySQL(),$user->getUserMySQL(),$user->getPasswMySQL()))
                     if($stations=Station::getAll($BD))
@@ -770,18 +762,18 @@ class User
                                                             <input type=\"hidden\" id=\"userid\" name=\"userid\" value=\"{$user->getId()}\">
                                                             <input type=\"hidden\" id=\"f_station_code\" name=\"f_station_code\" value=\"{$station->getStationCode()}\">
                                                             <div class=\"col-md-9\">";
-                            if($q_config->getActiva())
+                            if($q_config->getEnable())
                             {
                                 // estacion activa
                                 $disabled="";
                                 $label="label-enabled";
-                                echo "                          <input class=\"nadas\" type=\"checkbox\" id=\"activar\" name=\"activar\" checked=\"\" onclick=\"estacion_activa(this,'estacion_{$station->getStationCode()}');\">&nbsp;Activar Estaci&oacute;n";
+                                echo "                          <input class=\"nadas\" type=\"checkbox\" id=\"activar\" name=\"enable\" checked=\"\" onclick=\"estacion_activa(this,'estacion_{$station->getStationCode()}');\">&nbsp;Activar Estaci&oacute;n";
                             }else
                             {
                                 // estacion desactivada
                                 $disabled="disabled";
                                 $label="label-disabled";
-                                echo "                          <input class=\"nadas\" type=\"checkbox\" id=\"activar\" name=\"activar\" onclick=\"estacion_activa(this,'estacion_{$station->getStationCode()}');\">&nbsp;Activar Estaci&oacute;n";
+                                echo "                          <input class=\"nadas\" type=\"checkbox\" id=\"activar\" name=\"enable\" onclick=\"estacion_activa(this,'estacion_{$station->getStationCode()}');\">&nbsp;Activar Estaci&oacute;n";
                             }
                             echo "                          </div>
                                                             <div class=\"col-md-12\">
@@ -815,6 +807,7 @@ class User
                                                                     </div>
                                                                     <div class=\"panel-body\">";
                             // Periodo a descargar  
+                            // valores: periodo, mes_actual, todos, fijo
                             echo "                                      <div class=\"form-group\">
                                                                             <label for=\"{$label}\">Per&iacute;odo a descargar:</label><br>
                                                                             <label class=\"radio-inline\">";
@@ -826,8 +819,8 @@ class User
                                 echo "                                          <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"descarga_periodo\" value=\"periodo\" {$disabled}>&nbsp;<label for=\"{$label}\">Descarga de datos desde</label>";
                             }
                             echo "                                          </label><br>
-                                                                            <label for=\"{$label}\">Fecha inicial:&nbsp;</label><input type=\"text\" class=\"todos\" name=\"fecha_inicial\" id=\"fecha_inicial\" value=\"{$q_config->getPeriodoFechaInicial()}\" size=\"8\" maxlength=\"8\" {$disabled}><label for=\"{$label}\">(dd/mm/aaaa)</label><br>
-                                                                            <label for=\"{$label}\">Fecha final:&nbsp;</label><input type=\"text\" class=\"todos\" name=\"fecha_final\" id=\"fecha_final\" value=\"{$q_config->getPeriodoFechaFinal()}\" size=\"8\" maxlength=\"8\" {$disabled}><label for=\"{$label}\">(dd/mm/aaaa)</label><br>
+                                                                            <label for=\"{$label}\">Fecha inicial:&nbsp;</label><input type=\"text\" class=\"todos\" name=\"fecha_inicial\" id=\"fecha_inicial\" value=\"{$q_config->getPeriodoFechaInicial()}\" size=\"10\" maxlength=\"10\" {$disabled}><label for=\"{$label}\">(dd/mm/aaaa)</label><br>
+                                                                            <label for=\"{$label}\">Fecha final:&nbsp;</label><input type=\"text\" class=\"todos\" name=\"fecha_final\" id=\"fecha_final\" value=\"{$q_config->getPeriodoFechaFinal()}\" size=\"10\" maxlength=\"10\" {$disabled}><label for=\"{$label}\">(dd/mm/aaaa)</label><br>
                                                                             <label class=\"radio-inline\">";
                             if($q_config->getPeriodo()=='mes_actual')
                             {
@@ -849,12 +842,12 @@ class User
                             echo "                                      </label>
                                                                         <br>
                                                                         <label class=\"radio-inline\">";
-                            if($q_config->getPeriodo()=='')
+                            if($q_config->getPeriodo()=='fijo')
                             {
-                                echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"fijo\" value=\"fijo\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">Per&iacute;odo fijo</label>";
+                                echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"fijo\" value=\"fijo\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">Per&iacute;odo fijo de &uacute;ltimos&nbsp;</label><input class=\"todos\" type=\"text\" name=\"periodo_dias\" value=\"{$q_config->getPeriodoDias()}\" size=\"2\" maxlength=\"3\"/><label for=\"{$label}\">&nbsp;d&iacute;as</label>";
                             }else
                             {
-                                echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"fijo\" value=\"fijo\" {$disabled}>&nbsp;<label for=\"{$label}\">Per&iacute;odo fijo</label>";
+                                echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"fijo\" value=\"fijo\" {$disabled}>&nbsp;<label for=\"{$label}\">Per&iacute;odo fijo de &uacute;ltimos&nbsp;</label><input class=\"todos\" type=\"text\" name=\"periodo_dias\" value=\"{$q_config->getPeriodoDias()}\" size=\"4\" maxlength=\"4\"/><label for=\"{$label}\">&nbsp;d&iacute;as</label>";
                             }
                             echo "                                       </label>
                                                                     </div>";
@@ -950,7 +943,7 @@ class User
                             // Nombre de archivo dde salida
                             echo "                                  <div class=\"form-group\">
                                                                         <label for=\"{$label}\">Nombre de archivo (sin extension):</label><br>
-                                                                        <input class=\"todos\" type=\"text\" id=\"archivo\" name=\"archivo\" size=\"40\" maxlength=\"50\" {$disabled}>
+                                                                        <input class=\"todos\" type=\"text\" id=\"archivo\" name=\"archivo\" value=\"{$q_config->getNombreArchivo()}\" size=\"40\" maxlength=\"50\" {$disabled}>
                                                                     </div>";
                             echo "                              </div>
                                                             </div>
