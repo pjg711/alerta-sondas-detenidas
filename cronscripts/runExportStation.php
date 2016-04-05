@@ -28,22 +28,52 @@ if($users=User::getAll(true))
                     echo "enable--------->{$q_config->getEnable()}<br>";
                     echo "periodo-------->{$q_config->getPeriodo()}<br>";
                     //
-                    $data=array();
+                    $datas=array();
                     $enca1="";
-                    $enca2="";
-                    $querys=$q_config->runQuery($BD, $station);
-                    if(!empty($query))
+                    $enca2="FECHA";
+                    list($querys,$enca1,$enca2)=$q_config->runQuery($BD, $station);
+                    if(!empty($querys))
                     {
-                        foreach($querys as $query)
+                        foreach($querys as $key_query => $query)
                         {
+                            echo "query--->{$query}<br>";
                             if($BD->sql_select($query, $results))
                             {
                                 while($row=$results->fetch(PDO::FETCH_ASSOC))
                                 {
-                                    $data[$row['f_read_time']][$sensor]=$row;
+                                    $datas[$row['f_read_time']][$key_query]=$row;
                                 }
                             }
                         }
+                        // grabo el archivo
+                        $archivo=PATH_ROOT."/temp/".$q_config->getNombreArchivo();
+                        //echo "archivo--->{$archivo}<br>";
+                        $fp=fopen($archivo,'w');
+                        if($q_config->getEncabezado())
+                        {
+                            fwrite($fp,$enca1."\n");
+                            fwrite($fp,$enca2."\n");
+                        }
+                        foreach($datas as $fecha => $data)
+                        {
+                            $cadena=date("Y-m-d H:i:s",$fecha).$q_config->getSeparador2();
+                            foreach($data as $valor)
+                            {
+                                foreach($valor as $key_valor2 => $valor2)
+                                {
+                                    if($key_valor2!='f_read_time')
+                                    {
+                                        $cadena.=$valor2.$q_config->getSeparador2();
+                                    }
+                                }
+                            }
+                            if(substr($cadena,-(strlen($q_config->getSeparador2())))==$q_config->getSeparador2())
+                            {
+                                $cadena=substr($cadena,0,-(strlen($q_config->getSeparador2())));
+                            }
+                            fwrite($fp,$cadena."\n");
+                        }
+                        fclose($fp);
                     }
                 }
             }

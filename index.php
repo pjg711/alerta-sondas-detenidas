@@ -22,9 +22,12 @@ $user=new User();
 //       
 if($user->getLoginSession())
 {
+    /*
     echo "<pre>";
     print_r($_POST);
     echo "</pre>";
+     * 
+     */
     //
     //
     if(isset($_POST['check_connection']))
@@ -202,9 +205,10 @@ if($user->getLoginSession())
         // listado de archivos csv
         //listado_csvs();
         // todos los informes
-        $user->listado_informes();
-        echo "  </div>
-              </div>";
+        //$user->listado_informes();
+        echo "  </div>";
+        $page->footer();
+        echo "</div>";
     }else
     {
         $userid=$_SESSION['userid'];
@@ -216,9 +220,10 @@ if($user->getLoginSession())
                 </div>
                 <div id=\"detenidas\" class=\"tab-pane fade\">";
         // solo los informes de usuario ftp $userid
-        $user->listado_informes($userid);
-        echo "  </div>
-              </div>";
+        //$user->listado_informes($userid);
+        echo "  </div>";
+        $page->footer();
+        echo "</div>";
     }
     if(isset($_POST['comprobar']))
     {
@@ -229,6 +234,5 @@ if($user->getLoginSession())
         </script>
         <?php
     }
-    $page->footer();
 }
 ?>

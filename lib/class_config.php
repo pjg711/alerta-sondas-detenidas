@@ -435,9 +435,11 @@ class Config_Station
          */
         //
         $query=array();
+        $enca1="{$this->getSeparador2()}";
+        $enca2="fecha{$this->getSeparador2()}";
         foreach($this->sensores as $key_sensor => $sensor)
         {
-            $select='`f_station_code`,';
+            $select='`f_read_time`,';
             $where="`f_station_code`={$f_station_code} AND (`f_read_time`>={$date_start3} AND `f_read_time`<={$date_final3}) AND";
             // sensor contiene code_ch
             $partes=explode("_",$sensor);
@@ -446,28 +448,37 @@ class Config_Station
                 $f_sensor_code=$partes[0];
                 $f_sensor_ch=$partes[1];
                 $qsensor = $station->getSensor($f_sensor_code, $f_sensor_ch,1);
+                $enca1.="{$qsensor->getSensorUserName()}{$this->getSeparador2()}";
                 if($qsensor->getValMin())
                 {
-                    $select.='`min`';
+                    $select.='`min`,';
+                    $enca2.="min{$this->getSeparador2()}";
                 }
                 if($qsensor->getValMax())
                 {
-                    $select.='`max`';
+                    $select.='`max`,';
+                    $enca2.="max{$this->getSeparador2()}";
                 }
                 if($qsensor->getValSum())
                 {
-                    $select.='`sum`';
+                    $select.='`sum`,';
+                    $enca2.="sum{$this->getSeparador2()}";
                 }
                 if($qsensor->getValAver())
                 {
-                    $select.='`aver`';
+                    $select.='`aver`,';
+                    $enca2.="aver{$this->getSeparador2()}";
                 }
                 if($qsensor->getValLast())
                 {
-                    $select.='`last`';
+                    $select.='`last`,';
+                    $enca2.="last{$this->getSeparador2()}";
                 }
-                //echo "unidad del sensor-->{$qsensor->getUnit()}<br>";
                 $where.=" `f_sensor_code`={$f_sensor_code} AND `f_sensor_ch`={$f_sensor_ch}";
+            }
+            if(substr($select,-1==','))
+            {
+                $select=substr($select,0,-1);
             }
             if(substr($where,-3)=='AND')
             {
@@ -475,23 +486,19 @@ class Config_Station
                 $where=substr($where,0,-3);
             }
             // hago la consulta
-            $query[]="SELECT {$select}
+            $query[$sensor]="SELECT {$select}
                     FROM `seedclima_sensor_data_retrieve_stats_day` 
                     WHERE {$where}
                     ORDER BY `f_read_time` ASC";
-            /*
-            echo "<br>query-->{$key_sensor}--->{$query}<br>";
-            if(!$BD->sql_select($query,$results))
-            {
-                echo "ERROR con la consulta<br>";
-            }
-            while($row=$results->fetch(PDO::FETCH_ASSOC))
-            {
-                $data[$row['f_read_time']][$sensor]=$row;
-            }
-             * 
-             */
         }
-        return $query;
+        if(substr($enca1,-(strlen($this->getSeparador2()))==$this->getSeparador2()))
+        {
+            $enca1=substr($enca1,0,-(strlen($this->getSeparador2())));
+        }
+        if(substr($enca2,-(strlen($this->getSeparador2()))==$this->getSeparador2()))
+        {
+            $enca2=substr($enca2,0,-(strlen($this->getSeparador2())));
+        }
+        return array($query,$enca1,$enca2);
     }
 }

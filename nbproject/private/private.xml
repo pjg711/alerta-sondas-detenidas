@@ -5,6 +5,7 @@
         <group>
             <file>file:/home/pablo/public_html/sondas_humedad/config.php</file>
             <file>file:/home/pablo/public_html/sondas_humedad/cronscripts/runExportStation.php</file>
+            <file>file:/home/pablo/public_html/sondas_humedad/lib/FieldclimateSync.php</file>
             <file>file:/home/pablo/public_html/sondas_humedad/lib/class_sensor.php</file>
             <file>file:/home/pablo/public_html/sondas_humedad/lib/class_imetos.php</file>
             <file>file:/home/pablo/public_html/sondas_humedad/index.php</file>
