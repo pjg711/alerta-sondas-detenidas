@@ -1,6 +1,10 @@
 <?php
 define('VERSION','1.0.0');
 define('TITULO','Sondas de humedad');
+//
+// Define custom session name
+define('SESSION_NAME',"sondas_");
+session_name(SESSION_NAME);
 
 // para el alerta de sondas detenidas
 define('DIFERENCIA_DIAS',2);
@@ -12,7 +16,10 @@ define('MAIL_PORT',587);
 define('MAIL_SMTPSecure','tls');
 define('MAIL_USERNAME','sondas.seedmech@gmail.com');
 define('MAIL_PASSWORD','seedmech932');
-
+// ruta principal 
+define('PATH_ROOT',dirname(__FILE__));
+// archivo de errores
+define('ERROR_LOG',PATH_ROOT.'/temp/errores.log');
 // conexion a base de datos
 define('DEFAULT_CHARSET',"utf8"); //iso-8859-1     utf-8
 // datos para la conexion a la base de datos 

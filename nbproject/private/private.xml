@@ -4,16 +4,14 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/home/pablo/public_html/sondas_humedad/config.php</file>
-            <file>file:/home/pablo/public_html/sondas_humedad/lib/funciones.js</file>
             <file>file:/home/pablo/public_html/sondas_humedad/cronscripts/runExportStation.php</file>
             <file>file:/home/pablo/public_html/sondas_humedad/lib/class_sensor.php</file>
-            <file>file:/home/pablo/public_html/sondas_humedad/css/estilos.css</file>
             <file>file:/home/pablo/public_html/sondas_humedad/lib/class_imetos.php</file>
             <file>file:/home/pablo/public_html/sondas_humedad/index.php</file>
             <file>file:/home/pablo/public_html/sondas_humedad/lib/class_page.php</file>
-            <file>file:/home/pablo/public_html/sondas_humedad/lib/class_config.php</file>
             <file>file:/home/pablo/public_html/sondas_humedad/lib/class_station.php</file>
             <file>file:/home/pablo/public_html/sondas_humedad/lib/class_ftp.php</file>
+            <file>file:/home/pablo/public_html/sondas_humedad/lib/class_config.php</file>
             <file>file:/home/pablo/public_html/sondas_humedad/lib/class_users.php</file>
         </group>
     </open-files>

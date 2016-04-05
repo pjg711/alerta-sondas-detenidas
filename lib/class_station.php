@@ -961,22 +961,6 @@ class Station
     public function loadSensors(IMETOS $BD, Array $filterById = null)
     {
         $this->_sensorsList['enabled'] = Sensor::getAll($BD, $this->getStationCode(), null, null, 1, $filterById);
-        /*
-        switch($status)
-        {
-            case '1':
-                $this->_sensorsList['enabled'] = Sensor::getAll($this->getStationCode(), null, null, 1, $filterById);
-                break;
-            case'0':
-                $this->_sensorsList['disabled'] = Sensor::getAll($this->getStationCode(), null, null, 0, $filterById);
-                break;
-            default:
-                $this->_sensorsList['enabled'] = Sensor::getAll($this->getStationCode(), null, null, 1, $filterById);
-                $this->_sensorsList['disabled'] = Sensor::getAll($this->getStationCode(), null, null, 0, $filterById);
-                break;
-        }
-         * 
-         */
     }
 
     /**

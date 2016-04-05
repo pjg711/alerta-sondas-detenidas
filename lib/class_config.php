@@ -122,6 +122,25 @@ class Config_Station
     {
         return $this->separador;
     }
+    public function getSeparador2()
+    {
+        switch($this->separador)
+        {
+            case 'punto_coma':
+                return chr(59);
+                break;
+            case 'coma':
+                return chr(44);
+                break;
+            case 'espacio':
+                return chr(32);
+                break;
+            case 'tab':
+            default:
+                return chr(9);
+                break;
+        }
+    }
     public function getEncabezado()
     {
         return $this->encabezado;
@@ -342,38 +361,137 @@ class Config_Station
         echo "ERROR! No esta definido el usuario y/o la estaci&oacute;n";
         return false;
     }
-    
-    public function runQuery(IMETOS $BD)
+    /**
+     * 
+     * @param IMETOS $BD
+     * @param type $f_station_code is string
+     */
+    public function runQuery(IMETOS $BD, Station $station)
     {
+        $f_station_code=$station->getStationCode();
+        // periodo a descargar
         // valores: periodo, mes_actual, todos, fijo
+        echo "f_station_code--->{$f_station_code}<br>";
         switch($this->getPeriodo())
         {
             case 'periodo':
                 // fecha inicial 
                 $fecha_inicial=$this->getPeriodoMkFechaInicial();
                 $fecha_final=$this->getPeriodoMkFechaFinal();
+                $date_start= new DateTime(date('Y-m-d',$fecha_inicial));
+                $date_final= new DateTime(date('Y-m-d',$fecha_final));
                 break;
+                //
             case 'mes_actual':
                 $mes_actual=date('n');
                 $anio_actual=date('Y');
                 $days_number=cal_days_in_month(CAL_GREGORIAN, $mes_actual, $anio_actual);
                 $fecha_inicial=mktime(0,0,0,$mes_actual,1,$anio_actual);
+                $date_start= new DateTime(date('Y-m-d',$fecha_inicial));
                 $fecha_final=mktime(0,0,0,$mes_actual,$days_number,$anio_actual);
+                $date_final= new DateTime(date('Y-m-d',$fecha_final));
                 break;
+                //
             case 'todos':
-                
+                $query = "SELECT MIN(`f_read_time`) as min,
+                                 MAX(`f_read_time`) as max  
+                          FROM `seedclima_sensor_data_retrieve_stats_day`
+                          WHERE `f_station_code`={$this->f_station_code}";
+                if(!$BD->sql_select($query, $results))
+                {
+                    error_log("ERROR. No se puede determinar minimo y maximo en las fechas",3,ERROR_LOG);
+                }
+                if($min_max=$results->fetch(PDO::FETCH_ASSOC))
+                {
+                    $date_start= new DateTime(date('Y-m-d',$min_max['min']));
+                    $date_final= new DateTime(date('Y-m-d',$min_max['max']));
+                }else
+                {
+                    $date_start= new DateTime(date('Y-m-d'));
+                    $date_final= new DateTime(date('Y-m-d'));
+                }
                 break;
+                //
             case 'fijo':
-                $dias_fijos=$this->getPeriodoDias();
-                
-                $fecha= new DateTime('2000-01-01');
-                
-                $dia_actual=date('j');
-                $mes_actual=date('n');
-                $anio_actual=date('Y');
-                $fecha_final=mktime(0,0,0,$mes_actual,$dia_actual,$anio_actual);
-                $fecha_inicial=mktime(0,0,0,)
+                $periodo_dias=$this->getPeriodoDias();
+                $date_final= new DateTime(date('Y-m-d'));
+                $date_start= new DateTime(date('Y-m-d'));
+                // resta
+                $date_start->sub(new DateInterval('P'.$periodo_dias.'D'));
                 break;
         }
+        $date_start2 = $date_start->format('Y-m-d');
+        $date_final2 = $date_final->format('Y-m-d');
+        //
+        $date_start3 = $date_start->getTimestamp();
+        $date_final3 = $date_final->getTimestamp();
+        //
+        // sensores
+        /*
+        echo "<pre>";
+        print_r($this->sensores);
+        echo "</pre>";
+         * 
+         */
+        //
+        $query=array();
+        foreach($this->sensores as $key_sensor => $sensor)
+        {
+            $select='`f_station_code`,';
+            $where="`f_station_code`={$f_station_code} AND (`f_read_time`>={$date_start3} AND `f_read_time`<={$date_final3}) AND";
+            // sensor contiene code_ch
+            $partes=explode("_",$sensor);
+            if(count($partes)==2)
+            {
+                $f_sensor_code=$partes[0];
+                $f_sensor_ch=$partes[1];
+                $qsensor = $station->getSensor($f_sensor_code, $f_sensor_ch,1);
+                if($qsensor->getValMin())
+                {
+                    $select.='`min`';
+                }
+                if($qsensor->getValMax())
+                {
+                    $select.='`max`';
+                }
+                if($qsensor->getValSum())
+                {
+                    $select.='`sum`';
+                }
+                if($qsensor->getValAver())
+                {
+                    $select.='`aver`';
+                }
+                if($qsensor->getValLast())
+                {
+                    $select.='`last`';
+                }
+                //echo "unidad del sensor-->{$qsensor->getUnit()}<br>";
+                $where.=" `f_sensor_code`={$f_sensor_code} AND `f_sensor_ch`={$f_sensor_ch}";
+            }
+            if(substr($where,-3)=='AND')
+            {
+                // saco el AND
+                $where=substr($where,0,-3);
+            }
+            // hago la consulta
+            $query[]="SELECT {$select}
+                    FROM `seedclima_sensor_data_retrieve_stats_day` 
+                    WHERE {$where}
+                    ORDER BY `f_read_time` ASC";
+            /*
+            echo "<br>query-->{$key_sensor}--->{$query}<br>";
+            if(!$BD->sql_select($query,$results))
+            {
+                echo "ERROR con la consulta<br>";
+            }
+            while($row=$results->fetch(PDO::FETCH_ASSOC))
+            {
+                $data[$row['f_read_time']][$sensor]=$row;
+            }
+             * 
+             */
+        }
+        return $query;
     }
 }

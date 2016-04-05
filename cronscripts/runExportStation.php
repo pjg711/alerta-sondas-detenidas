@@ -21,32 +21,29 @@ if($users=User::getAll(true))
                     $station->loadSensors($BD);
                     $stationSensorsList = $station->getAvailableSensors();
                     $q_config = Config_Station::load($user->getId(),$station->getStationCode());
-                    
+                    //
                     echo "<br>-------------------------------------------------------<br>";
                     echo "UserId--------->{$user->getId()}<br>";
                     echo "station-code--->{$station->getStationCode()}<br>";
                     echo "enable--------->{$q_config->getEnable()}<br>";
-                    
-                    switch($q_config->getPeriodo())
+                    echo "periodo-------->{$q_config->getPeriodo()}<br>";
+                    //
+                    $data=array();
+                    $enca1="";
+                    $enca2="";
+                    $querys=$q_config->runQuery($BD, $station);
+                    if(!empty($query))
                     {
-                        case ''
-                    }
-                    if($q_config->getEnable())
-                    {
-                        echo "fecha inicial------>{$q_config->getPeriodoFechaInicial()}<br>";
-                        echo "mk fecha inicial--->{$q_config->getPeriodoMkFechaInicial()}<br>";
-                        
-                        //$query=$q_config->runQuery();
-                        /*
-                        foreach($q_config->getSensores() as $sensor)
+                        foreach($querys as $query)
                         {
-                            
-                            $query="SELECT * "
-                            echo "<pre>";
-                            print_r($sensor);
-                            echo "</pre>";
+                            if($BD->sql_select($query, $results))
+                            {
+                                while($row=$results->fetch(PDO::FETCH_ASSOC))
+                                {
+                                    $data[$row['f_read_time']][$sensor]=$row;
+                                }
+                            }
                         }
-                        */
                     }
                 }
             }

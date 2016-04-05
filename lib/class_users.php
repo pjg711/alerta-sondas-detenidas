@@ -1,8 +1,17 @@
 <?php
 class User
 {
+    /**
+     *
+     * @var type id is integer
+     */
     private $id;
+    /**
+     *
+     * @var type is_admin is boolean
+     */
     private $is_admin;
+    
     private $user_name;
     private $mails_imetos;
     private $enable_user;

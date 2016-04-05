@@ -233,7 +233,7 @@ class Sensor
             $loadedDataArray = $fromArrayValues;
         }else
         {
-            echo "pase por aca 1<br>";
+            //echo "pase por aca 1<br>";
             $BD=new IMETOS();
             $query = "
                 SELECT
@@ -298,6 +298,18 @@ class Sensor
         }
         if(is_array($loadedDataArray) && count($loadedDataArray) > 0)
         {
+            /*
+            echo "f_name------->{$loadedDataArray['f_name']}<br>";
+            echo "f_unit------->{$loadedDataArray['f_unit']}<br>";
+            echo "f_unit_code-->{$loadedDataArray['f_unit_code']}<br>";
+             * 
+             */
+            /*
+            echo "<pre>";
+            print_r($loadedDataArray);
+            echo "</pre>";
+             * 
+             */
             $sensor = new Sensor(
                 $loadedDataArray['row_id'],
                 @$loadedDataArray['f_station_code'],
