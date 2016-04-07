@@ -31,6 +31,8 @@ class PAGE
         . "         <link rel=\"stylesheet\" type=\"text/css\" href=\"./lib/toastr/build/toastr.min.css\"/>\n"
         . "         <script type=\"text/javascript\" src=\"./lib/toastr/build/toastr.min.js\"></script>\n"
         . "         <!-- fin toastr -->"
+        . "         <link rel=\"stylesheet\" type=\"text/css\" href=\"./lib/pikaday/css/pikaday.css\"/>\n"
+        . "         <script type=\"text/javascript\" src=\"./lib/pikaday/pikaday.js\"></script>\n"
         . "     </head>"
         . "     <body>";
     }

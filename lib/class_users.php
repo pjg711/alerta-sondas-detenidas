@@ -101,10 +101,10 @@ class User
      * 
      * @return type boolean
      */
-    public function getIsAdmin()
+    public static function getIsAdmin()
     {
         if(isset($_SESSION['is_admin'])) return $_SESSION['is_admin'];
-        return $this->is_admin;
+        return false;
     }
     /**
      * 
@@ -184,7 +184,7 @@ class User
      * 
      * @param type $action is string
      */
-    public function getInto($action="index.php") 
+    public static function Login($action="index.php") 
 	{
 		?>
         <br>
@@ -228,16 +228,9 @@ class User
      * @param type $password is string
      * @return boolean
      */
-    public function verify_user($usuario="",$password="")
+    public static function verify_user($usuario="",$password="")
     {
         // primero verifico que el usuario este en el sistema
-        /*
-        $query="SELECT  `id`,`username`,`password`,`is_admin`
-                FROM    `users` 
-                WHERE   `username`='{$usuario}' AND 
-                        `usertype`='imetos' LIMIT 1";
-         * 
-         */
         $query="SELECT  `id`,`username`,`password`,`is_admin`
                 FROM    `users` 
                 WHERE   `username`='{$usuario}' AND 
@@ -278,7 +271,7 @@ class User
      * retorna si esta abierta una sesion o no
      * @return boolean
      */
-    public function getLoginSession() 
+    public static function getLoginSession() 
 	{
         if(isset($_SESSION['user_login_session']))
         {
@@ -710,7 +703,7 @@ class User
                                 <i class=\"fa fa-terminal\"></i>
                             </a>&nbsp;&nbsp;";
                 }
-                echo "      <a class=\"link-tabla\" href=\"javascript:mostrar_ocultar('conf_usuario_{$user->getId()}');\" title=\"Editar usuario\">
+                echo "      <a class=\"link-tabla\" href=\"javascript:mostrar_ocultar('conf_usuario_{$user->getId()}');\" title=\"Configuraci&oacute;n de usuario\">
                                 <i class=\"fa fa-user\"></i>
                             </a>&nbsp;&nbsp;";
                 echo "      <a class=\"link-tabla\" href=\"javascript:mostrar_ocultar('conf_exporta_{$user->getId()}');\" title=\"Configuraci&oacute;n de estaciones\">
@@ -731,7 +724,6 @@ class User
                 if($user->getEnableMySQL())
                 {
                     $BD = new IMETOS($user->getIdMySQL(), $user->getServerMySQL(), $user->getDatabaseMySQL(), $user->getUserMySQL(), $user->getPasswMySQL());
-                    //if($stations=Station::getAll($BD,$user->getIdMySQL(),$user->getServerMySQL(),$user->getDatabaseMySQL(),$user->getUserMySQL(),$user->getPasswMySQL()))
                     if($stations=Station::getAll($BD))
                     {
                         echo "  <div class=\"estaciones\" id=\"estaciones\">
@@ -862,93 +854,56 @@ class User
                                                                     </div>";
                             // Tipo de archivo a exportar
                             echo "                                  <div class=\"form-group\">
-                                                                        <label for=\"{$label}\">Exportar a tipo de archivo:</label><br>
-                                                                        <label class=\"radio-inline\">";
-                            if($q_config->getTipoArchivo()=='txt')
+                                                                        <label for=\"{$label}\">Exportar a tipo de archivo:</label><br>";
+                            $tipos_archivos=json_decode(TIPOS_ARCHIVOS);
+                            foreach($tipos_archivos as $key_tipo_archivo => $tipo_archivo)
                             {
-                                echo "                                      <input class=\"todos\" type=\"radio\" name=\"tipo_archivo\" id=\"archivo_txt\" value=\"txt\" checked=\"\" {$disabled}><label for=\"{$label}\">TXT</label>";
-                            }else
-                            {
-                                echo "                                      <input class=\"todos\" type=\"radio\" name=\"tipo_archivo\" id=\"archivo_txt\" value=\"txt\" {$disabled}><label for=\"{$label}\">TXT</label>";
+                                echo "                                  <label class=\"radio-inline\">";
+                                if($q_config->getTipoArchivo()==$key_tipo_archivo)
+                                {
+                                    echo "                                  <input class=\"todos\" type=\"radio\" name=\"tipo_archivo\" id=\"archivo_{$key_tipo_archivo}\" value=\"{$key_tipo_archivo}\" checked=\"\" {$disabled}><label for=\"{$label}\">{$tipo_archivo}</label>";
+                                }else
+                                {
+                                    echo "                                  <input class=\"todos\" type=\"radio\" name=\"tipo_archivo\" id=\"archivo_{$key_tipo_archivo}\" value=\"{$key_tipo_archivo}\" {$disabled}><label for=\"{$label}\">{$tipo_archivo}</label>";
+                                }
+                                echo "                                  </label>";
                             }
-                            echo "                                      </label>
-                                                                        <label class=\"radio-inline\">";
-                            if($q_config->getTipoArchivo()=='csv')
-                            {
-                                echo "                                      <input class=\"todos\" type=\"radio\" name=\"tipo_archivo\" id=\"archivo_csv\" value=\"csv\" checked=\"\" {$disabled}><label for=\"{$label}\">CSV</label>";
-                            }else
-                            {
-                                echo "                                      <input class=\"todos\" type=\"radio\" name=\"tipo_archivo\" id=\"archivo_csv\" value=\"csv\" {$disabled}><label for=\"{$label}\">CSV</label>";
-                            }
-                            echo "                                      </label>
-                                                                    </div>";
+                            echo "                                  </div>";
                             // Separador de columnas
                             echo "                                  <div class=\"form-group\">
-                                                                        <label for=\"{$label}\">Separar columnas por:</label><br>
-                                                                        <label class=\"radio-inline\">";
-                            if($q_config->getSeparador()=='coma')
+                                                                        <label for=\"{$label}\">Separar columnas por:</label><br>";
+                            $separadores=  json_decode(SEPARADORES);
+                            foreach($separadores as $key_separador => $separador)
                             {
-                                echo "                                     <input class=\"todos\" type=\"radio\" id=\"coma\" name=\"separador\" value=\"coma\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">coma (,)</label>";
-                            }else
-                            {
-                                echo "                                     <input class=\"todos\" type=\"radio\" id=\"coma\" name=\"separador\" value=\"coma\" {$disabled}>&nbsp;<label for=\"{$label}\">coma (,)</label>";
+                                echo "                                      <label class=\"radio-inline\">";
+                                if($q_config->getSeparador()==$key_separador)
+                                {
+                                    echo "                                  <input class=\"todos\" type=\"radio\" id=\"coma\" name=\"separador\" value=\"{$key_separador}\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">{$separador}</label>";
+                                }else
+                                {
+                                    echo "                                  <input class=\"todos\" type=\"radio\" id=\"coma\" name=\"separador\" value=\"{$key_separador}\" {$disabled}>&nbsp;<label for=\"{$label}\">{$separador}</label>";
+                                }
+                                echo "                                  </label><br>";
                             }
-                            echo "                                      </label>
-                                                                        <br>
-                                                                        <label class=\"radio-inline\">";
-                            if($q_config->getSeparador()=='punto_coma')
-                            {
-                                echo "                                      <input class=\"todos\" type=\"radio\" id=\"punto_coma\" name=\"separador\" value=\"punto_coma\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">punto y coma (;)</label>";
-                            }else
-                            {
-                                echo "                                      <input class=\"todos\" type=\"radio\" id=\"punto_coma\" name=\"separador\" value=\"punto_coma\" {$disabled}>&nbsp;<label for=\"{$label}\">punto y coma (;)</label>";
-                            }
-                            echo "                                      </label>
-                                                                        <br>
-                                                                        <label class=\"radio-inline\">";
-                            if($q_config->getSeparador()=='tab')
-                            {
-                                echo "                                      <input class=\"todos\" type=\"radio\" id=\"tab\" name=\"separador\" value=\"tab\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">tabulaci&oacute;n</label>";
-                            }else
-                            {
-                                echo "                                      <input class=\"todos\" type=\"radio\" id=\"tab\" name=\"separador\" value=\"tab\" {$disabled}>&nbsp;<label for=\"{$label}\">tabulaci&oacute;n</label>";
-                            }
-                            echo "                                      </label>
-                                                                        <br>
-                                                                        <label class=\"radio-inline\">";
-                            if($q_config->getSeparador()=='espacio')
-                            {
-                                echo "                                      <input class=\"todos\" type=\"radio\" id=\"espacio\" name=\"separador\" value=\"espacio\" checked=\"\">&nbsp;<label for=\"{$label}\">espacio</label>";
-                            }else
-                            {
-                                echo "                                      <input class=\"todos\" type=\"radio\" id=\"espacio\" name=\"separador\" value=\"espacio\">&nbsp;<label for=\"{$label}\">espacio</label>";
-                            }
-
-                            echo "                                       </label>
-                                                                    </div>";
-                            // Agregar encabezado                   
+                            echo "                                  </div>";
+                            // Agregar encabezado
+                            $encabezados=array('si'=>'Si','no'=>'No');
                             echo "                                  <div class=\"form-group\">
                                                                         <label for=\"{$label}\">Agregar encabezado:</label>
-                                                                        <br>
-                                                                        <label class=\"radio-inline\">";
-                            if($q_config->getEncabezado()=='si')
+                                                                        <br>";
+                            foreach($encabezados as $key_enca => $encabezado)
                             {
-                                echo "                                      <input class=\"todos\" type=\"radio\" id=\"encabezado_si\" name=\"encabezado\" value=\"si\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">S&iacute;</label>&nbsp;&nbsp;";
-                            }else
-                            {
-                                echo "                                      <input class=\"todos\" type=\"radio\" id=\"encabezado_si\" name=\"encabezado\" value=\"si\" {$disabled}>&nbsp;<label for=\"{$label}\">S&iacute;</label>&nbsp;&nbsp;";
+                                echo "                                  <label class=\"radio-inline\">";
+                                if($q_config->getEncabezado()==$key_enca)
+                                {
+                                    echo "                                  <input class=\"todos\" type=\"radio\" id=\"encabezado_si\" name=\"encabezado\" value=\"{$key_enca}\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">{$encabezado}</label>&nbsp;&nbsp;";
+                                }else
+                                {
+                                    echo "                                  <input class=\"todos\" type=\"radio\" id=\"encabezado_si\" name=\"encabezado\" value=\"{$key_enca}\" {$disabled}>&nbsp;<label for=\"{$label}\">{$encabezado}</label>&nbsp;&nbsp;";
+                                }
+                                echo "                                  </label>";
                             }
-                            echo "                                      </label>
-                                                                        <label class=\"radio-inline\">";
-                            if($q_config->getEncabezado()=='no')
-                            {
-                                echo "                                      <input class=\"todos\" type=\"radio\" id=\"encabezado_no\" name=\"encabezado\" value=\"no\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">No</label>";
-                            }else
-                            {
-                                echo "                                      <input class=\"todos\" type=\"radio\" id=\"encabezado_no\" name=\"encabezado\" value=\"no\" {$disabled}>&nbsp;<label for=\"{$label}\">No</label>";
-                            }
-                            echo "                                      </label>
-                                                                    </div>";
+                            echo "                                  </div>";
                             // Nombre de archivo dde salida
                             echo "                                  <div class=\"form-group\">
                                                                         <label for=\"{$label}\">Nombre de archivo (sin extension):</label><br>
@@ -1018,13 +973,13 @@ class User
                                 <div class=\"col-md-12\" style=\"text-align:center\">";
         if(!$f_new)
         {
-            echo "                  <h2>Editar usuario</h2>";
+            echo "                  <h2>Configuraci&oacute;n de usuario</h2>";
         }
         echo "                  </div>
                             </div>
                             <div class=\"row\">
                                 <div class=\"col-md-12\">
-                                    <form name=\"user_edit\" method=\"post\" action=\"index.php\">
+                                    <form name=\"user_edit\" method=\"post\" action=\"/ftp\">
                                         <input type=\"hidden\" name=\"userid\" value=\"{$user->getId()}\">";
         if($user->getEnableFTP())
         {
@@ -1315,7 +1270,7 @@ class User
     /**
      * 
      */
-    public function SignOff()
+    public static function SignOff()
     {
         unset($_SESSION['user_login_session']);
         unset($_SESSION['password']);
@@ -1665,7 +1620,7 @@ class User
      * @param type $id_informe
      * @return boolean
      */
-    public function borrar_informe($id_informe=0)
+    public static function borrar_informe($id_informe=0)
     {
         if($id_informe==0) return false;
         $query="  DELETE FROM `informes`
@@ -1682,7 +1637,7 @@ class User
      * @param type $userid
      * @return boolean
      */
-    public function borrar_informes_todos($userid=0)
+    public static function borrar_informes_todos($userid=0)
     {
         if($userid) return false;
         $query="  DELETE FROM `informes` 

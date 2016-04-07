@@ -1,11 +1,4 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * Description of Config_Station
  *
@@ -29,12 +22,30 @@ class Config_Station
     private $nombre_archivo;
     //
     private $error;
-    
-    function __construct($userid='',$f_station_code='',$enable,$sensores='',$periodo='',
+    /**
+     * 
+     * @param type $userid
+     * @param type $f_station_code
+     * @param type $enable
+     * @param type $sensores
+     * @param type $periodo
+     * @param type $periodo_fecha_inicial
+     * @param type $periodo_fecha_final
+     * @param type $periodo_dias
+     * @param type $tipo_archivo
+     * @param type $separador
+     * @param type $encabezado
+     * @param type $archivo
+     */
+    function __construct($userid='',$f_station_code='',
+                        $enable='',$sensores='',$periodo='',
                         $periodo_fecha_inicial='',
                         $periodo_fecha_final='',
                         $periodo_dias='',
-                        $tipo_archivo='',$separador='',$encabezado='',$archivo='') 
+                        $tipo_archivo='',
+                        $separador='',
+                        $encabezado='',
+                        $archivo='') 
     {
         if($sensores=='')
         {
@@ -77,53 +88,104 @@ class Config_Station
             }
         }
     }
+    /**
+     * 
+     * @return type
+     */
     public function getIdUsuario()
     {
         return $this->userid;
     }
+    /**
+     * 
+     * @return type
+     */
     public function getStationCode()
     {
         return $this->f_station_code;
     }
+    /**
+     * 
+     * @return boolean
+     */
     public function getEnable()
     {
         if($this->enable==1) return true;
         return false;
     }
+    /**
+     * 
+     * @return type
+     */
     public function getPeriodo()
     {
         return $this->periodo;
     }
+    /**
+     * 
+     * @return type
+     */
     public function getPeriodoFechaInicial()
     {
         return $this->periodo_fecha_inicial;
     }
+    /**
+     * 
+     * @return type
+     */
     public function getPeriodoMkFechaInicial()
     {
         return $this->periodo_mkfecha_inicial;
     }
+    /**
+     * 
+     * @return type
+     */
     public function getPeriodoFechaFinal()
     {
         return $this->periodo_fecha_final;
     }
+    /**
+     * 
+     * @return type
+     */
     public function getPeriodoMkFechaFinal()
     {
         return $this->periodo_mkfecha_final;
     }
+    /**
+     * 
+     * @return type
+     */
     public function getPeriodoDias()
     {
         return $this->periodo_dias;
     }
+    /**
+     * 
+     * @return type
+     */
     public function getTipoArchivo()
     {
         return $this->tipo_archivo;
     }
+    /**
+     * 
+     * @return type
+     */
     public function getSeparador()
     {
         return $this->separador;
     }
+    /**
+     * 
+     * @return type
+     */
     public function getSeparador2()
     {
+        $separador2=  json_decode(SEPARADORES2);
+        return $separador2[$this->separador];
+        /*
         switch($this->separador)
         {
             case 'punto_coma':
@@ -140,19 +202,40 @@ class Config_Station
                 return chr(9);
                 break;
         }
+         * 
+         */
     }
+    /**
+     * 
+     * @return type
+     */
     public function getEncabezado()
     {
         return $this->encabezado;
     }
+    /**
+     * 
+     * @return type
+     */
     public function getNombreArchivo()
     {
         return $this->nombre_archivo;
     }
+    /**
+     * 
+     * @return type
+     */
     public function getSensores()
     {
         return $this->sensores;
     }
+    /**
+     * 
+     * @param type $userid
+     * @param type $f_station_code
+     * @param type $fromArrayValues
+     * @return \Config_Station
+     */
     public static function load($userid="",$f_station_code="",$fromArrayValues=false)
     {
         if(is_array($fromArrayValues))
@@ -190,7 +273,7 @@ class Config_Station
                     $enable=$loadedDataArray['enable'];
                 }else
                 {
-                    $enable=1;
+                    $enable=0;
                 }
                 // sensores
                 $sensores=array();
@@ -291,22 +374,38 @@ class Config_Station
                 return $q_config;
             }
         }
-        $q_config = new Config_Station($userid,$f_station_code,"1");
+        $q_config = new Config_Station($userid,$f_station_code,"0");
         return $q_config;
     }
+    /**
+     * 
+     * @return type
+     */
     public function getError()
     {
         return $this->error;
     }
-    public static function update()
+    /**
+     * 
+     * @return boolean
+     */
+    public function update()
     {
         if(!isset($_POST['enable']) OR $_POST['enable']=='off')
         {
+            //estacion desactivada
             $enable=0;
         }else
         {
             $enable=1;
+            if(!$validacion=$this->validacion())
+            {
+                error_log(date('Y-m-d H:i:s').chr(9).$validacion,3,ERROR_LOG);
+                $this->error=$validacion;
+                return false;
+            }
         }
+        //
         $info= json_encode($_POST);
         if(isset($_POST['userid']))
         {
@@ -349,7 +448,7 @@ class Config_Station
                 $query="INSERT INTO `configurations` 
                             (`userid`,`f_station_code`,`enable`,`info`)
                         VALUES 
-                            ({$id_usuario},{$f_station_code},{$enable},'{$info}')";
+                            ({$userid},{$f_station_code},{$enable},'{$info}')";
                 if(!sql_select($query,$results))
                 {
                     echo "ERROR! No se pudo insertar los datos de la estacion";
@@ -383,6 +482,7 @@ class Config_Station
                 break;
                 //
             case 'mes_actual':
+                // mes actual
                 $mes_actual=date('n');
                 $anio_actual=date('Y');
                 $days_number=cal_days_in_month(CAL_GREGORIAN, $mes_actual, $anio_actual);
@@ -393,13 +493,14 @@ class Config_Station
                 break;
                 //
             case 'todos':
+                // todos los datos
                 $query = "SELECT MIN(`f_read_time`) as min,
                                  MAX(`f_read_time`) as max  
                           FROM `seedclima_sensor_data_retrieve_stats_day`
                           WHERE `f_station_code`={$this->f_station_code}";
                 if(!$BD->sql_select($query, $results))
                 {
-                    error_log("ERROR. No se puede determinar minimo y maximo en las fechas",3,ERROR_LOG);
+                    error_log(date('Y-m-d H:i:s').chr(9)."ERROR. No se puede determinar minimo y maximo en las fechas",3,ERROR_LOG);
                 }
                 if($min_max=$results->fetch(PDO::FETCH_ASSOC))
                 {
@@ -413,10 +514,10 @@ class Config_Station
                 break;
                 //
             case 'fijo':
+                // periodo fijo en dias
                 $periodo_dias=$this->getPeriodoDias();
                 $date_final= new DateTime(date('Y-m-d'));
                 $date_start= new DateTime(date('Y-m-d'));
-                // resta
                 $date_start->sub(new DateInterval('P'.$periodo_dias.'D'));
                 break;
         }
@@ -427,13 +528,6 @@ class Config_Station
         $date_final3 = $date_final->getTimestamp();
         //
         // sensores
-        /*
-        echo "<pre>";
-        print_r($this->sensores);
-        echo "</pre>";
-         * 
-         */
-        //
         $query=array();
         $enca1="{$this->getSeparador2()}";
         $enca2="fecha{$this->getSeparador2()}";
@@ -500,5 +594,80 @@ class Config_Station
             $enca2=substr($enca2,0,-(strlen($this->getSeparador2())));
         }
         return array($query,$enca1,$enca2);
+    }
+    /**
+     * 
+     */
+    private function validacion()
+    {
+        $validacion="";
+        // debo validar los campos
+        // {"userid":"4","f_station_code":"164","enable":"on",
+        // "sensor_17921_771":"seleccionado","sensor_17921_770":"seleccionado",
+        // "periodo":"periodo",
+        // "fecha_inicial":"10/05/2015","fecha_final":"11/05/2016","periodo_dias":"30",
+        // "tipo_archivo":"csv","separador":"coma",
+        // "encabezado":"si",
+        // "archivo":"prueba.csv","save_config":""}
+        if(!in_array("seleccionado",$_POST))
+        {
+            $validacion.="Seleccione alg&uacute;n sensor para exportar\n";
+        }
+        if(isset($_POST['periodo']))
+        {
+            switch($_POST['periodo'])
+            {
+                case 'periodo':
+                    if(!isset($_POST['fecha_incial']) OR !isset($_POST['fecha_final']))
+                    {
+                        $validacion.="No se definieron las fechas de inicio y final\n";
+                    }
+                    if(isset($_POST['fecha_inicial']))
+                    {
+                        // fecha valida
+                        if(strlen($_POST['fecha_inicial'])==0)
+                        {
+                            $validacion.="Debe completar la fecha de inicio del período.\n";
+                        }
+                        if(strlen($_POST['fecha_final'])==0)
+                        {
+                            $validacion.="Debe completar la fecha de fin del período.\n";
+                        }
+                        if(!$this->valido_fechas($_POST['fecha_inicial'],$_POST['fecha_final']))
+                        {
+                            $validacion.="La fecha final no puede ser anterior a la fecha inicial del período.\n";
+                        }
+                    }
+                    break;
+                    //
+                case 'fijo':
+                    if(!isset($_POST['periodo_dias']))
+                    {
+                        $validacion.="No esta definido el período en días.\n";
+                    }else
+                    {
+                        $periodo_dias=intval($_POST['periodo_dias']);
+                        if($periodo_dias<1 OR $periodo_dias>365)
+                        {
+                            $validacion.="El período en días debe ser mayor a 0 y menor a 366 días.\n";
+                        }
+                    }
+                    break;
+                    
+            }
+        }
+        if(!isset($_POST['tipo_archivo']))
+        {
+            $validacion.="El tipo de archivo no esta definido.\n";
+            
+        }
+        if(!empty($validacion))
+        {
+            echo "pase por aca<br>";
+            echo $validacion."<br>";
+            $this->error=$validacion;
+            return false;
+        }
+        return true;
     }
 }

@@ -5,7 +5,7 @@ define('TITULO','Sondas de humedad');
 // Define custom session name
 define('SESSION_NAME',"sondas_");
 session_name(SESSION_NAME);
-
+//
 // para el alerta de sondas detenidas
 define('DIFERENCIA_DIAS',2);
 //
@@ -29,7 +29,14 @@ define('USUARIO','alerta');
 define('PASSWORD','alertasondas932');
 // Pie de pagina
 define('PIE','Seedmech Latinamérica SRL - Buenos Aires 642 - CP 2000 - Rosario - Santa Fe - Argentina <br> Tel. (telfax) +54 +341 4472954 y 4259475');
-//
+//tipos de archivos
+$tipos_archivos=json_encode(array('txt'=>'TXT','csv'=>'CSV','xls'=>'XLS'));
+define('TIPOS_ARCHIVOS',$tipos_archivos);
+//separadores de columna
+$separador= json_encode(array('coma'=>'coma (,)','punto_coma'=>'punto y coma (;)','tab'=>'tabulación','espacio'=>'espacio'));
+$separador2=  json_encode(array('coma'=>44,'punto_coma'=>59,'tab'=>9,'espacio'=>32));
+define('SEPARADORES',$separador);
+define('SEPARADORES2',$separador2);
 //
 global $db_link;
 if(!($db_link = new PDO('mysql:host='.SERVIDOR.';dbname='.BASE_DATOS.';charset=utf8',USUARIO,PASSWORD)))
