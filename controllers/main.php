@@ -1,10 +1,6 @@
 <?php
 if(User::getLoginSession())
 {
-    //
-    if(isset($_POST['check_connection']))
-    {
-    }
     // *************************************************
     // User
     // *************************************************
@@ -76,10 +72,6 @@ if(User::getLoginSession())
     }
 }
 //
-if(isset($_GET['sign_off']))
-{
-    User::SignOff();
-}
 if(!User::getLoginSession())
 {
     if(isset($_POST['usuario']) and isset($_POST['password']))
@@ -102,21 +94,21 @@ if(!User::getLoginSession())
         User::Login();
     }
 }
-if($user->getLoginSession())
+if(User::getLoginSession())
 {
     echo "
     <ul style=\"margin:19px 0 18px 0;\" class=\"nav nav-tabs test2\">
         <li class=\"active\"><a data-toggle=\"tab\" href=\"#exportacion\">Exportación de datos de sondas</a></li>
         <li><a data-toggle=\"tab\" href=\"#detenidas\">Informe de detenidas</a></li>
     </ul>";
-    $user->logged(User::getIsAdmin());
-    if($user->getIsAdmin())
+    User::logged(User::getIsAdmin());
+    if(User::getIsAdmin())
     {
         // para administradores
         if(isset($_POST['alta_usuario']))
         {
             //inserto usuario nuevo
-            if($user->insertar())
+            if(User::save())
             {
                 mensaje("Se guard\u00F3 el nuevo usuario","Nuevo usuario");
             }else
@@ -127,7 +119,7 @@ if($user->getLoginSession())
         if(isset($_POST['confirmed_delete_user']))
         {
             $userid= req("confirmed_delete_user");
-            if($user->delete_user($userid))
+            if(User::delete_user($userid))
             {
                 mensaje("El usuario fue borrado","Borrar usuario");
             }else
@@ -139,7 +131,7 @@ if($user->getLoginSession())
         {
             $q_usuario=array();
             $q_usuario[1]=  req("realizar_informe");
-            hago_informes($q_usuario,true);
+            User::hago_informes($q_usuario,true);
         }
         if(isset($_POST['cambiar_configuracion']))
         {
@@ -148,9 +140,9 @@ if($user->getLoginSession())
         echo "<div class=\"tab-content\">
                 <div id=\"exportacion\" class=\"tab-pane fade in active\">";
         // solo admin puede crear un nuevo usuario
-        $user->new_user();
+        //User::new_user();
         // es usuario admin y presento todos los informes ordenados por fecha
-        $user->listar(true);
+        //User::listar(true);
         echo "      <br><br><br>
                 </div>
                 <div id=\"detenidas\" class=\"tab-pane fade\">";
@@ -159,7 +151,6 @@ if($user->getLoginSession())
         // todos los informes
         //$user->listado_informes();
         echo "  </div>";
-        $page->footer();
         echo "</div>";
     }else
     {
@@ -167,14 +158,14 @@ if($user->getLoginSession())
         echo "<div class=\"tab-content\">
                 <div id=\"exportacion\" class=\"tab-pane fade in active\">";
         //
-        $user->listar(false);
+        User::listar(false);
         echo "      <br><br><br>
                 </div>
                 <div id=\"detenidas\" class=\"tab-pane fade\">";
         // solo los informes de usuario ftp $userid
         //$user->listado_informes($userid);
         echo "  </div>";
-        $page->footer();
+        Page::footer();
         echo "</div>";
     }
     if(isset($_POST['comprobar']))
@@ -186,4 +177,9 @@ if($user->getLoginSession())
         </script>
         <?php
     }
+    Page::footer();
+}else
+{
+    echo "</body>
+    </html>";
 }

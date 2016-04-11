@@ -311,8 +311,6 @@ class Station
             $loadedDataArray = $fromArrayValues;
         }else
         {
-            //echo "pase por aca 3<br>";
-            //$BD=new IMETOS();
             $query = "
                 SELECT
                     `row_id`,

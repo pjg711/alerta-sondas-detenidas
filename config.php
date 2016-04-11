@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/Argentina/Buenos_Aires');
 define('VERSION','1.0.0');
 define('TITULO','Sondas de humedad');
 //
@@ -62,14 +63,6 @@ function sql_select($query, &$rv)
         // para insert
         return $last_id;
     }
-    /*
-    if($row_count=$rv->rowCount())
-    {
-        // para select
-        return (int)$row_count;
-    }
-     * 
-     */
     return true;
 }
 /*

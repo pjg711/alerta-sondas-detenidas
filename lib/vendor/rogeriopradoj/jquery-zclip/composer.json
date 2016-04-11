@@ -1,0 +1,5 @@
+{
+    "description" : "A way to install jQuery ZeroClipboard via composer",
+    "name" : "rogeriopradoj/jquery-zclip",
+    "license": "MIT"
+}

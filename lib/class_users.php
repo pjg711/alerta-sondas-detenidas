@@ -184,41 +184,39 @@ class User
      * 
      * @param type $action is string
      */
-    public static function Login($action="index.php") 
+    //public static function Login($action="index.php")
+    public static function Login()
 	{
-		?>
-        <br>
-        <h1><?=TITULO;?></h1>
-        <form id="frmIngreso" name="frmIngreso" method="post" action="<?=$action;?>">
-            <input type="hidden" name="usar_imap" value="1">
+        echo "
+        <br>\n
+        <h1>".TITULO."</h1>
+        <form id=\"frmIngreso\" name=\"frmIngreso\" method=\"post\" action=\"\">
+            <input type=\"hidden\" name=\"usar_imap\" value=\"1\">
             <br>
-            <table id="tabla-ingreso">
+            <table id=\"tabla-ingreso\">
                 <tr>
-                	<td colspan="2" align="center">
-                        <img src="./img/enviroscan.png">
+                	<td colspan=\"2\" align=\"center\">
+                        <img src=\"./img/enviroscan.png\">
                     </td>
                 </tr>
-                <tr><td colspan="2">&nbsp;</td></tr>
+                <tr><td colspan=\"2\">&nbsp;</td></tr>
                 <tr>
-                    <td align="right">Usuario:&nbsp;</td>
-                    <td align="left"><input name="usuario" type="text" id="usuario" size="25" maxlength="70"/></td>
+                    <td align=\"right\">Usuario:&nbsp;</td>
+                    <td align=\"left\"><input name=\"usuario\" type=\"text\" id=\"usuario\" size=\"25\" maxlength=\"70\" /></td>
                 </tr>
-                <tr><td colspan="2">&nbsp;</td></tr>
+                <tr><td colspan=\"2\">&nbsp;</td></tr>
                 <tr>
-                    <td align="right">Contrase&ntilde;a:&nbsp;</td>
-                    <td align="left"><input name="password" type="password" id="password" size="25" maxlength="50"/></td>
+                    <td align=\"right\">Contrase&ntilde;a:&nbsp;</td>
+                    <td align=\"left\"><input name=\"password\" type=\"password\" id=\"password\" size=\"25\" maxlength=\"50\"/></td>
                 </tr>
-                <tr><td colspan="2">&nbsp;</td></tr>
+                <tr><td colspan=\"2\">&nbsp;</td></tr>
                 <tr>
-                    <td colspan="2" align="center">
-                        <button type="submit">
-                            <i class="fa fa-sign-in"></i>&nbsp;Ingresar
-                        </button>
+                    <td colspan=\"2\" align=\"center\">
+                        <button type=\"submit\"><i class=\"fa fa-sign-in\"></i>&nbsp;Ingresar</button>
                     </td>
                 </tr>
             </table>
-        </form>
-		<?php		
+        </form>";
 	}
     /**
      * Verifica usuario y crear variables de sesion si es true con la informacion de:
@@ -283,9 +281,9 @@ class User
      * Muestra informacion de la sesion iniciada
      * @param type $isAdmin is boolean
      */
-    public function logged($isAdmin=false)
+    public static function logged($isAdmin=false)
     {
-		if($this->getLoginSession())
+		if(User::getLoginSession())
 		{
 			echo "
             <div id=\"sesion-iniciada\">
@@ -307,7 +305,7 @@ class User
             }
             echo "  <tr>
                         <td align=\"right\">
-                            <a class=\"sesion-iniciada\" href=\"index.php?sign_off\"><i class=\"fa fa-sign-out\"></i>&nbsp;Cerrar sesion</a>
+                            <a class=\"sesion-iniciada\" href=\"/sign_off\"><i class=\"fa fa-sign-out\"></i>&nbsp;Cerrar sesion</a>
                         </td>
                     </tr>
                 </table>
@@ -370,7 +368,7 @@ class User
     /**
      * formulario nuevo usuario
      */
-    public function new_user()
+    public static function new_user()
     {
         // nuevo usuario
         if(isset($_POST['check_connection']))
@@ -423,7 +421,8 @@ class User
                             <h4 class=\"modal-title\">Agregar usuario</h4>
                         </div>
                         <div class=\"modal-body\">";
-                            $this->formulario_usuario();
+                            //$this->formulario_usuario();
+                            User::formulario_usuario();
         echo "          </div>
                         <div class=\"modal-footer\">
                             <button type=\"submit\" name=\"config_admin\" class=\"btn btn-default\">Guardar nueva contraseña</button>&nbsp;
@@ -613,23 +612,6 @@ class User
      */
     public static function save()
     {
-        /*
-        [userid] => 0
-        [id_ftp] => 0
-        [id_mysql] => 0
-        [usuario_imetos] => usuario_metos
-        [mails] => 22222@asdasd.com
-        [username_ftp] => usuario_ftp
-        [password_ftp] => password_ftp
-        [server_ftp] => servidor_ftp
-        [remotedir] => directorio remote
-        [usuario_mysql] => adasd
-        [password_mysql] => adasd
-        [base_datos_mysql] => asdasd
-        [servidor_mysql] => asdasd
-        [new_user] => 
-         * 
-        */
         // nuevo usuario
         $username_imetos=  req('username_imetos');
         $mails=  req('mails');
@@ -651,7 +633,6 @@ class User
                 VALUES (1,{$create_time},'{$username_imetos}','','','',0,'imetos','{$mails}')";
         if($lastid=sql_select($query, $results))
         {
-            //echo "ultimo id--->{$lastid}<br>";
             unset($results);
             $query="INSERT INTO `users`
                         (`enable_user`,`create_time`,`username`,`password`,`server`,`remotedir`,`is_admin`,`userid`,`usertype`,`mails`)
@@ -676,7 +657,7 @@ class User
      * @param type $is_admin is boolean
      * @param type $userid is number
      */
-    public function listar($is_admin=false, $userid=0)
+    public static function listar($is_admin=false, $userid=0)
     {
         //$enum_tipos_usuarios=getEnumOptions('usuarios', 'usertype');
         if($users=User::getAll($is_admin))
@@ -717,7 +698,7 @@ class User
                         <td colspan=\"6\">
                             <div id=\"conf_usuario_{$user->getId()}\" style=\"display:none\">";
                 //formulario edicion de usuario
-                $this->formulario_usuario($user);
+                User::formulario_usuario($user);
                 echo "      </div>
                             <div class=\"conf_exporta\" id=\"conf_exporta_{$user->getId()}\" style=\"display:none\">";
                 // si esta habilitado muestra info de estaciones
@@ -957,7 +938,7 @@ class User
      * Formulario para crear/editar usuario
      * @param type $q_user is Object User
      */
-    private function formulario_usuario($q_user=null)
+    private static function formulario_usuario($q_user=null)
     {
         $f_new=false;
         if(is_null($q_user))
@@ -1103,21 +1084,6 @@ class User
                                                 </td>
                                             </tr>";
         }
-        /*
-        echo "                              <tr>
-                                                <td colspan=\"2\" align=\"right\">";
-        if($f_new)
-        {
-            echo "                                  <button type=\"button\" name=\"cancel\" class=\"btn btn-default\" onClick=\"javascript:mostrar_ocultar('conf_usuario_{$user->getId()}')\">Cancelar</button>&nbsp;
-                                                    <button type=\"submit\" name=\"new_user\" class=\"btn btn-default\">Guardar usuario</button>";
-        }else
-        {
-            echo "                                  <button type=\"button\" name=\"cancel\" class=\"btn btn-default\" onClick=\"javascript:mostrar_ocultar('conf_usuario_{$user->getId()}')\">Cancelar</button>&nbsp;
-                                                    <button type=\"submit\" name=\"update_user\" class=\"btn btn-default\">Guardar edici&oacute;n</button>";
-        }    
-        echo "                                  </td>
-                                            </tr>
-        */
         echo "                          </table>
                                     </form>
                                     <br><br><br>
@@ -1203,7 +1169,7 @@ class User
      * @param type $userid
      * @return boolean
      */
-    public function delete_user($userid=0)
+    public static function delete_user($userid=0)
     {
         if($userid==0) return false;
         $query="DELETE FROM `users` 
@@ -1428,8 +1394,13 @@ class User
         unset($dom);
         return $cadena;
     }
-    
-    public function hago_informes($argv,$lo_guardo=false)
+    /**
+     * 
+     * @param type $argv
+     * @param type $lo_guardo
+     * @return boolean
+     */
+    public static function hago_informes($argv,$lo_guardo=false)
     {
         if(!isset($argv[1]))
         {
