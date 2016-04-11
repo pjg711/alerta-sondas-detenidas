@@ -190,7 +190,7 @@ class User
         echo "
         <br>\n
         <h1>".TITULO."</h1>
-        <form id=\"frmIngreso\" name=\"frmIngreso\" method=\"post\" action=\"\">
+        <form id=\"frmIngreso\" name=\"frmIngreso\" method=\"post\" action=\"/login\">
             <input type=\"hidden\" name=\"usar_imap\" value=\"1\">
             <br>
             <table id=\"tabla-ingreso\">
@@ -202,7 +202,7 @@ class User
                 <tr><td colspan=\"2\">&nbsp;</td></tr>
                 <tr>
                     <td align=\"right\">Usuario:&nbsp;</td>
-                    <td align=\"left\"><input name=\"usuario\" type=\"text\" id=\"usuario\" size=\"25\" maxlength=\"70\" /></td>
+                    <td align=\"left\"><input name=\"username\" type=\"text\" id=\"username\" size=\"25\" maxlength=\"70\" /></td>
                 </tr>
                 <tr><td colspan=\"2\">&nbsp;</td></tr>
                 <tr>
@@ -322,7 +322,7 @@ class User
                                     <h4 class=\"modal-title\">Cambiar contraseña</h4>
                                 </div>
                                 <div class=\"modal-body\">
-                                    <form class=\"form-horizontal\" role=\"form\" method=\"post\" action=\"index.php\">
+                                    <form class=\"form-horizontal\" role=\"form\" method=\"post\" action=\"/users/config\">
                                         <table width=\"99%\">
                                             <tr>
                                                 <td>Ingrese la contraseña actual:</td>
@@ -364,6 +364,11 @@ class User
                     </div>";
             }
 		}
+    }
+    public static function save_config()
+    {
+        // guardo la nueva contraseña
+        
     }
     /**
      * formulario nuevo usuario
@@ -960,7 +965,7 @@ class User
                             </div>
                             <div class=\"row\">
                                 <div class=\"col-md-12\">
-                                    <form name=\"user_edit\" method=\"post\" action=\"/ftp\">
+                                    <form name=\"user_edit\" method=\"post\" action=\"/users\">
                                         <input type=\"hidden\" name=\"userid\" value=\"{$user->getId()}\">";
         if($user->getEnableFTP())
         {

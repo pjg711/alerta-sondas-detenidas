@@ -16,18 +16,21 @@ if(User::getLoginSession())
                 mensaje("ERROR. No se pudo guardar el nuevo usuario","","error");
             }
             break;
-            
         case 'edit':
             
             break;
         case 'update':
             
             break;
-        
+        case 'config':
+            if(User::save_config())
+            {
+                
+            }
+            break;
         case 'delete':
             
             break;
-        
         case 'confirmed_delete':
             if(User::delete_user($userid))
             {

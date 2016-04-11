@@ -65,32 +65,6 @@ function sql_select($query, &$rv)
     }
     return true;
 }
-/*
-function getEnumOptions($table, $field) 
-{
-    global $db_link;
-    $finalResult = array(); 
-    if(strlen(trim($table)) < 1) return false; 
-    $query = "show columns from $table";
-    sql_select($query, $consulta);
-    while($row = $consulta->fetch(PDO::FETCH_ASSOC))
-    { 
-        if($field != $row["Field"]) continue;
-        //check if enum type 
-        //if(ereg('enum.(.*).', $row['Type'], $match))
-        if(preg_match('/enum.(.*)./', $row['Type'], $match))
-        { 
-            $opts = explode(',', $match[1]); 
-            foreach ($opts as $item) 
-                $finalResult[] = substr($item, 1, strlen($item)-2); 
-        } 
-        else 
-            return false;
-    }
-    return $finalResult; 
-}
- * 
- */
 /* ******************************************************************************************
  * Funciones para el manejo de las variables POST y GET
  */

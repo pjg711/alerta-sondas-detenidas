@@ -1,34 +1,10 @@
 <?php
+/*
 if(User::getLoginSession())
 {
     // *************************************************
     // User
     // *************************************************
-    if(isset($_POST['new_user']))
-    {
-        // grabo nuevo usuario
-        $_SESSION['action']='new_user';
-        if(User::save())
-        {
-            mensaje("El usuario se guard\u00F3 con \u00E9xito","Nuevo usuario");
-        }else
-        {
-            mensaje("ERROR. No se pudo guardar el nuevo usuario","","error");
-        }
-    }
-    //
-    if(isset($_POST['edit_user']))
-    {
-        $_SESSION['action']='edit_user';
-        if(User::update())
-        {
-            mensaje("Se actualiz\u00F3 el usuario","Editar usuario");
-        }else
-        {
-            mensaje("ERROR! Problema al actualizar usuario","","error");
-        }
-    }
-    //
     if(isset($_POST['data_export']))
     {
         $_SESSION['action']='data_export';
@@ -59,41 +35,10 @@ if(User::getLoginSession())
             User::borrar_informes_todos($userid);
         }
     }
-    if(isset($_POST['save_config']))
-    {
-        $config = new Config_Station();
-        if($config->update())
-        {
-            mensaje("Se guardó la configuración para la estación","Configurar estación");
-        }else
-        {
-            mensaje($config->getError(),"","error");
-        }
-    }
 }
+ * 
+ */
 //
-if(!User::getLoginSession())
-{
-    if(isset($_POST['usuario']) and isset($_POST['password']))
-    {
-        $q_usuario = req("usuario");
-        $q_password = req("password");
-        // verifico el usuario
-        if(User::verify_user($q_usuario, $q_password))
-        {
-            // bien
-        }else
-        {
-            User::SignOff();
-            mensaje("Error en dato de usuario y/o contraseña","","error");
-            redireccionar("index.php");
-        }
-    }else
-    {
-        //pido usuario y contraseña para el ingreso
-        User::Login();
-    }
-}
 if(User::getLoginSession())
 {
     echo "
@@ -180,6 +125,8 @@ if(User::getLoginSession())
     Page::footer();
 }else
 {
+    // no esta logeado
+    redireccionar('/login');
     echo "</body>
     </html>";
 }
