@@ -230,7 +230,6 @@ class Station
     //public static function getAll(IMETOS $BD, $userid=0,$server="",$database="",$username="",$password="")
     public static function getAll(IMETOS $BD)
     {
-        //$BD = new IMETOS($userid, $server, $database, $username, $password);
         $query="SELECT
                     `row_id`,
                     `f_station_code`,
@@ -1082,4 +1081,10 @@ class Station
     {
         return $this->getName();
     }
+    
+    public function export()
+    {
+        
+    }
+
 }

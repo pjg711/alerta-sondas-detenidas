@@ -1,5 +1,5 @@
 <?php
-if(User::getLoginSession())
+if(Login::getLoginSession())
 {
     print_r($_POST);
     $action=req($_GET['action']);

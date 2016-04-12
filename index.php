@@ -7,6 +7,7 @@ session_start();
 require 'config.php';
 //
 require PATH_ROOT.'/lib/class_page.php';
+require PATH_ROOT.'/lib/class_login.php';
 require PATH_ROOT.'/lib/class_imetos.php';
 require PATH_ROOT.'/lib/class_station.php';
 require PATH_ROOT.'/lib/class_sensor.php';
@@ -31,7 +32,7 @@ echo "</pre>";
 // *****************************************************************************
 $router->get('/', function(){
     //include './controllers/login.php';
-    if(User::getLoginSession())
+    if(Login::getLoginSession())
     {
         include './controllers/main.php';
     }else
@@ -42,68 +43,28 @@ $router->get('/', function(){
 });
 $router->mount('/login', function() use ($router){
     include './controllers/login.php';
-    /*
-    $router->get('/',function(){
-        include './controllers/login.php';
-    });
-    $router->post('/',function(){
-        include './controllers/login.php';
-    });
-     * 
-     */
 });
 $router->get('/sign_off',function(){
-    User::SignOff();
+    Login::SignOff();
     redireccionar('/login');
 });
 // Users
 $router->mount('/users', function() use ($router){
     $router->get('/', function(){
-        if(User::getIsAdmin())
+        if(Login::getIsAdmin())
         {
             // si es admin muestro listado de usuarios
+            
         }else
         {
             redireccionar('/');
         }
     });
-    $router->post('/new', function(){
-        // nuevo usuario
-        if(User::save())
-        {
-            mensaje("El usuario se guard\u00F3 con \u00E9xito","Nuevo usuario");
-        }else
-        {
-            mensaje("ERROR. No se pudo guardar el nuevo usuario","","error");
-        }
-    });
-    $router->post('/update', function(){
-        // actualizar usuario
-        if(User::update())
-        {
-            mensaje("Se actualiz\u00F3 el usuario","Editar usuario");
-        }else
-        {
-            mensaje("ERROR! Problema al actualizar usuario","","error");
-        }
-    });
-    $router->post('/save_config', function(){
-        // con
-        $config = new Config_Station();
-        if($config->update())
-        {
-            mensaje("Se guardó la configuración para la estación","Configurar estación");
-        }else
-        {
-            mensaje($config->getError(),"","error");
-        }
-        
-    });
-    $router->post('/delete', function(){
-        // borrar usuario
-        $id=req('id');
-        
-    });
+    $router->get('/(\w+)/(\d+)', function($action,$id) {
+        $_POST['action']=req($action);
+        $_POST['userid']=req($id);
+        include './controllers/users.php';
+    });    
 });
 //Stations
 $router->mount('/stations', function() use ($router){
@@ -111,9 +72,13 @@ $router->mount('/stations', function() use ($router){
         // listado de estaciones
         echo "listado de estaciones<br>";
     });
+    
 });
 // Informe de sondas detenidas
 $router->mount('/reports', function() use ($router){
+    $router->get('/', function(){
+        
+    });
     $router->post('/', function(){
         
     });

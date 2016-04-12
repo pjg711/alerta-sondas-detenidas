@@ -39,15 +39,15 @@ if(User::getLoginSession())
  * 
  */
 //
-if(User::getLoginSession())
+if(Login::getLoginSession())
 {
     echo "
     <ul style=\"margin:19px 0 18px 0;\" class=\"nav nav-tabs test2\">
         <li class=\"active\"><a data-toggle=\"tab\" href=\"#exportacion\">Exportación de datos de sondas</a></li>
         <li><a data-toggle=\"tab\" href=\"#detenidas\">Informe de detenidas</a></li>
     </ul>";
-    User::logged(User::getIsAdmin());
-    if(User::getIsAdmin())
+    Login::logged(Login::getIsAdmin());
+    if(Login::getIsAdmin())
     {
         // para administradores
         if(isset($_POST['alta_usuario']))
@@ -94,7 +94,7 @@ if(User::getLoginSession())
         // listado de archivos csv
         //listado_csvs();
         // todos los informes
-        //$user->listado_informes();
+        $user->listado_informes();
         echo "  </div>";
         echo "</div>";
     }else

@@ -1,5 +1,5 @@
 <?php
-if(!User::getLoginSession())
+if(!Login::getLoginSession())
 {
     if(isset($_POST['username']) and isset($_POST['password']))
     {
@@ -12,13 +12,13 @@ if(!User::getLoginSession())
             redireccionar('/');
         }else
         {
-            User::SignOff();
+            Login::SignOff();
             mensaje("Error en dato de usuario y/o contraseña","","error");
         }
     }else
     {
         //pido usuario y contraseña para el ingreso
-        User::Login();
+        Login::login_session();
     }
 }
 ?>
