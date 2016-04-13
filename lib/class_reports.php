@@ -27,7 +27,7 @@ class Reports
     }
     
     /**
-     * 
+     * Funcion para armar el xml con la info de las sondas
      * @param array $sondas
      * @return boolean
      */
@@ -444,15 +444,15 @@ class Reports
         $usuario=CCStrip($argv[1]);
         if($usuario=="todos")
         {
-            $query="SELECT    *
-                  FROM      `users` 
-                  WHERE     `activo`=1 AND 
+            $query="SELECT  *
+                    FROM    `users` 
+                    WHERE   `activo`=1 AND 
                             `usertype`='ftp'";
         }else
         {
-            $query="SELECT    *
-                  FROM      `users` 
-                  WHERE     `enable_user`=1 AND 
+            $query="SELECT  *
+                    FROM    `users` 
+                    WHERE   `enable_user`=1 AND 
                             `usertype`='ftp' AND 
                             `username`='{$usuario}' LIMIT 1";
         }
@@ -470,11 +470,11 @@ class Reports
         unset($results);
     }
     /**
-     * 
+     * Funcion principal que hace el informe de sondas detenidas
      * @param array $registro
      * @param type $lo_guardo
      */
-    private function hago_informe(Array $registro,$lo_guardo=false)
+    private function hago_informe(Array $registro, $lo_guardo=false)
     {
         $servidor=trim(utf8_decode($registro['servidor']));
         $usuario=trim(utf8_decode($registro['usuario']));
@@ -490,7 +490,7 @@ class Reports
                 {
                     // y lo guardo en la base de datos
                     $fecha_actual=date("Y-m-d H:i:s");
-                    $query="INSERT INTO `informes` 
+                    $query="INSERT INTO `reports` 
                                 (`userid`,`informe`,`fecha`) 
                             VALUES 
                                 ({$registro['id']},'{$informe}','{$fecha_actual}')";
@@ -508,3 +508,4 @@ class Reports
         unset($results);
     }    
 }
+?>

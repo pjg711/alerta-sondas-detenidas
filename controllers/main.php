@@ -47,6 +47,28 @@ if(Login::getLoginSession())
         <li><a data-toggle=\"tab\" href=\"#detenidas\">Informe de detenidas</a></li>
     </ul>";
     Login::logged(Login::getIsAdmin());
+    
+    if(Login::getIsAdmin())
+    {
+        echo "<div class=\"tab-content\">
+                <div id=\"exportacion\" class=\"tab-pane fade in active\">";
+        // solo admin puede crear un nuevo usuario
+        User::new_user();
+    }
+    // es usuario admin y presento todos los informes ordenados por fecha
+    User::listar(Login::getIsAdmin());
+    echo "          <br><br><br>
+                </div>
+                <div id=\"detenidas\" class=\"tab-pane fade\">";
+    // listado de archivos csv
+    //listado_csvs();
+    // todos los informes
+    Reports::listado_informes();
+    echo "  </div>";
+    Page::footer();
+    echo "</div>";
+   
+    /*
     if(Login::getIsAdmin())
     {
         // para administradores
@@ -98,6 +120,9 @@ if(Login::getLoginSession())
         echo "  </div>";
         echo "</div>";
     }else
+     * 
+     */
+     /*
     {
         $userid=$_SESSION['userid'];
         echo "<div class=\"tab-content\">
@@ -113,6 +138,8 @@ if(Login::getLoginSession())
         Page::footer();
         echo "</div>";
     }
+      * 
+      */
     if(isset($_POST['comprobar']))
     {
         // vuelvo a mostrar el div
@@ -130,3 +157,4 @@ if(Login::getLoginSession())
     echo "</body>
     </html>";
 }
+?>

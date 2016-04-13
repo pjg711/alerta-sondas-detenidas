@@ -1,7 +1,8 @@
 <?php
+
 if(Login::getLoginSession())
 {
-    echo "pase por users<br>";
+    //echo "pase por users<br>";
     if(!isset($_POST['action'])) exit;
     $userid=req('userid');
     switch($_POST['action'])
@@ -44,6 +45,5 @@ if(Login::getLoginSession())
             }
             break;
     }
-    
 }
 ?>

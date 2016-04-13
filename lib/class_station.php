@@ -117,7 +117,12 @@ class Station
     private $_status;
     /** @var Array */
     private $_instantSensorData;
+    /** @var type */
+    private $_config;
 
+    private $_mensaje;
+    private $_error;
+    
     /**
      *
      * @param <type> $row_id
@@ -227,8 +232,7 @@ class Station
      * @param type $password is string
      * @return array de objetos Station
      */
-    //public static function getAll(IMETOS $BD, $userid=0,$server="",$database="",$username="",$password="")
-    public static function getAll(IMETOS $BD)
+    public static function getAll(IMETOS $BD, $userid=0)
     {
         $query="SELECT
                     `row_id`,
@@ -287,8 +291,7 @@ class Station
             {
                 while($stationInfo = $result->fetch(PDO::FETCH_ASSOC))
                 {
-                    //echo "pase por aca 3a--->{$stationInfo['f_station_code']}<br>";
-                    $station = Station::load($BD, $stationInfo['f_station_code']);
+                    $station = Station::load($BD, $stationInfo['f_station_code'],false,$userid);
                     $response[$stationInfo['f_station_code']]= $station;
                 }
                 return $response;
@@ -303,7 +306,7 @@ class Station
      * @param Array $fromArrayValues
      * @return Station
      */
-    public static function load(IMETOS $BD, $f_station_code, $fromArrayValues = false)
+    public static function load(IMETOS $BD, $f_station_code, $fromArrayValues = false, $userid=0)
     {
         if(is_array($fromArrayValues))
         {
@@ -371,7 +374,6 @@ class Station
                     settype($response, 'array');
                     while($stationInfo = $result->fetch(PDO::FETCH_ASSOC))
                     {
-                        //echo "bien<br>";
                         $loadedDataArray = $stationInfo;
                     }
                 }
@@ -429,6 +431,7 @@ class Station
             );
             $station->_setLastDataRetrievedTime($BD);
             $station->_setStatusReport();
+            $station->_setConfig($userid); // cargo info de configuracion de estacion para la descarga
             return $station;
         }else
         {
@@ -840,14 +843,35 @@ class Station
     {
         return $this->_status;
     }
-    
+    /**
+     * 
+     * @return type
+     */
+    public function getConfig()
+    {
+        return $this->_config;
+    }
+    /**
+     * 
+     * @return type
+     */
+    public function getMensaje()
+    {
+        return $this->_mensaje;
+    }
+    /**
+     * 
+     * @return type
+     */
+    public function getError()
+    {
+        return $this->_error;
+    }
     /**
      * 
      */
     private function _setLastDataRetrievedTime(IMETOS $BD)
     {
-        //echo "pase por aca 4<br>";
-        //$BD=new IMETOS();
         $query = "
             SELECT
                 MAX(`last_read_time`)  as 'last_read_time'
@@ -867,7 +891,21 @@ class Station
             }
         }
     }
-
+    /**
+     * 
+     */
+    private function _setConfig($userid=0)
+    {
+        //echo "--->userid-->{$userid}<br>";
+        if(!$userid==0)
+        {
+            $q_config = Config_Station::load($userid,$this->getStationCode());
+            $this->_config=$q_config;
+        }else
+        {
+            $this->_config="";
+        }
+    }
     /**
      *
      * @return Array|false 
@@ -1082,9 +1120,64 @@ class Station
         return $this->getName();
     }
     
-    public function export()
+    public static function export_data($userid=0,$station_code=0)
     {
-        
+        $error="";
+        $mensaje="";
+        $user = User::load($userid);
+        if($user->getEnableMySQL())
+        {
+            $BD = new IMETOS($user->getIdMySQL(), $user->getServerMySQL(), $user->getDatabaseMySQL(), $user->getUserMySQL(), $user->getPasswMySQL());
+            $station = Station::load($BD, false, false, $userid);
+            $q_config = $station->getConfig();
+            $datas=array();
+            $enca1="";
+            $enca2="FECHA";
+            list($querys,$enca1,$enca2)=$q_config->runQuery($BD, $station);
+            if(!empty($querys))
+            {
+                foreach($querys as $key_query => $query)
+                {
+                    if($BD->sql_select($query, $results))
+                    {
+                        while($row=$results->fetch(PDO::FETCH_ASSOC))
+                        {
+                            $datas[$row['f_read_time']][$key_query]=$row;
+                        }
+                    }
+                }
+                // grabo el archivo
+                $archivo=PATH_ROOT."/temp/".$q_config->getNombreArchivo();
+                $fp=fopen($archivo,'w');
+                if($q_config->getEncabezado())
+                {
+                    fwrite($fp,$enca1."\n");
+                    fwrite($fp,$enca2."\n");
+                }
+                foreach($datas as $fecha => $data)
+                {
+                    $cadena=date("Y-m-d H:i:s",$fecha).$q_config->getSeparador2();
+                    foreach($data as $valor)
+                    {
+                        foreach($valor as $key_valor2 => $valor2)
+                        {
+                            if($key_valor2!='f_read_time')
+                            {
+                                $cadena.=$valor2.$q_config->getSeparador2();
+                            }
+                        }
+                    }
+                    if(substr($cadena,-(strlen($q_config->getSeparador2())))==$q_config->getSeparador2())
+                    {
+                        $cadena=substr($cadena,0,-(strlen($q_config->getSeparador2())));
+                    }
+                    fwrite($fp,$cadena."\n");
+                }
+                fclose($fp);
+                $mensaje="Se creó el archivo";
+                return true;
+            }
+        }
+        return false;
     }
-
 }

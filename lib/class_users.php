@@ -575,7 +575,7 @@ class User
                 if($user->getEnableMySQL())
                 {
                     $BD = new IMETOS($user->getIdMySQL(), $user->getServerMySQL(), $user->getDatabaseMySQL(), $user->getUserMySQL(), $user->getPasswMySQL());
-                    if($stations=Station::getAll($BD))
+                    if($stations=Station::getAll($BD, $user->getId()))
                     {
                         echo "  <div class=\"estaciones\" id=\"estaciones\">
                                     <div class=\"container\">
@@ -599,7 +599,14 @@ class User
                         {
                             $station->loadSensors($BD);
                             $stationSensorsList = $station->getAvailableSensors();
-                            $q_config = Config_Station::load($user->getId(),$station->getStationCode());
+                            //$q_config = Config_Station::load($user->getId(),$station->getStationCode());
+                            $q_config=$station->getConfig();
+                            /*
+                            echo "<pre>";
+                            print_r($q_config);
+                            echo "</pre>";
+                             * 
+                             */
                             if($con == 0)
                             {
                                 echo "      <div class=\"info-sensores\" id=\"estacion_{$station->getStationCode()}\" style=\"display:block\">";
@@ -610,7 +617,7 @@ class User
                             echo "              <div class=\"container\">
                                                     <hr class=\"\">
                                                     <div class=\"row\">
-                                                        <form class=\"form-horizontal\" role=\"form\" method=\"post\" action=\"index.php\">
+                                                        <form class=\"form-horizontal\" role=\"form\" method=\"post\" action=\"/stations/config/{$station->getStationCode()}\">
                                                             <input type=\"hidden\" id=\"userid\" name=\"userid\" value=\"{$user->getId()}\">
                                                             <input type=\"hidden\" id=\"f_station_code\" name=\"f_station_code\" value=\"{$station->getStationCode()}\">
                                                             <div class=\"col-md-9\">";
@@ -781,13 +788,15 @@ class User
                                                         </div>
                                                         <div class=\"col-md-8\">
                                                             <div class=\"pull-right\">
-                                                                <button type=\"submit\" name=\"data_export\" class=\"btn btn-default\">Exportar ahora</button>&nbsp;
-                                                                <button type=\"submit\" name=\"save_config\" class=\"btn btn-default\">Guardar configuraci&oacute;n</button>&nbsp;
-                                                                <button type=\"button\" name=\"close\" class=\"btn btn-default\" onClick=\"javascript:mostrar_ocultar('conf_exporta_{$user->getId()}');\">Cerrar</button>&nbsp;
+                                                                <button type=\"submit\" name=\"save_config\" class=\"btn btn-default\"><i class=\"fa fa-floppy-o\" aria-hidden=\"true\"></i>&nbsp;Guardar configuraci&oacute;n</button>&nbsp;
+                                                                <button type=\"button\" name=\"close\" class=\"btn btn-default\" onClick=\"javascript:mostrar_ocultar('conf_exporta_{$user->getId()}');\"><i class=\"fa fa-times\" aria-hidden=\"true\"></i>&nbsp;Cerrar</button>&nbsp;
                                                             </div>
                                                         </div>
                                                     </div>";
                             echo "              </form>
+                                                <form class=\"form-horizontal\" role=\"form\" method=\"post\" action=\"/stations/export/{$station->getStationCode()}/{$user->getId()}\">
+                                                    <button type=\"submit\" name=\"export_data\" class=\"btn btn-default\"><i class=\"fa fa-table\" aria-hidden=\"true\"></i>&nbsp;Exportar ahora</button>&nbsp;
+                                                </form>
                                             </div> <!-- cierre de div container -->
                                         </div> <!-- cierre de div info-sensores -->";
                             $con++;

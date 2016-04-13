@@ -51,14 +51,7 @@ $router->get('/sign_off',function(){
 // Users
 $router->mount('/users', function() use ($router){
     $router->get('/', function(){
-        if(Login::getIsAdmin())
-        {
-            // si es admin muestro listado de usuarios
-            
-        }else
-        {
-            redireccionar('/');
-        }
+        include './controllers/users.php';
     });
     $router->get('/(\w+)/(\d+)', function($action,$id) {
         $_POST['action']=req($action);
@@ -68,11 +61,20 @@ $router->mount('/users', function() use ($router){
 });
 //Stations
 $router->mount('/stations', function() use ($router){
-    $router->get('/', function(){
-        // listado de estaciones
-        echo "listado de estaciones<br>";
+    $router->post('/export/(\d+)/(\d+)', function($station_code, $userid){
+        // exporto datos de estacion
+        $_POST['action']='export_data';
+        $_POST['station_code']=$station_code;
+        $_POST['userid']=$userid;
+        include './controllers/stations.php';
     });
-    
+    $router->post('/', function(){
+        // formulario de configuracion de estacion
+        echo "listado de estaciones post<br>";
+        echo "<pre>";
+        print_r($_POST);
+        echo "</pre>";
+    });
 });
 // Informe de sondas detenidas
 $router->mount('/reports', function() use ($router){

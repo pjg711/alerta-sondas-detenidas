@@ -19,8 +19,8 @@ if($users=User::getAll(true))
                 foreach($stations as $station)
                 {
                     $station->loadSensors($BD);
-                    $stationSensorsList = $station->getAvailableSensors();
-                    $q_config = Config_Station::load($user->getId(),$station->getStationCode());
+                    //$stationSensorsList = $station->getAvailableSensors();
+                    $q_config = $station->getConfig();
                     //
                     echo "<br>-------------------------------------------------------<br>";
                     echo "UserId--------->{$user->getId()}<br>";
@@ -36,7 +36,6 @@ if($users=User::getAll(true))
                     {
                         foreach($querys as $key_query => $query)
                         {
-                            echo "query--->{$query}<br>";
                             if($BD->sql_select($query, $results))
                             {
                                 while($row=$results->fetch(PDO::FETCH_ASSOC))
@@ -47,7 +46,6 @@ if($users=User::getAll(true))
                         }
                         // grabo el archivo
                         $archivo=PATH_ROOT."/temp/".$q_config->getNombreArchivo();
-                        //echo "archivo--->{$archivo}<br>";
                         $fp=fopen($archivo,'w');
                         if($q_config->getEncabezado())
                         {
