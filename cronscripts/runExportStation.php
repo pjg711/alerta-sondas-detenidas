@@ -19,7 +19,7 @@ if($users=User::getAll(true))
                 foreach($stations as $station)
                 {
                     $station->loadSensors($BD);
-                    //$stationSensorsList = $station->getAvailableSensors();
+                    $stationSensorsList = $station->getAvailableSensors();
                     $q_config = $station->getConfig();
                     //
                     echo "<br>-------------------------------------------------------<br>";
@@ -45,7 +45,7 @@ if($users=User::getAll(true))
                             }
                         }
                         // grabo el archivo
-                        $archivo=PATH_ROOT."/temp/".$q_config->getNombreArchivo();
+                        $archivo = TEMPORALES.$q_config->getNombreArchivo();
                         $fp=fopen($archivo,'w');
                         if($q_config->getEncabezado())
                         {

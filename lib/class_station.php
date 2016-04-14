@@ -119,8 +119,9 @@ class Station
     private $_instantSensorData;
     /** @var type */
     private $_config;
-
+    /** @var type */
     private $_mensaje;
+    /** @var type */
     private $_error;
     
     /**
@@ -308,6 +309,7 @@ class Station
      */
     public static function load(IMETOS $BD, $f_station_code, $fromArrayValues = false, $userid=0)
     {
+        $loadedDataArray=false;
         if(is_array($fromArrayValues))
         {
             $loadedDataArray = $fromArrayValues;
@@ -371,7 +373,7 @@ class Station
             {
                 if($BD->getRowCount() > 0)
                 {
-                    settype($response, 'array');
+                    //settype($response, 'array');
                     while($stationInfo = $result->fetch(PDO::FETCH_ASSOC))
                     {
                         $loadedDataArray = $stationInfo;
@@ -1119,17 +1121,23 @@ class Station
     {
         return $this->getName();
     }
-    
+    /**
+     * 
+     * @param type $userid
+     * @param type $station_code
+     * @return boolean
+     */
     public static function export_data($userid=0,$station_code=0)
     {
-        $error="";
-        $mensaje="";
         $user = User::load($userid);
         if($user->getEnableMySQL())
         {
             $BD = new IMETOS($user->getIdMySQL(), $user->getServerMySQL(), $user->getDatabaseMySQL(), $user->getUserMySQL(), $user->getPasswMySQL());
-            $station = Station::load($BD, false, false, $userid);
-            $q_config = $station->getConfig();
+            $station = Station::load($BD, $station_code, false, $userid);
+            $station->loadSensors($BD);
+            $stationSensorsList = $station->getAvailableSensors();
+            $q_config = $station->getConfig(); // problema
+            //
             $datas=array();
             $enca1="";
             $enca2="FECHA";
@@ -1147,7 +1155,7 @@ class Station
                     }
                 }
                 // grabo el archivo
-                $archivo=PATH_ROOT."/temp/".$q_config->getNombreArchivo();
+                $archivo = TEMPORALES.$q_config->getNombreArchivo();
                 $fp=fopen($archivo,'w');
                 if($q_config->getEncabezado())
                 {
@@ -1174,9 +1182,23 @@ class Station
                     fwrite($fp,$cadena."\n");
                 }
                 fclose($fp);
-                $mensaje="Se creó el archivo";
-                return true;
+                // se creo el archivo
+                if($last_id=Log::add($userid,'export_data',$archivo))
+                {
+                    return $last_id;
+                }else
+                {
+                    echo "No se puedo insertar el mensaje en el log<br>";
+                }
             }
+            else
+            {
+                echo "Error en las consultas.<br>";
+            }
+        }
+        else
+        {
+            echo "No existe la información de la conexión para la consulta.<br>";
         }
         return false;
     }

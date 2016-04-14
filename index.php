@@ -15,10 +15,23 @@ require PATH_ROOT.'/lib/class_config.php';
 require PATH_ROOT.'/lib/class_ftp.php';
 require PATH_ROOT.'/lib/class_users.php';
 require PATH_ROOT.'/lib/class_reports.php';
+require PATH_ROOT.'/lib/class_log.php';
 
 // Require composer autoloader
 require PATH_ROOT.'/lib/vendor/autoload.php';
 $router = new \Bramus\Router\Router();
+
+$router->mount('/export', function() use ($router){
+    $router->get('/(\d+)', function($id_log){
+        $archivo=Log::search($id_log);
+        $enlace = $archivo[0]->getInfo();
+        $enlace2 = $archivo[0]->getFile();
+        header ("Content-Disposition: attachment; filename=$enlace2 ");
+        header ("Content-Type: application/force-download");
+        header ("Content-Length: ".filesize($enlace));
+        readfile($enlace);    
+    });
+});
 
 Page::header();
 /*
@@ -98,9 +111,6 @@ $router->get('/reports/(\w+)/(\d+)', function($action,$id){
     $_POST['action']=req($action);
     $_POST['reportid']=req($id);
     include './controllers/reports.php';
-});
-$router->mount('/export', function() use ($router){
-    
 });
 $router->run();
 ?>

@@ -19,6 +19,8 @@ define('MAIL_USERNAME','sondas.seedmech@gmail.com');
 define('MAIL_PASSWORD','seedmech932');
 // ruta principal 
 define('PATH_ROOT',dirname(__FILE__));
+// archivos temporales
+define('TEMPORALES',PATH_ROOT.'/temp/');
 // archivo de errores
 define('ERROR_LOG',PATH_ROOT.'/temp/errores.log');
 // conexion a base de datos
@@ -141,5 +143,12 @@ function redireccionar($pagina="")
     echo "<script type=\"text/javascript\">";
     echo "  window.location=\"".$pagina."\";";
     echo "</script>";
+}
+function get_current_url()
+{
+    $protocol = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
+    $base_url = $protocol . "://" . $_SERVER['HTTP_HOST'];
+    $complete_url = $base_url . $_SERVER["REQUEST_URI"];
+    return $complete_url;
 }
 ?>

@@ -1,5 +1,4 @@
 <?php
-
 if(Login::getLoginSession())
 {
     //echo "pase por users<br>";

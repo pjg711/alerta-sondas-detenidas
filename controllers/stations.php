@@ -1,20 +1,20 @@
 <?php
 if(Login::getLoginSession())
 {
-    echo "pase por stations<br>";
     if(!isset($_POST['action'])) exit;
-    $station_code=$_POST['station_code'];
     $userid=$_POST['userid'];
+    $station_code=$_POST['station_code'];
     switch($_POST['action'])
     {
         case 'export_data':
-            if(Station::export())
+            if($id_log=Station::export_data($userid,$station_code))
             {
-                
+                mensaje("Se exportó con exito el archivo id->{$id_log}","Exportar datos");
+                redireccionar('/export/'.$id_log);
+            }else
+            {
+                //mensaje($error,"","error");
+                echo "ocurrio algun error<br>";
             }
-            
-            echo "station-code--->{$station_code}<br>";
-            echo "userid--------->{$userid}<br>";
-            break;
     }
 }

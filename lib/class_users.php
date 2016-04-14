@@ -192,7 +192,7 @@ class User
     {
         // primero verifico que el usuario este en el sistema
         $query="SELECT  `id`,`username`,`password`,`is_admin`
-                FROM    `users` 
+                FROM    `" . SESSION_NAME . "users` 
                 WHERE   `username`='{$usuario}' AND 
                         (`usertype`='imetos' OR `usertype`='sistema') LIMIT 1";
         if(sql_select($query, $results))
@@ -316,14 +316,14 @@ class User
             {
                 $username=$_SESSION['user_active'];
                 $query="SELECT  `id`,`username`
-                        FROM    `users`
+                        FROM    `" . SESSION_NAME . "users`
                         WHERE   `usertype`='imetos' AND
                                 `username`='{$username}'";
             }
         }else
         {
             $query="SELECT  `id`,`username`
-                    FROM    `users`
+                    FROM    `" . SESSION_NAME . "users`
                     WHERE   `usertype`='imetos'";
         }
         if(!sql_select($query,$results))
@@ -359,7 +359,7 @@ class User
                             `username`,
                             `mails`,
                             `is_admin`
-                    FROM    `users`
+                    FROM    `" . SESSION_NAME . "users`
                     WHERE   `usertype`='imetos' AND
                             `id`={$userid} LIMIT 1";
             if(!sql_select($query, $results))
@@ -379,7 +379,7 @@ class User
                                 `server`,
                                 `remotedir`,
                                 `mails`
-                        FROM    `users`
+                        FROM    `" . SESSION_NAME . "users`
                         WHERE   `usertype`='ftp' AND
                                 `userid`={$user['id']} LIMIT 1";
                 if(sql_select($query, $results2))
@@ -397,7 +397,7 @@ class User
                                 `password`,
                                 `server`,
                                 `database`
-                        FROM    `users` 
+                        FROM    `" . SESSION_NAME . "users` 
                         WHERE   `usertype`='mysql' AND 
                                 `userid`={$user['id']} LIMIT 1";
                 //echo "query mysql--->".$query."<br>";
@@ -498,20 +498,20 @@ class User
         $server_mysql=  req('server_mysql');
         
         $create_time=time();
-        $query="INSERT INTO `users` 
+        $query="INSERT INTO `" . SESSION_NAME . "users`
                     (`enable_user`,`create_time`,`username`,`password`,`server`,`remotedir`,`is_admin`,`usertype`,`mails`)
                 VALUES (1,{$create_time},'{$username_imetos}','','','',0,'imetos','{$mails}')";
         if($lastid=sql_select($query, $results))
         {
             unset($results);
-            $query="INSERT INTO `users`
+            $query="INSERT INTO `" . SESSION_NAME . "users`
                         (`enable_user`,`create_time`,`username`,`password`,`server`,`remotedir`,`is_admin`,`userid`,`usertype`,`mails`)
                     VALUES (1,{$create_time},'{$username_ftp}','{$password_ftp}','{$server_ftp}','{$remotedir}',0,{$lastid},'ftp','{$mails_ftp}')";
             if(sql_select($query,$results))
             {
             }
             unset($results);
-            $query="INSERT INTO `users`
+            $query="INSERT INTO `" . SESSION_NAME . "users`
                         (`enable_user`,`create_time`,`username`,`password`,`server`,`remotedir`,`is_admin`,`userid`,`usertype`,`mails`)
                     VALUES (1,{$create_time},'{$username_mysql}','{$password_mysql}','{$server_mysql}','',0,{$lastid},'mysql','')";
             if(sql_select($query,$results))
@@ -993,7 +993,7 @@ class User
         $password_mysql=  req("password_mysql");
         $servidor_mysql=  req("servidor_mysql");
         //
-        $query="UPDATE  `users`
+        $query="UPDATE  `" . SESSION_NAME . "users`
                 SET     `username`='".$usuario."',
                         `password`='',
                         `server`='',
@@ -1009,7 +1009,7 @@ class User
         }
         unset($results);
         // ftp
-        $query="UPDATE  `users`
+        $query="UPDATE  `" . SESSION_NAME . "users`
                 SET     `username`='{$usuario_ftp}',
                         `password`='{$password_ftp}',
                         `server`='{$servidor_ftp}',
@@ -1025,7 +1025,7 @@ class User
         }
         unset($results);
         // mysql
-        $query="UPDATE  `users`
+        $query="UPDATE  `" . SESSION_NAME . "users`
                 SET     `username`='{$usuario_mysql}',
                         `password`='{$password_mysql}',
                         `server`='{$servidor_mysql}',
@@ -1051,7 +1051,7 @@ class User
     public static function delete_user($userid=0)
     {
         if($userid==0) return false;
-        $query="DELETE FROM `users` 
+        $query="DELETE FROM `" . SESSION_NAME . "users` 
                 WHERE `id`={$userid}";
         if(!sql_select($query, $results))
         {

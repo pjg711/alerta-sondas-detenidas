@@ -183,7 +183,18 @@ class Config_Station
      */
     public function getSeparador2()
     {
-        $separador2=  json_decode(SEPARADORES2);
+        /*
+        echo "SEPARADORES2-->".SEPARADORES2."<br>";
+        echo "separador----->".$this->separador."<--<br>";
+        */
+        $separador2=  json_decode(SEPARADORES2,true);
+        /*
+        echo "<pre>";
+        print_r($separador2);
+        echo "</pre>";
+        echo "separador2[this->separador]-->".$separador2[$this->separador]."<br>";
+         * 
+         */
         return $separador2[$this->separador];
         /*
         switch($this->separador)
@@ -248,7 +259,7 @@ class Config_Station
                             `f_station_code`,
                             `enable`,
                             `info`
-                    FROM    `configurations`
+                    FROM    `" . SESSION_NAME . "configurations`
                     WHERE   `f_station_code`={$f_station_code} AND 
                             `userid`={$userid}";
             $loadedDataArray="";
@@ -419,7 +430,7 @@ class Config_Station
         {
             // primero verifico que exista
             $query="SELECT  `id`
-                    FROM    `configurations`
+                    FROM    `" . SESSION_NAME . "configurations`
                     WHERE   `userid`={$userid} AND
                             `f_station_code`={$f_station_code}";
             if(!sql_select($query, $results))
@@ -431,7 +442,7 @@ class Config_Station
             {
                 unset($results);
                 // lo actualizo
-                $query="UPDATE  `configurations`
+                $query="UPDATE  `" . SESSION_NAME . "configurations`
                         SET     `info`='{$info}',
                                 `enable`={$enable}
                         WHERE   `userid`={$userid} AND
@@ -445,7 +456,7 @@ class Config_Station
             {
                 unset($results);
                 // inserto estacion
-                $query="INSERT INTO `configurations` 
+                $query="INSERT INTO `" . SESSION_NAME . "configurations` 
                             (`userid`,`f_station_code`,`enable`,`info`)
                         VALUES 
                             ({$userid},{$f_station_code},{$enable},'{$info}')";
