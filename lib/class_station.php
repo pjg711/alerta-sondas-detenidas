@@ -1164,20 +1164,20 @@ class Station
                 }
                 foreach($datas as $fecha => $data)
                 {
-                    $cadena=date("Y-m-d H:i:s",$fecha).$q_config->getSeparador2();
+                    $cadena=date("Y-m-d H:i:s",$fecha).chr($q_config->getSeparador2());
                     foreach($data as $valor)
                     {
                         foreach($valor as $key_valor2 => $valor2)
                         {
                             if($key_valor2!='f_read_time')
                             {
-                                $cadena.=$valor2.$q_config->getSeparador2();
+                                $cadena.=$valor2.chr($q_config->getSeparador2());
                             }
                         }
                     }
-                    if(substr($cadena,-(strlen($q_config->getSeparador2())))==$q_config->getSeparador2())
+                    if(substr($cadena,-(strlen(chr($q_config->getSeparador2())))==chr($q_config->getSeparador2())))
                     {
-                        $cadena=substr($cadena,0,-(strlen($q_config->getSeparador2())));
+                        $cadena=substr($cadena,0,-(strlen(chr($q_config->getSeparador2()))));
                     }
                     fwrite($fp,$cadena."\n");
                 }

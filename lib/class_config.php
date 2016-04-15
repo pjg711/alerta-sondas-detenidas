@@ -400,8 +400,9 @@ class Config_Station
      * 
      * @return boolean
      */
-    public function update()
+    public static function update()
     {
+        $error="";
         if(!isset($_POST['enable']) OR $_POST['enable']=='off')
         {
             //estacion desactivada
@@ -409,11 +410,11 @@ class Config_Station
         }else
         {
             $enable=1;
-            if(!$validacion=$this->validacion())
+            $error.=  Config_Station::validation();
+            if(!empty($validacion))
             {
-                error_log(date('Y-m-d H:i:s').chr(9).$validacion,3,ERROR_LOG);
-                $this->error=$validacion;
-                return false;
+                error_log(date('Y-m-d H:i:s').chr(9).$validacion."\r",3,ERROR_LOG);
+                return $validacion;
             }
         }
         //
@@ -436,7 +437,7 @@ class Config_Station
             if(!sql_select($query, $results))
             {
                 mensaje("No se pudo consultar la base de datos","","error");
-                return false;
+                $error.="ERROR! No se pudo consultar la base de datos.\n";
             }
             if($results->rowCount() > 0)
             {
@@ -450,7 +451,7 @@ class Config_Station
                 if(!sql_select($query, $results))
                 {
                     mensaje("No se pudo actualizar los datos de la estacion","","error");
-                    return false;
+                    $error.="ERROR! No se pudo actualizar los datos de la estación.\n";
                 }
             }else
             {
@@ -460,16 +461,15 @@ class Config_Station
                             (`userid`,`f_station_code`,`enable`,`info`)
                         VALUES 
                             ({$userid},{$f_station_code},{$enable},'{$info}')";
-                if(!sql_select($query,$results))
+                if(sql_select($query,$results))
                 {
-                    echo "ERROR! No se pudo insertar los datos de la estacion";
-                    return false;
+                    return true;
                 }
             }
-            return true;
+            $error.="ERROR! No se pudo insertar los datos de la estacion.\n";
         }
-        echo "ERROR! No esta definido el usuario y/o la estaci&oacute;n";
-        return false;
+        $error.="ERROR! No esta definido el usuario y/o la estaci&oacute;n.\n";
+        return $error;
     }
     /**
      * 
@@ -481,7 +481,6 @@ class Config_Station
         $f_station_code=$station->getStationCode();
         // periodo a descargar
         // valores: periodo, mes_actual, todos, fijo
-        echo "f_station_code--->{$f_station_code}<br>";
         switch($this->getPeriodo())
         {
             case 'periodo':
@@ -541,7 +540,7 @@ class Config_Station
         // sensores
         $query=array();
         $enca1="{$this->getSeparador2()}";
-        $enca2="fecha{$this->getSeparador2()}";
+        $enca2="fecha".chr($this->getSeparador2());
         foreach($this->sensores as $key_sensor => $sensor)
         {
             $select='`f_read_time`,';
@@ -557,27 +556,27 @@ class Config_Station
                 if($qsensor->getValMin())
                 {
                     $select.='`min`,';
-                    $enca2.="min{$this->getSeparador2()}";
+                    $enca2.="min".chr($this->getSeparador2());
                 }
                 if($qsensor->getValMax())
                 {
                     $select.='`max`,';
-                    $enca2.="max{$this->getSeparador2()}";
+                    $enca2.="max".chr($this->getSeparador2());
                 }
                 if($qsensor->getValSum())
                 {
                     $select.='`sum`,';
-                    $enca2.="sum{$this->getSeparador2()}";
+                    $enca2.="sum".chr($this->getSeparador2());
                 }
                 if($qsensor->getValAver())
                 {
                     $select.='`aver`,';
-                    $enca2.="aver{$this->getSeparador2()}";
+                    $enca2.="aver".chr($this->getSeparador2());
                 }
                 if($qsensor->getValLast())
                 {
                     $select.='`last`,';
-                    $enca2.="last{$this->getSeparador2()}";
+                    $enca2.="last".chr($this->getSeparador2());
                 }
                 $where.=" `f_sensor_code`={$f_sensor_code} AND `f_sensor_ch`={$f_sensor_ch}";
             }
@@ -591,25 +590,26 @@ class Config_Station
                 $where=substr($where,0,-3);
             }
             // hago la consulta
-            $query[$sensor]="SELECT {$select}
+            $query[$sensor]="
+                    SELECT {$select}
                     FROM `seedclima_sensor_data_retrieve_stats_day` 
                     WHERE {$where}
                     ORDER BY `f_read_time` ASC";
         }
         if(substr($enca1,-(strlen($this->getSeparador2()))==$this->getSeparador2()))
         {
-            $enca1=substr($enca1,0,-(strlen($this->getSeparador2())));
+            $enca1=substr($enca1,0,-(strlen(chr($this->getSeparador2()))));
         }
-        if(substr($enca2,-(strlen($this->getSeparador2()))==$this->getSeparador2()))
+        if(substr($enca2,-(strlen(chr($this->getSeparador2())))==chr($this->getSeparador2())))
         {
-            $enca2=substr($enca2,0,-(strlen($this->getSeparador2())));
+            $enca2=substr($enca2,0,-(strlen(chr($this->getSeparador2()))));
         }
         return array($query,$enca1,$enca2);
     }
     /**
      * 
      */
-    private function validacion()
+    private static function validation()
     {
         $validacion="";
         // debo validar los campos
@@ -629,22 +629,22 @@ class Config_Station
             switch($_POST['periodo'])
             {
                 case 'periodo':
-                    if(!isset($_POST['fecha_incial']) OR !isset($_POST['fecha_final']))
+                    if(!isset($_POST['fecha_incial']) AND !isset($_POST['fecha_final']))
                     {
                         $validacion.="No se definieron las fechas de inicio y final\n";
                     }
                     if(isset($_POST['fecha_inicial']))
                     {
                         // fecha valida
-                        if(strlen($_POST['fecha_inicial'])==0)
+                        if(is_valid_date_format($_POST['fecha_inicial']))
                         {
                             $validacion.="Debe completar la fecha de inicio del período.\n";
                         }
-                        if(strlen($_POST['fecha_final'])==0)
+                        if(is_valid_date_format($_POST['fecha_final']))
                         {
                             $validacion.="Debe completar la fecha de fin del período.\n";
                         }
-                        if(!$this->valido_fechas($_POST['fecha_inicial'],$_POST['fecha_final']))
+                        if(validate_two_dates($_POST['fecha_inicial'],$_POST['fecha_final']))
                         {
                             $validacion.="La fecha final no puede ser anterior a la fecha inicial del período.\n";
                         }
@@ -664,21 +664,21 @@ class Config_Station
                         }
                     }
                     break;
-                    
             }
         }
         if(!isset($_POST['tipo_archivo']))
         {
             $validacion.="El tipo de archivo no esta definido.\n";
-            
         }
+        /*
         if(!empty($validacion))
         {
             echo "pase por aca<br>";
             echo $validacion."<br>";
-            $this->error=$validacion;
-            return false;
+            //$this->error=$validacion;
         }
-        return true;
+         * 
+         */
+        return $validacion;
     }
 }

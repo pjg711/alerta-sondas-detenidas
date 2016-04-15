@@ -20,7 +20,7 @@
  * @filesource
  * @todo          document this file 
  */
-$full_uri = dummy_request_uri();
+//$full_uri = dummy_request_uri();
 
 
 /* * ***
@@ -468,27 +468,27 @@ function strip_default_folders($string)
 function date_to_european($string, $output ="", $from_unixtimestamp = false)
 {
 
-    if (trim($string)) {
-
-        if ($from_unixtimestamp) {
+    if(trim($string))
+    {
+        if($from_unixtimestamp)
+        {
             $date = getdate($string);
-
             $string = $date['year'] . "-" . add_zero_first($date['mon'], 2) . "-" . add_zero_first($date['mday'], 2) . " <strong>" . add_zero_first($date['hours'], 2) . ":" . add_zero_first($date['minutes'], 2) . ":" . add_zero_first($date['seconds'], 2) . "</strong>";
         }
 
-        if (preg_match('#(\d{4})-(\d{2})-(\d{2})#ix', $string)) {
+        if(preg_match('#(\d{4})-(\d{2})-(\d{2})#ix', $string))
+        {
             $split = split(" ", $string);
             $return_string = split("-", $split['0']);
         }
 
         $time = ((isset($split['1']) && ($split['1'] > "00:00:00")) ? " - " . $split['1'] : "");
 
-        switch ($output) {
-
+        switch($output)
+        {
             case'translated':
                 return $return_string['2'] . " " . dateTranslated($return_string['1']) . ", " . $return_string['0'] . $time;
                 break;
-
             case'translated_add_day':
                 return dayTranslated(date("w", mktime(0, 0, 0, $return_string['1'], $return_string['2'], $return_string['0']))) . " " . $return_string['2'] . " " . dateTranslated($return_string['1']) . ", " . $return_string['0'] . $time;
                 break;
@@ -521,7 +521,8 @@ function date_to_european($string, $output ="", $from_unixtimestamp = false)
                 return $return_string['2'] . "/" . $return_string['1'] . "/" . $return_string['0'] . $time;
                 break;
         }
-    } else {
+    }else
+    {
         return "";
     }
 }
@@ -1309,19 +1310,20 @@ function check_on_off($string)
 }
 
 #############################################
-###   VALIDATE YYYY-MM-DD date format
+###   VALIDATE DD-MM-YYYY date format
 #
 
 function is_valid_date_format($string)
 {
-    $date_splitted = @explode("-", $string);
-    return ((preg_match('#(\d{4})-(\d{2})-(\d{2})#ix', $string)) //VALID YYYY-MM-DD
+    //checkdate(int $month , int $day , int $year )
+    $date_splitted = @explode("/", $string);
+    return ((preg_match('#(\d{2})/(\d{2})/(\d{4})#ix', $string)) //VALID DD-MM-YYYY
     &&
     (@count($date_splitted) == 3)
     &&
-    (is_int($date_splitted[1] . $date_splitted[2] . $date_splitted[0]))
+    (is_int($date_splitted[1] . $date_splitted[0] . $date_splitted[2]))
     &&
-    (checkdate($date_splitted[1], $date_splitted[2], $date_splitted[0]))
+    (checkdate($date_splitted[1], $date_splitted[0], $date_splitted[2]))
     ) ? true : false;
 }
 
@@ -1354,12 +1356,15 @@ function validate_date($string, $field_name)
 
 function check_referer($return_message = 0, $message_content = 0)
 {
-    if ((DEFINED_HTTP_REFERER)
+    if((DEFINED_HTTP_REFERER)
             && (preg_match("#^" . MAIN_DOMAIN . "#is", DEFINED_HTTP_REFERER))
-            && (preg_match("#" . DEFINED_HTTP_HOST . "#is", DEFINED_HTTP_REFERER))) {
+            && (preg_match("#" . DEFINED_HTTP_HOST . "#is", DEFINED_HTTP_REFERER)))
+    {
         return true;
-    } else {
-        if ($return_message == 1) {
+    }else
+    {
+        if($return_message == 1)
+        {
             echo (($message_content) ? $message_content : ("<br>" . ALERT_BOX_OPEN . "<strong class=\"red\">" . translate("email_send_error") . "</strong>" . ALERT_BOX_CLOSE . ""));
         }
         return false;
@@ -1727,5 +1732,105 @@ function mps_speed_convertion($data, $new_unit)
             break;
     endswitch;
 }
+/**
+ * 
+ * @param type $texto
+ * @param type $enca
+ * @param type $tipo
+ */
+function mensaje($texto,$enca="",$tipo="success")
+{
+    echo "<script type=\"text/javascript\">";
+    if($enca=="")
+    {
+        echo "toastr.{$tipo}(\"".$texto."\");";
+    }else
+    {
+        echo "toastr.{$tipo}(\"".$texto."\",\"".$enca."\");";
+    }
+    echo "</script>";
+}
+/**
+ * 
+ * @param type $texto
+ */
+function mensaje2($texto="")
+{
+    echo "<script type=\"text/javascript\">";
+    echo "  alert('{$texto}')";
+    echo "</script>";
+}
+/**
+ * 
+ * @param type $pagina
+ */
+function redireccionar($pagina="")
+{
+    echo "<script type=\"text/javascript\">";
+    echo "  window.location=\"".$pagina."\";";
+    echo "</script>";
+}
+/**
+ * 
+ * @return string
+ */
+function get_current_url()
+{
+    $protocol = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
+    $base_url = $protocol . "://" . $_SERVER['HTTP_HOST'];
+    $complete_url = $base_url . $_SERVER["REQUEST_URI"];
+    return $complete_url;
+}
+/**
+ * 
+ * @param type $varreq
+ * @param type $method
+ * @param type $sanitise
+ * @return type
+ */
+function req($varreq, $method = "REQUEST", $sanitise = true)
+{
+    if((isset($_REQUEST[$varreq])) && ($_REQUEST[$varreq] <> ""))
+    {
+        // PREVENT SQL INJECTION
+        switch ($method):
+            case'POST':
+                $return_string = ((isset($_POST[$varreq])) ? trim($_POST[$varreq]) : NULL);
+                break;
 
+            case'GET':
+                $return_string = ((isset($_GET[$varreq])) ? trim($_GET[$varreq]) : NULL);
+                break;
+
+            default: //REQUEST
+                $return_string = trim($_REQUEST[$varreq]);
+                break;
+        endswitch;
+    }else
+    {
+        $return_string = null;
+    }
+    return (($sanitise === true) ? (str_replace(array("--", "'", "\'", "`", "<", ">"), "", $return_string . '')) : $return_string . '');
+}
+
+function validate_two_dates($date1="",$date2="") //fecha inicial , fecha final
+{
+    if(is_valid_date_format($date1) AND is_valid_date_format($date2))
+    {
+        $date1a= date_to_mktime($date1);
+        $date2a= date_to_mktime($date2);
+        if($data1a<$date2a) return true;
+    }
+    return false;
+}
+
+function date_to_mktime($date1="")
+{
+    $date2=explode("/",$date1);
+    if(count($date2)==3)
+    {
+        return mktime(0,0,0,$date2[1],$date2[0],$date2[2]);
+    }
+    return false;
+}
 ?>

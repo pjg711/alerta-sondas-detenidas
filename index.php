@@ -5,7 +5,6 @@ ini_set('display_errors',1);
 session_start();
 
 require 'config.php';
-//
 require PATH_ROOT.'/lib/class_page.php';
 require PATH_ROOT.'/lib/class_login.php';
 require PATH_ROOT.'/lib/class_imetos.php';
@@ -16,30 +15,15 @@ require PATH_ROOT.'/lib/class_ftp.php';
 require PATH_ROOT.'/lib/class_users.php';
 require PATH_ROOT.'/lib/class_reports.php';
 require PATH_ROOT.'/lib/class_log.php';
-
+//
+require PATH_ROOT.'/lib/functions_standard.php';
+//
 // Require composer autoloader
 require PATH_ROOT.'/lib/vendor/autoload.php';
 $router = new \Bramus\Router\Router();
 
-$router->mount('/export', function() use ($router){
-    $router->get('/(\d+)', function($id_log){
-        $archivo=Log::search($id_log);
-        $enlace = $archivo[0]->getInfo();
-        $enlace2 = $archivo[0]->getFile();
-        header ("Content-Disposition: attachment; filename=$enlace2 ");
-        header ("Content-Type: application/force-download");
-        header ("Content-Length: ".filesize($enlace));
-        readfile($enlace);    
-    });
-});
-
 Page::header();
-/*
-echo "<pre>";
-print_r($_POST);
-echo "</pre>";
- * 
- */
+
 // *****************************************************************************
 // ruta principal / main
 // *****************************************************************************
@@ -81,6 +65,13 @@ $router->mount('/stations', function() use ($router){
         $_POST['userid']=$userid;
         include './controllers/stations.php';
     });
+    $router->post('/config/(\d+)', function($station_code){
+        // guardo la configuracion
+        $_POST['action']='save_config';
+        $_POST['station_code']=$station_code;
+        include './controllers/stations.php';
+    });
+    /*
     $router->post('/', function(){
         // formulario de configuracion de estacion
         echo "listado de estaciones post<br>";
@@ -88,6 +79,8 @@ $router->mount('/stations', function() use ($router){
         print_r($_POST);
         echo "</pre>";
     });
+     * 
+     */
 });
 // Informe de sondas detenidas
 $router->mount('/reports', function() use ($router){
@@ -112,5 +105,6 @@ $router->get('/reports/(\w+)/(\d+)', function($action,$id){
     $_POST['reportid']=req($id);
     include './controllers/reports.php';
 });
+
 $router->run();
 ?>
