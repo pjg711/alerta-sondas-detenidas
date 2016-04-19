@@ -191,7 +191,7 @@ class Reports
      * 
      * @param type $userid
      */
-    public function listado_informes($userid=0)
+    public static function reports_list($userid=0)
     {
         $query_select="  
             SELECT  informes.`id` AS id_informe,

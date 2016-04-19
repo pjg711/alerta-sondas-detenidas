@@ -1,7 +1,6 @@
 <?php
 if(Login::getLoginSession())
 {
-    //echo "pase por users<br>";
     if(!isset($_POST['action'])) exit;
     $userid=req('userid');
     switch($_POST['action'])
@@ -25,16 +24,24 @@ if(Login::getLoginSession())
                 mensaje("ERROR. No se pudo editar el usuario","","error");
             }
             break;
+            
         case 'save_config':
+            // guarda la nueva contraseña
             if(User::save_config())
             {
-                
+                mensaje("Se cambió contraseña de usuario");
+            }else
+            {
+                mensaje("ERROR. No se pudo cambiar la contraseña.","","error");
             }
             break;
-        case 'delete':
             
+        case 'delete_user':
+            // borrar usuario
             break;
+        
         case 'confirmed_delete':
+            // confirmar borrado de usuario
             if(User::delete_user($userid))
             {
                 mensaje("El usuario fue borrado","Borrar usuario");

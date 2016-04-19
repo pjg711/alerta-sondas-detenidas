@@ -291,8 +291,7 @@ class User
                             <h4 class=\"modal-title\">Agregar usuario</h4>
                         </div>
                         <div class=\"modal-body\">";
-                            //$this->formulario_usuario();
-                            User::formulario_usuario();
+                            User::formulario_usuario2();
         echo "          </div>
                         <div class=\"modal-footer\">
                             <button type=\"submit\" name=\"config_admin\" class=\"btn btn-default\">Guardar nueva contraseña</button>&nbsp;
@@ -527,7 +526,7 @@ class User
      * @param type $is_admin is boolean
      * @param type $userid is number
      */
-    public static function listar($is_admin=false, $userid=0)
+    public static function users_list($is_admin=false, $userid=0)
     {
         //$enum_tipos_usuarios=getEnumOptions('usuarios', 'usertype');
         if($users=User::getAll($is_admin))
@@ -568,7 +567,7 @@ class User
                         <td colspan=\"6\">
                             <div id=\"conf_usuario_{$user->getId()}\" style=\"display:none\">";
                 //formulario edicion de usuario
-                User::formulario_usuario($user);
+                User::formulario_usuario2($user);
                 echo "      </div>
                             <div class=\"conf_exporta\" id=\"conf_exporta_{$user->getId()}\" style=\"display:none\">";
                 // si esta habilitado muestra info de estaciones
@@ -577,230 +576,7 @@ class User
                     $BD = new IMETOS($user->getIdMySQL(), $user->getServerMySQL(), $user->getDatabaseMySQL(), $user->getUserMySQL(), $user->getPasswMySQL());
                     if($stations=Station::getAll($BD, $user->getId()))
                     {
-                        echo "  <div class=\"estaciones\" id=\"estaciones\">
-                                    <div class=\"container\">
-                                        <div class=\"row\">
-                                            <div class=\"col-md-12\" style=\"text-align:center\">
-                                                <h2>Configuraci&oacute;n de estaciones</h2>
-                                            </div>
-                                        </div>
-                                        <div class=\"row\">
-                                            <label class=\"col-xs-3 control-label\">Seleccione estaci&oacute;n:</label>
-                                            <select class=\"form-control\" onChange=\"mostrar_ocultar('estacion_'+this.value,'info-sensores');\">";
-                        foreach($stations as $station)
-                        {
-                            echo "              <option value=\"{$station->getStationCode()}\">{$station->getFName()} - {$station->getName()}</option>";
-                        }
-                        echo "              </select>
-                                        </div>
-                                    </div><!-- fin class container -->";
-                        $con=0;
-                        foreach($stations as $key_est => $station)
-                        {
-                            $station->loadSensors($BD);
-                            $stationSensorsList = $station->getAvailableSensors();
-                            //$q_config = Config_Station::load($user->getId(),$station->getStationCode());
-                            $q_config=$station->getConfig();
-                            /*
-                            echo "<pre>";
-                            print_r($q_config);
-                            echo "</pre>";
-                             * 
-                             */
-                            if($con == 0)
-                            {
-                                echo "      <div class=\"info-sensores\" id=\"estacion_{$station->getStationCode()}\" style=\"display:block\">";
-                            }else
-                            {
-                                echo "      <div class=\"info-sensores\" id=\"estacion_{$station->getStationCode()}\" style=\"display:none\">";
-                            }
-                            echo "              <div class=\"container\">
-                                                    <hr class=\"\">
-                                                    <div class=\"row\">
-                                                        <form class=\"form-horizontal\" role=\"form\" method=\"post\" action=\"/stations/config/{$station->getStationCode()}\">
-                                                            <input type=\"hidden\" id=\"userid\" name=\"userid\" value=\"{$user->getId()}\">
-                                                            <input type=\"hidden\" id=\"f_station_code\" name=\"f_station_code\" value=\"{$station->getStationCode()}\">
-                                                            <div class=\"col-md-9\">";
-                            if($q_config->getEnable())
-                            {
-                                // estacion activa
-                                $disabled="";
-                                $label="label-enabled";
-                                echo "                          <input class=\"nadas\" type=\"checkbox\" id=\"activar\" name=\"enable\" checked=\"\" onclick=\"estacion_activa(this,'estacion_{$station->getStationCode()}');\">&nbsp;Activar Estaci&oacute;n";
-                            }else
-                            {
-                                // estacion desactivada
-                                $disabled="disabled";
-                                $label="label-disabled";
-                                echo "                          <input class=\"nadas\" type=\"checkbox\" id=\"activar\" name=\"enable\" onclick=\"estacion_activa(this,'estacion_{$station->getStationCode()}');\">&nbsp;Activar Estaci&oacute;n";
-                            }
-                            echo "                          </div>
-                                                            <div class=\"col-md-12\">
-                                                                <h3>{$station->getFName()} - {$station->getName()}</h3>
-                                                            </div>";
-                            echo "                          <div class=\"col-md-4\">
-                                                                <div class=\"panel panel-default\">
-                                                                    <div class=\"panel-heading\">
-                                                                        <h3 class=\"\">Sensores</h3>
-                                                                        <h4 class=\"\">Seleccione que sensores que quiere descargar</h4>
-                                                                    </div>
-                                                                    <div class=\"panel-body\">
-                                                                        <input class=\"sensores\" type=\"checkbox\" id=\"sensor-todos-{$station->getStationCode()}\" name=\"{$station->getStationCode()}\" value=\"-9999\" onClick=\"seleccionar_sensores_todos('{$station->getStationCode()}');\"><label for=\"{$label}\" {$disabled}>&nbsp;Todos</label><br>";
-                            foreach($stationSensorsList['enabled'] as $key_sensor => $sensor)
-                            {
-                                if(in_array($key_sensor,$q_config->getSensores()))
-                                {
-                                    echo "                              <input class=\"sensores-todos\" type=\"checkbox\" id=\"sensor-{$station->getStationCode()}\" name=\"sensor_".$sensor->getSensorCode()."_".$sensor->getSensorCh()."\" value=\"seleccionado\" checked=\"\">&nbsp;<label for=\"{$label}\">{$sensor->getName()}</label><br>";
-                                }else
-                                {
-                                    echo "                              <input class=\"sensores-todos\" type=\"checkbox\" id=\"sensor-{$station->getStationCode()}\" name=\"sensor_".$sensor->getSensorCode()."_".$sensor->getSensorCh()."\" value=\"seleccionado\">&nbsp;<label for=\"{$label}\">{$sensor->getName()}</label><br>";
-                                }   
-                            }
-                            echo "                                  </div>
-                                                                </div>
-                                                            </div>";
-                            echo "                          <div class=\"col-md-4\">
-                                                                <div class=\"panel panel-default\">
-                                                                    <div class=\"panel-heading\">
-                                                                        <h3 class=\"\">Configuraci&oacute;n</h3>
-                                                                    </div>
-                                                                    <div class=\"panel-body\">";
-                            // Periodo a descargar  
-                            // valores: periodo, mes_actual, todos, fijo
-                            echo "                                      <div class=\"form-group\">
-                                                                            <label for=\"{$label}\">Per&iacute;odo a descargar:</label><br>
-                                                                            <label class=\"radio-inline\">";
-                            if($q_config->getPeriodo()=='periodo')
-                            {
-                                echo "                                          <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"descarga_periodo\" value=\"periodo\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">Descarga de datos desde</label>";
-                            }else
-                            {
-                                echo "                                          <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"descarga_periodo\" value=\"periodo\" {$disabled}>&nbsp;<label for=\"{$label}\">Descarga de datos desde</label>";
-                            }
-                            echo "                                          </label><br>
-                                                                            <label for=\"{$label}\">Fecha inicial:&nbsp;</label><input type=\"text\" class=\"todos\" name=\"fecha_inicial\" id=\"fecha_inicial\" value=\"{$q_config->getPeriodoFechaInicial()}\" size=\"10\" maxlength=\"10\" {$disabled}><label for=\"{$label}\">(dd/mm/aaaa)</label><br>
-                                                                            <label for=\"{$label}\">Fecha final:&nbsp;</label><input type=\"text\" class=\"todos\" name=\"fecha_final\" id=\"fecha_final\" value=\"{$q_config->getPeriodoFechaFinal()}\" size=\"10\" maxlength=\"10\" {$disabled}><label for=\"{$label}\">(dd/mm/aaaa)</label><br>
-                                                                            <label class=\"radio-inline\">";
-                            if($q_config->getPeriodo()=='mes_actual')
-                            {
-                                echo "                                          <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"mes_actual\" value=\"mes_actual\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">Mes actual</label>";
-                            }else
-                            {
-                                echo "                                          <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"mes_actual\" value=\"mes_actual\" {$disabled}>&nbsp;<label for=\"{$label}\">Mes actual</label>";
-                            }
-                            echo "                                          </label>
-                                                                            <br>
-                                                                            <label class=\"radio-inline\">";
-                            if($q_config->getPeriodo()=='todos')
-                            {
-                                echo "                                          <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"todos2\" value=\"todos\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">Desde el principio</label>";
-                            }else
-                            {
-                                echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"todos2\" value=\"todos\" {$disabled}>&nbsp;<label for=\"{$label}\">Desde el principio</label>";
-                            }
-                            echo "                                      </label>
-                                                                        <br>
-                                                                        <label class=\"radio-inline\">";
-                            if($q_config->getPeriodo()=='fijo')
-                            {
-                                echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"fijo\" value=\"fijo\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">Per&iacute;odo fijo de &uacute;ltimos&nbsp;</label><input class=\"todos\" type=\"text\" name=\"periodo_dias\" value=\"{$q_config->getPeriodoDias()}\" size=\"2\" maxlength=\"3\"/><label for=\"{$label}\">&nbsp;d&iacute;as</label>";
-                            }else
-                            {
-                                echo "                                      <input class=\"todos\" type=\"radio\" name=\"periodo\" id=\"fijo\" value=\"fijo\" {$disabled}>&nbsp;<label for=\"{$label}\">Per&iacute;odo fijo de &uacute;ltimos&nbsp;</label><input class=\"todos\" type=\"text\" name=\"periodo_dias\" value=\"{$q_config->getPeriodoDias()}\" size=\"4\" maxlength=\"4\"/><label for=\"{$label}\">&nbsp;d&iacute;as</label>";
-                            }
-                            echo "                                       </label>
-                                                                    </div>";
-                            // Tipo de archivo a exportar
-                            echo "                                  <div class=\"form-group\">
-                                                                        <label for=\"{$label}\">Exportar a tipo de archivo:</label><br>";
-                            $tipos_archivos=json_decode(TIPOS_ARCHIVOS);
-                            foreach($tipos_archivos as $key_tipo_archivo => $tipo_archivo)
-                            {
-                                echo "                                  <label class=\"radio-inline\">";
-                                if($q_config->getTipoArchivo()==$key_tipo_archivo)
-                                {
-                                    echo "                                  <input class=\"todos\" type=\"radio\" name=\"tipo_archivo\" id=\"archivo_{$key_tipo_archivo}\" value=\"{$key_tipo_archivo}\" checked=\"\" {$disabled}><label for=\"{$label}\">{$tipo_archivo}</label>";
-                                }else
-                                {
-                                    echo "                                  <input class=\"todos\" type=\"radio\" name=\"tipo_archivo\" id=\"archivo_{$key_tipo_archivo}\" value=\"{$key_tipo_archivo}\" {$disabled}><label for=\"{$label}\">{$tipo_archivo}</label>";
-                                }
-                                echo "                                  </label>";
-                            }
-                            echo "                                  </div>";
-                            // Separador de columnas
-                            echo "                                  <div class=\"form-group\">
-                                                                        <label for=\"{$label}\">Separar columnas por:</label><br>";
-                            $separadores=  json_decode(SEPARADORES);
-                            foreach($separadores as $key_separador => $separador)
-                            {
-                                echo "                                      <label class=\"radio-inline\">";
-                                if($q_config->getSeparador()==$key_separador)
-                                {
-                                    echo "                                  <input class=\"todos\" type=\"radio\" id=\"coma\" name=\"separador\" value=\"{$key_separador}\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">{$separador}</label>";
-                                }else
-                                {
-                                    echo "                                  <input class=\"todos\" type=\"radio\" id=\"coma\" name=\"separador\" value=\"{$key_separador}\" {$disabled}>&nbsp;<label for=\"{$label}\">{$separador}</label>";
-                                }
-                                echo "                                  </label><br>";
-                            }
-                            echo "                                  </div>";
-                            // Agregar encabezado
-                            $encabezados=array('si'=>'Si','no'=>'No');
-                            echo "                                  <div class=\"form-group\">
-                                                                        <label for=\"{$label}\">Agregar encabezado:</label>
-                                                                        <br>";
-                            foreach($encabezados as $key_enca => $encabezado)
-                            {
-                                echo "                                  <label class=\"radio-inline\">";
-                                if($q_config->getEncabezado()==$key_enca)
-                                {
-                                    echo "                                  <input class=\"todos\" type=\"radio\" id=\"encabezado_si\" name=\"encabezado\" value=\"{$key_enca}\" checked=\"\" {$disabled}>&nbsp;<label for=\"{$label}\">{$encabezado}</label>&nbsp;&nbsp;";
-                                }else
-                                {
-                                    echo "                                  <input class=\"todos\" type=\"radio\" id=\"encabezado_si\" name=\"encabezado\" value=\"{$key_enca}\" {$disabled}>&nbsp;<label for=\"{$label}\">{$encabezado}</label>&nbsp;&nbsp;";
-                                }
-                                echo "                                  </label>";
-                            }
-                            echo "                                  </div>";
-                            // Nombre de archivo dde salida
-                            echo "                                  <div class=\"form-group\">
-                                                                        <label for=\"{$label}\">Nombre de archivo (sin extension):</label><br>
-                                                                        <input class=\"todos\" type=\"text\" id=\"archivo\" name=\"archivo\" value=\"{$q_config->getNombreArchivo()}\" size=\"40\" maxlength=\"50\" {$disabled}>
-                                                                    </div>";
-                            echo "                              </div>
-                                                            </div>
-                                                        </div>";
-                            /*
-                            echo "                      <div class=\"col-md-4\">
-                                                            <div class=\"panel panel-default\">
-                                                                <div class=\"panel-heading\">
-                                                                    <h2 class=\"\">Alertas</h2>
-                                                                </div>
-                                                                <div class=\"panel-body\">";
-                            echo "                              </div>
-                                                            </div>
-                                                        </div>";
-                            */
-                            echo "                  </div> <!-- cierre de div row -->";
-                            echo "                  <div class=\"row\">
-                                                        <div class=\"col-md-4 text-right\">
-                                                            
-                                                        </div>
-                                                        <div class=\"col-md-8\">
-                                                            <div class=\"pull-right\">
-                                                                <button type=\"submit\" name=\"save_config\" class=\"btn btn-default\"><i class=\"fa fa-floppy-o\" aria-hidden=\"true\"></i>&nbsp;Guardar configuraci&oacute;n</button>&nbsp;
-                                                                <button type=\"button\" name=\"close\" class=\"btn btn-default\" onClick=\"javascript:mostrar_ocultar('conf_exporta_{$user->getId()}');\"><i class=\"fa fa-times\" aria-hidden=\"true\"></i>&nbsp;Cerrar</button>&nbsp;
-                                                            </div>
-                                                        </div>
-                                                    </div>";
-                            echo "              </form>
-                                                <form class=\"form-horizontal\" role=\"form\" method=\"post\" action=\"/stations/export/{$station->getStationCode()}/{$user->getId()}\">
-                                                    <button type=\"submit\" name=\"export_data\" class=\"btn btn-default\"><i class=\"fa fa-table\" aria-hidden=\"true\"></i>&nbsp;Exportar ahora</button>&nbsp;
-                                                </form>
-                                            </div> <!-- cierre de div container -->
-                                        </div> <!-- cierre de div info-sensores -->";
-                            $con++;
-                        }
+                        Station::listAll($BD, $stations, $user);
                     }
                 }
                 echo "      </div> <!-- cierre de div conf_exporta -->
@@ -822,11 +598,14 @@ class User
         $f_new=false;
         if(is_null($q_user))
         {
+            // nuevo usuario
             $f_new=true;
             $user=new User();
+            $enform="new_user";
         }else
         {
             $user=$q_user;
+            $enform="edit_user";
         }
         echo "          <div class=\"container\">
                             <div class=\"row\">
@@ -839,7 +618,7 @@ class User
                             </div>
                             <div class=\"row\">
                                 <div class=\"col-md-12\">
-                                    <form name=\"user_edit\" method=\"post\" action=\"/users\">
+                                    <form name=\"user_edit\" method=\"post\" action=\"/users/{$enform}\">
                                         <input type=\"hidden\" name=\"userid\" value=\"{$user->getId()}\">";
         if($user->getEnableFTP())
         {
@@ -868,6 +647,44 @@ class User
                                                     <textarea name=\"mails\" rows=\"3\" cols=\"80\">{$user->getEmails()}</textarea>
                                                 </td>
                                             </tr>";
+        // agrego usuario mysql
+        if($user->getEnableMySQL())
+        {
+            echo "                          <tr>
+                                                <td colspan=\"2\"><hr></td>
+                                            </tr>";
+            echo "                          <tr>
+                                                <td colspan=\"2\" align=\"center\">
+                                                    <dt>
+                                                        Datos para la conexión a la base de datos iMetos
+                                                    </dt>
+                                                </td>
+                                            </tr>";
+            echo "                          <tr>
+                                                <td align=\"right\">Usuario Mysql:&nbsp;</td>
+                                                <td>
+                                                    <input type=\"text\" name=\"usuario_mysql\" value=\"{$user->getUserMySQL()}\" size=\"80\" maxlength=\"255\">&nbsp;
+                                                </td>
+                                            </tr>";
+            echo "                          <tr>
+                                                <td align=\"right\">Password Mysql:&nbsp;</td>
+                                                <td>
+                                                    <input type=\"text\" name=\"password_mysql\" value=\"{$user->getPasswMySQL()}\" size=\"80\" maxlength=\"255\">&nbsp;
+                                                </td>
+                                            </tr>";
+            echo "                          <tr>
+                                                <td align=\"right\">Base de datos Mysql:&nbsp;</td>
+                                                <td>
+                                                    <input type=\"text\" name=\"base_datos_mysql\" value=\"{$user->getDatabaseMySQL()}\" size=\"80\" maxlength=\"255\">&nbsp;
+                                                </td>
+                                            </tr>";
+            echo "                          <tr>
+                                                <td align=\"right\">Servidor Mysql:&nbsp;</td>
+                                                <td>
+                                                    <input type=\"text\" name=\"servidor_mysql\" value=\"{$user->getServerMySQL()}\" size=\"80\" maxlength=\"255\">&nbsp;
+                                                </td>
+                                            </tr>";
+        }
         if($user->getEnableFTP())
         {
             echo "                          <tr>
@@ -878,14 +695,6 @@ class User
                                                     <dt>Datos FTP para el informe de alerta</dt>
                                                 </td>
                                             </tr>";
-/*
-            echo "                          <tr>
-                                                <td align=\"2\">
-                                                    <button name=\"realizar_informe_ahora\">Verificar sondas detenidas</button>
-                                                </td>
-                                            </tr>";
- * 
- */
             echo "                          <tr>
                                                 <td align=\"right\">Usuario FTP:&nbsp;</td>
                                                 <td>
@@ -925,51 +734,141 @@ class User
                                                 </td>
                                             </tr>";
         }
-        // agrego usuario mysql
-        if($user->getEnableMySQL())
-        {
-            echo "                          <tr>
-                                                <td colspan=\"2\"><hr></td>
-                                            </tr>";
-            echo "                          <tr>
-                                                <td colspan=\"2\" align=\"center\">
-                                                    <dt>
-                                                        Datos de conexión a la base de datos iMetos
-                                                    </dt>
-                                                </td>
-                                            </tr>";
-            echo "                          <tr>
-                                                <td align=\"right\">Usuario Mysql:&nbsp;</td>
-                                                <td>
-                                                    <input type=\"text\" name=\"usuario_mysql\" value=\"{$user->getUserMySQL()}\" size=\"80\" maxlength=\"255\">&nbsp;
-                                                </td>
-                                            </tr>";
-            echo "                          <tr>
-                                                <td align=\"right\">Password Mysql:&nbsp;</td>
-                                                <td>
-                                                    <input type=\"text\" name=\"password_mysql\" value=\"{$user->getPasswMySQL()}\" size=\"80\" maxlength=\"255\">&nbsp;
-                                                </td>
-                                            </tr>";
-            echo "                          <tr>
-                                                <td align=\"right\">Base de datos Mysql:&nbsp;</td>
-                                                <td>
-                                                    <input type=\"text\" name=\"base_datos_mysql\" value=\"{$user->getDatabaseMySQL()}\" size=\"80\" maxlength=\"255\">&nbsp;
-                                                </td>
-                                            </tr>";
-            echo "                          <tr>
-                                                <td align=\"right\">Servidor Mysql:&nbsp;</td>
-                                                <td>
-                                                    <input type=\"text\" name=\"servidor_mysql\" value=\"{$user->getServerMySQL()}\" size=\"80\" maxlength=\"255\">&nbsp;
-                                                </td>
-                                            </tr>";
-        }
-        echo "                          </table>
-                                    </form>
+        echo "                          </table>";
+        echo "                      </form>
                                     <br><br><br>
                                 </div><!-- fin de col-md-12 -->
                             </div><!-- fin de row -->
                         </div><!-- fin de container -->";
     }
+    /**
+     * 
+     * @param type $q_user
+     */
+    private static function formulario_usuario2($q_user=null)
+    {
+        $f_new=false;
+        if(is_null($q_user))
+        {
+            // nuevo usuario
+            $f_new=true;
+            $user=new User();
+            $enform="new_user";
+        }else
+        {
+            $user=$q_user;
+            $enform="edit_user";
+        }
+        echo "          <div class=\"container\">
+                            <div class=\"row\">
+                                <div class=\"col-md-12\" style=\"text-align:center\">";
+        if(!$f_new)
+        {
+            echo "                  <h2>Configuraci&oacute;n de usuario</h2>";
+        }
+        echo "                  </div>
+                            </div>
+                            <div class=\"row\">
+                                <div class=\"col-md-12\">
+                                    <form name=\"user_edit\" method=\"post\" action=\"/users/{$enform}\">
+                                        <input type=\"hidden\" name=\"userid\" value=\"{$user->getId()}\">";
+        if($user->getEnableFTP())
+        {
+            echo "                      <input type=\"hidden\" name=\"id_ftp\" value=\"{$user->getIdFTP()}\">";
+        }
+        if($user->getEnableMySQL())
+        {
+            echo "                      <input type=\"hidden\" name=\"id_mysql\" value=\"{$user->getIdMySQL()}\">";
+        }
+        $label="label-enabled";
+        echo "                              <div class=\"panel panel-default\">
+                                                <div class=\"panel-heading\">
+                                                    <h3 class=\"\">Datos de cuenta Fieldclimate</h3>
+                                                </div>
+                                                <div class=\"panel-body\">
+                                                    <div class=\"form-group\">
+                                                        <label for=\"{$label}\">Usuario iMetos:&nbsp;</label><input type=\"text\" name=\"username_imetos\" value=\"{$user->getUsername()}\" size=\"80\" maxlength=\"255\">
+                                                    </div>
+                                                    <div class=\"form-group\">
+                                                        <label for=\"{$label}\">Mails para el env&iacute;o de informes de exportaci&oacute;n:&nbsp;</label><textarea name=\"mails\" rows=\"3\" cols=\"80\">{$user->getEmails()}</textarea>
+                                                    </div>
+                                                </div>
+                                            </div>";
+        // agrego usuario mysql
+        if($user->getEnableMySQL())
+        {
+            echo "                          <div class=\"panel panel-default\">
+                                                <div class=\"panel-heading\">
+                                                    <h3 class=\"\">Datos para la conexión a la base de datos iMetos</h3>
+                                                </div>
+                                                <div class=\"panel-body\">
+                                                    <div class=\"form-group\">
+                                                        <label for=\"{$label}\">Usuario Mysql:&nbsp;</label><input type=\"text\" name=\"usuario_mysql\" value=\"{$user->getUserMySQL()}\" size=\"80\" maxlength=\"255\">
+                                                    </div>
+                                                </div>
+                                                <div class=\"panel-body\">
+                                                    <div class=\"form-group\">
+                                                        <label for=\"{$label}\">Password Mysql:&nbsp;</label><input type=\"text\" name=\"password_mysql\" value=\"{$user->getPasswMySQL()}\" size=\"80\" maxlength=\"255\">
+                                                    </div>
+                                                </div>
+                                                <div class=\"panel-body\">
+                                                    <div class=\"form-group\">
+                                                        <label for=\"{$label}\">Base de datos Mysql:&nbsp;</label><input type=\"text\" name=\"base_datos_mysql\" value=\"{$user->getDatabaseMySQL()}\" size=\"80\" maxlength=\"255\">
+                                                    </div>
+                                                </div>
+                                                <div class=\"panel-body\">
+                                                    <div class=\"form-group\">
+                                                        <label for=\"{$label}\">Servidor Mysql:&nbsp;</label><input type=\"text\" name=\"servidor_mysql\" value=\"{$user->getServerMySQL()}\" size=\"80\" maxlength=\"255\">
+                                                    </div>
+                                                </div>
+                                            </div>";
+        }
+        if($user->getEnableFTP())
+        {
+            echo "                          <div class=\"panel panel-default\">
+                                                <div class=\"panel-heading\">
+                                                    <h3 class=\"\">Datos FTP para el informe de alerta</h3>
+                                                </div>
+                                                <div class=\"panel-body\">
+                                                    <div class=\"form-group\">
+                                                        <label for=\"{$label}\">Usuario FTP:&nbsp;</label><input type=\"text\" name=\"username_ftp\" value=\"{$user->getUserFTP()}\" size=\"80\" maxlength=\"255\">
+                                                    </div>
+                                                </div>
+                                                <div class=\"panel-body\">
+                                                    <div class=\"form-group\">
+                                                        <label for=\"{$label}\">Password FTP:&nbsp;</label><input type=\"password\" name=\"password_ftp\" value=\"{$user->getPasswFTP()}\" size=\"80\" maxlength=\"255\">
+                                                    </div>
+                                                </div>                                                        
+                                                <div class=\"panel-body\">
+                                                    <div class=\"form-group\">
+                                                        <label for=\"{$label}\">Servidor FTP:&nbsp;</label><input type=\"text\" name=\"server_ftp\" value=\"{$user->getServerFTP()}\" size=\"80\" maxlength=\"1000\">
+                                                    </div>
+                                                </div>                                                        
+                                                <div class=\"panel-body\">
+                                                    <div class=\"form-group\">
+                                                        <label for=\"{$label}\">Directorio remoto:&nbsp;</label><input type=\"text\" name=\"remotedir\" value=\"{$user->getRemoteDirFTP()}\" size=\"80\" maxlength=\"1000\">
+                                                    </div>
+                                                </div>
+                                                <div class=\"panel-body\">
+                                                    <div class=\"form-group\">
+                                                        <label for=\"{$label}\">Mails para el env&iacute;o de alertas:&nbsp;</label><textarea name=\"mails_ftp\" rows=\"3\" cols=\"80\">{$user->getEmailsFTP()}</textarea>
+                                                    </div>
+                                                </div>
+                                            </div>";
+            echo "                          <div class=\"panel panel-default\">
+                                                <div class=\"panel-body\">
+                                                    <div class=\"form-group\">
+                                                        <button type=\"submit\" name=\"check_connection\" class=\"btn btn-default\">Verificar conexi&oacute;n</button>
+                                                    </div>
+                                                </div>
+                                            </div>";    
+        }
+        echo "                      </form>
+                                    <br><br><br>
+                                </div><!-- fin de col-md-12 -->
+                            </div><!-- fin de row -->
+                        </div><!-- fin de container -->";
+    }    
     /**
      * Actualiza datos del usuario
      * @return boolean

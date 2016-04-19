@@ -1738,8 +1738,10 @@ function mps_speed_convertion($data, $new_unit)
  * @param type $enca
  * @param type $tipo
  */
+//function mensaje($texto,$enca="",$tipo="success",$redireccionar="")
 function mensaje($texto,$enca="",$tipo="success")
 {
+    if($tipo=="") $tipo="success";
     echo "<script type=\"text/javascript\">";
     if($enca=="")
     {
@@ -1748,6 +1750,13 @@ function mensaje($texto,$enca="",$tipo="success")
     {
         echo "toastr.{$tipo}(\"".$texto."\",\"".$enca."\");";
     }
+    /*
+    if(!empty($redireccionar))
+    {
+        echo "window.location=\"".$redireccionar."\";";
+    }
+     * 
+     */
     echo "</script>";
 }
 /**

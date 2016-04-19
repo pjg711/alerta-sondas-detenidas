@@ -36,13 +36,12 @@ if(Login::getLoginSession())
 
             if($errores=Config_Station::update())
             {
-                mensaje("Se guardó la configuración de la estación","Configurar estación");
+                mensaje("Se guardó la configuración de la estación","Configurar estación","","/");
             }else
             {
                 echo "Errores--->{$errores}<br>";
-                mensaje("Error en la configuración de la estación","","error");
+                mensaje("Error en la configuración de la estación","","error","/");
             }
             break;
     }
-    //redireccionar('/');
 }

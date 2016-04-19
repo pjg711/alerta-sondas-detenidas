@@ -27,8 +27,28 @@ Page::header();
 // *****************************************************************************
 // ruta principal / main
 // *****************************************************************************
+
+$router->mount('/', function() use ($router){
+    include './controllers/main.php';
+    /*
+    $router->get('/', function(){
+        echo "pase por aca<br>";
+        if(Login::getLoginSession())
+        {
+            include './controllers/main.php';
+        }else
+        {
+            // no esta logeado
+            redireccionar('/login');
+        }
+    });
+     * 
+     */
+});
+/*
 $router->get('/', function(){
     //include './controllers/login.php';
+    echo "pase por aca 2<br>";
     if(Login::getLoginSession())
     {
         include './controllers/main.php';
@@ -38,6 +58,8 @@ $router->get('/', function(){
         redireccionar('/login');
     }
 });
+ * 
+ */
 $router->mount('/login', function() use ($router){
     include './controllers/login.php';
 });
@@ -53,56 +75,33 @@ $router->mount('/users', function() use ($router){
     $router->get('/(\w+)/(\d+)', function($action,$id) {
         $_POST['action']=req($action);
         $_POST['userid']=req($id);
-        include './controllers/users.php';
-    });    
+    });
+    include './controllers/users.php';
 });
-//Stations
+// Stations
 $router->mount('/stations', function() use ($router){
     $router->post('/export/(\d+)/(\d+)', function($station_code, $userid){
         // exporto datos de estacion
         $_POST['action']='export_data';
         $_POST['station_code']=$station_code;
         $_POST['userid']=$userid;
-        include './controllers/stations.php';
     });
     $router->post('/config/(\d+)', function($station_code){
         // guardo la configuracion
         $_POST['action']='save_config';
         $_POST['station_code']=$station_code;
-        include './controllers/stations.php';
     });
-    /*
-    $router->post('/', function(){
-        // formulario de configuracion de estacion
-        echo "listado de estaciones post<br>";
-        echo "<pre>";
-        print_r($_POST);
-        echo "</pre>";
-    });
-     * 
-     */
+    include './controllers/stations.php';
 });
 // Informe de sondas detenidas
 $router->mount('/reports', function() use ($router){
+    
     $router->get('/', function(){
         
     });
     $router->post('/', function(){
         
     });
-    
-});
-/*
-$router->get('/stations/(\w+)/(\d+)', function($action,$id){
-    $_POST['action']=req($action);
-    $_POST['stationid']=req($id);
-    include './controllers/stations.php';
-});
- * 
- */
-$router->get('/reports/(\w+)/(\d+)', function($action,$id){
-    $_POST['action']=req($action);
-    $_POST['reportid']=req($id);
     include './controllers/reports.php';
 });
 
