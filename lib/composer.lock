@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "116764813d92980e555a29f619f52076",
-    "content-hash": "304ee8ff239ea0a6f811773d4c6ea06a",
+    "hash": "48970b7957a627afc4954ff630ce974f",
+    "content-hash": "03edba9379588069ce574b3a4302445d",
     "packages": [
         {
             "name": "bramus/router",
@@ -52,6 +52,62 @@
                 "routing"
             ],
             "time": "2015-02-04 12:43:17"
+        },
+        {
+            "name": "klein/klein",
+            "version": "v2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/klein/klein.php.git",
+                "reference": "5dc073f05adb67ee09680545b4cc7b0590d2559e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/klein/klein.php/zipball/5dc073f05adb67ee09680545b4cc7b0590d2559e",
+                "reference": "5dc073f05adb67ee09680545b4cc7b0590d2559e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/php-code-coverage": "1.2.x",
+                "phpunit/phpunit": "3.7.x",
+                "squizlabs/php_codesniffer": "1.4.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Klein\\": "src/Klein/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chris O'Hara",
+                    "email": "cohara87@gmail.com",
+                    "homepage": "http://chris6f.com/",
+                    "role": "Creator/Developer"
+                },
+                {
+                    "name": "Trevor Suarez",
+                    "email": "rican7@gmail.com",
+                    "homepage": "http://about.me/tnsuarez",
+                    "role": "Contributor/Developer"
+                }
+            ],
+            "description": "A lightning fast router for PHP",
+            "homepage": "https://github.com/chriso/klein.php",
+            "keywords": [
+                "boilerplate",
+                "router",
+                "routing",
+                "sinatra"
+            ],
+            "time": "2014-11-07 07:35:23"
         }
     ],
     "packages-dev": [],

@@ -1773,10 +1773,11 @@ function mensaje2($texto="")
  * 
  * @param type $pagina
  */
-function redireccionar($pagina="")
+function redireccionar($pagina="/")
 {
     echo "<script type=\"text/javascript\">";
     echo "  window.location=\"".$pagina."\";";
+    //echo "      location.reload();";
     echo "</script>";
 }
 /**

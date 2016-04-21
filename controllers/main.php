@@ -1,6 +1,11 @@
 <?php
+echo "<pre>";
+print_r($_SESSION);
+echo "</pre>";
 if(Login::getLoginSession())
 {
+    //echo "pase por login true main.php<br>";
+    //exit;
     echo "
     <ul style=\"margin:19px 0 18px 0;\" class=\"nav nav-tabs test2\">
         <li class=\"active\"><a data-toggle=\"tab\" href=\"#exportacion\">Exportación de datos de sondas</a></li>
@@ -36,12 +41,30 @@ if(Login::getLoginSession())
         </script>
         <?php
     }
-    //Page::footer();
 }else
 {
-    // no esta logeado
-    redireccionar('/login');
-    echo "</body>
-    </html>";
+    if(isset($_POST['username']) and isset($_POST['password']))
+    {
+        $q_usuario = req("username");
+        $q_password = req("password");
+        // verifico el usuario
+        if(Login::verify_user($q_usuario, $q_password))
+        {
+            // bien
+            echo "bien<br>";
+            dump($_SESSION);
+            //redireccionar('/');
+            //header('Location: /');
+            redireccionar('/');
+        }else
+        {
+            Login::SignOff();
+            mensaje("Error en dato de usuario y/o contraseña","","error");
+        }
+    }else
+    {
+        //pido usuario y contraseña para el ingreso
+        Login::login_session();
+    }
 }
 ?>

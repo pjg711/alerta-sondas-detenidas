@@ -1,6 +1,8 @@
 <?php
 if(Login::getLoginSession())
 {
+    dump($_POST);
+    exit;
     if(!isset($_POST['action'])) exit;
     if(isset($_POST['userid']))
     {
@@ -32,7 +34,7 @@ if(Login::getLoginSession())
             }
             break;
             
-        case 'save_config':
+        case 'config':
 
             if($errores=Config_Station::update())
             {

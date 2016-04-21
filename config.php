@@ -9,8 +9,8 @@ session_name(SESSION_NAME);
 //
 // para el alerta de sondas detenidas
 define('DIFERENCIA_DIAS',2);
-//
-define('AUTENTICAR',false);
+// AUTENTICAR
+define('AUTENTICAR',true);
 // datos de la cuenta de gmail usada como smtp para el envio de mails
 define('MAIL_HOST','smtp.gmail.com');
 define('MAIL_PORT',587);

@@ -6,7 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Twig_' => array($vendorDir . '/twig/twig/lib'),
-    'MaxMind' => array($vendorDir . '/maxmind-db/reader/src'),
     'Bramus' => array($vendorDir . '/bramus/router/src'),
 );

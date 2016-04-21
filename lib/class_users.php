@@ -181,53 +181,6 @@ class User
         return $this->reportsList;
     }
     /**
-     * Verifica usuario y crear variables de sesion si es true con la informacion de:
-     * user_login_session, userid, user_active, password, is_admin
-     * 
-     * @param type $usuario is string
-     * @param type $password is string
-     * @return boolean
-     */
-    public static function verify_user($usuario="",$password="")
-    {
-        // primero verifico que el usuario este en el sistema
-        $query="SELECT  `id`,`username`,`password`,`is_admin`
-                FROM    `" . SESSION_NAME . "users` 
-                WHERE   `username`='{$usuario}' AND 
-                        (`usertype`='imetos' OR `usertype`='sistema') LIMIT 1";
-        if(sql_select($query, $results))
-        {
-            if($registro=$results->fetch(PDO::FETCH_ASSOC))
-            {
-                if(!AUTENTICAR)
-                {
-                    // sin autenticar
-                    $_SESSION['user_login_session']=true;
-                    $_SESSION['userid']=$registro['id'];
-                    $_SESSION['user_active']=$registro['username'];
-                    $_SESSION['password']=$registro['password'];
-                    $_SESSION['is_admin']=$registro['is_admin'];
-                    return true;
-                }else
-                {
-                    // luego verifico el login en iMetos
-                    $iMetos=new JSON_IMETOS($usuario,$password);
-                    if(!$iMetos->get_error() OR !AUTENTICAR)
-                    {
-                        // bien
-                        $_SESSION['user_login_session']=true;
-                        $_SESSION['userid']=$registro['id'];
-                        $_SESSION['user_active']=$registro['username'];
-                        $_SESSION['password']=$registro['password'];
-                        $_SESSION['is_admin']=$registro['is_admin'];
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-    /**
      * 
      */
     public static function save_config()
@@ -782,7 +735,7 @@ class User
         }
         $label="label-enabled";
         echo "                              <div class=\"panel panel-default\">
-                                                <div class=\"panel-heading\">
+                                                <div class=\"panel-heading\" style=\"text-align:center\">
                                                     <h3 class=\"\">Datos de cuenta Fieldclimate</h3>
                                                 </div>
                                                 <div class=\"panel-body\">
@@ -790,7 +743,9 @@ class User
                                                         <label for=\"{$label}\">Usuario iMetos:&nbsp;</label><input type=\"text\" name=\"username_imetos\" value=\"{$user->getUsername()}\" size=\"80\" maxlength=\"255\">
                                                     </div>
                                                     <div class=\"form-group\">
-                                                        <label for=\"{$label}\">Mails para el env&iacute;o de informes de exportaci&oacute;n:&nbsp;</label><textarea name=\"mails\" rows=\"3\" cols=\"80\">{$user->getEmails()}</textarea>
+                                                        <label for=\"{$label}\">Mails para el env&iacute;o de informes de exportaci&oacute;n:&nbsp;</label>
+                                                        <label for=\"{$label}\"><h6 class=\"\">(para varios mails sep&aacute;relos por coma)</h6></label><br>
+                                                        <textarea name=\"mails\" rows=\"3\" cols=\"120\">{$user->getEmails()}</textarea>
                                                     </div>
                                                 </div>
                                             </div>";
@@ -826,7 +781,7 @@ class User
         if($user->getEnableFTP())
         {
             echo "                          <div class=\"panel panel-default\">
-                                                <div class=\"panel-heading\">
+                                                <div class=\"panel-heading\" style=\"text-align:center\">
                                                     <h3 class=\"\">Datos FTP para el informe de alerta</h3>
                                                 </div>
                                                 <div class=\"panel-body\">
@@ -851,7 +806,9 @@ class User
                                                 </div>
                                                 <div class=\"panel-body\">
                                                     <div class=\"form-group\">
-                                                        <label for=\"{$label}\">Mails para el env&iacute;o de alertas:&nbsp;</label><textarea name=\"mails_ftp\" rows=\"3\" cols=\"80\">{$user->getEmailsFTP()}</textarea>
+                                                        <label for=\"{$label}\">Mails para el env&iacute;o de alertas:&nbsp;</label>
+                                                        <label for=\"{$label}\"><h6 class=\"\">(para varios mails sep&aacute;relos por coma)</h6></label><br>
+                                                        <textarea name=\"mails_ftp\" rows=\"3\" cols=\"80\">{$user->getEmailsFTP()}</textarea>
                                                     </div>
                                                 </div>
                                             </div>";

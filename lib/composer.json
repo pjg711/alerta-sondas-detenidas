@@ -1,5 +1,6 @@
 {
     "require": {
-        "bramus/router": "^1.0"
+        "bramus/router": "^1.0",
+        "klein/klein": "^2.1"
     }
 }

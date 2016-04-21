@@ -1,11 +1,4 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * Description of class_login
  *
@@ -31,7 +24,7 @@ class Login
         echo "
         <br>\n
         <h1>".TITULO."</h1>
-        <form id=\"frmIngreso\" name=\"frmIngreso\" method=\"post\" action=\"/login\">
+        <form id=\"frmLogin\" name=\"frmLogin\" method=\"post\" action=\"/login\">
             <input type=\"hidden\" name=\"usar_imap\" value=\"1\">
             <br>
             <table id=\"tabla-ingreso\">
@@ -146,6 +139,73 @@ class Login
                     </div>";
             }
 		}
+    }
+    /**
+     * Verifica usuario y crear variables de sesion si es true con la informacion de:
+     * user_login_session, userid, user_active, password, is_admin
+     * 
+     * @param type $usuario is string
+     * @param type $password is string
+     * @return boolean
+     */
+    public static function verify_user($usuario="",$password="")
+    {
+        // primero verifico que el usuario este en el sistema
+        $query="SELECT  `id`,`username`,`password`,`is_admin`
+                FROM    `" . SESSION_NAME . "users` 
+                WHERE   `username`='{$usuario}' AND 
+                        (`usertype`='imetos' OR `usertype`='sistema') LIMIT 1";
+        echo "query--->{$query}<br>";
+        if(sql_select($query, $results))
+        {
+            echo "bien 2<br>";
+            if($registro=$results->fetch(PDO::FETCH_ASSOC))
+            {
+                echo "bien 3<br>";
+                if(!AUTENTICAR)
+                {
+                    echo "bien 4<br>";
+                    // sin autenticar
+                    $_SESSION['user_login_session']=true;
+                    $_SESSION['userid']=$registro['id'];
+                    $_SESSION['user_active']=$registro['username'];
+                    $_SESSION['password']=$registro['password'];
+                    $_SESSION['is_admin']=$registro['is_admin'];
+                    return true;
+                }else
+                {
+                    echo "bien 5<br>";
+                    if($registro['is_admin']==0)
+                    {
+                        // es usuario imetos y verifico el login en iMetos
+                        echo "bien 6<br>";
+                        $iMetos=new JSON_IMETOS($usuario,$password);
+                        if(!$iMetos->get_error() OR !AUTENTICAR)
+                        {
+                            // bien
+                            echo "bien 7<br>";
+                            $_SESSION['user_login_session']=true;
+                            $_SESSION['userid']=$registro['id'];
+                            $_SESSION['user_active']=$registro['username'];
+                            $_SESSION['password']=$registro['password'];
+                            $_SESSION['is_admin']=$registro['is_admin'];
+                            return true;
+                        }
+                    }else
+                    {
+                        // es tipo de usuario sistema
+                        echo "bien 8<br>";
+                        $_SESSION['user_login_session']=true;
+                        $_SESSION['userid']=$registro['id'];
+                        $_SESSION['user_active']=$registro['username'];
+                        $_SESSION['password']=$registro['password'];
+                        $_SESSION['is_admin']=$registro['is_admin'];
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }    
     /**
      * retorna si esta abierta una sesion o no
@@ -155,7 +215,7 @@ class Login
 	{
         if(isset($_SESSION['user_login_session']))
         {
-			if ($_SESSION['user_login_session']) return true;
+			if($_SESSION['user_login_session']) return true;
         }
         return false;
     }

@@ -17,93 +17,46 @@ require PATH_ROOT.'/lib/class_reports.php';
 require PATH_ROOT.'/lib/class_log.php';
 //
 require PATH_ROOT.'/lib/functions_standard.php';
-//
-// Require composer autoloader
-require PATH_ROOT.'/lib/vendor/autoload.php';
-$router = new \Bramus\Router\Router();
+
+require_once PATH_ROOT . '/lib/vendor/autoload.php';
+$router = new \Klein\Klein();
 
 Page::header();
+// API Klein https://github.com/klein/klein.php/wiki/Api
+//controllers
+$router->respond('/[:controller]?/[:action]?', function ($request, $response) {
+    echo "pase por aca<br>";
+    if(isset($request->action)) $_POST['action']=$request->action;
+    if($request->param('station_code')) $_POST['station_code']=$request->param('station_code');
+    if($request->param('userid')) $_POST['userid']=$request->param('userid');
+    // users
+    if($request->controller=="users")
+    {
+        include './controllers/users.php';
+    }
+    // stations
+    if($request->controller=="stations")
+    {
+        echo "pase por aca<br>";
+        include './controllers/stations.php';
+    }
+    // reports
+    if($request->controller=="reports")
+    {
+        include './controllers/reports.php';        
+    }
+});
 
+//sign off
+$router->respond('GET', '/sign_off', function () {
+    Login::SignOff();
+});
 // *****************************************************************************
 // ruta principal / main
 // *****************************************************************************
-
-$router->mount('/', function() use ($router){
+$router->respond(function () {
     include './controllers/main.php';
-    /*
-    $router->get('/', function(){
-        echo "pase por aca<br>";
-        if(Login::getLoginSession())
-        {
-            include './controllers/main.php';
-        }else
-        {
-            // no esta logeado
-            redireccionar('/login');
-        }
-    });
-     * 
-     */
-});
-/*
-$router->get('/', function(){
-    //include './controllers/login.php';
-    echo "pase por aca 2<br>";
-    if(Login::getLoginSession())
-    {
-        include './controllers/main.php';
-    }else
-    {
-        // no esta logeado
-        redireccionar('/login');
-    }
-});
- * 
- */
-$router->mount('/login', function() use ($router){
-    include './controllers/login.php';
-});
-$router->get('/sign_off',function(){
-    Login::SignOff();
-    redireccionar('/login');
-});
-// Users
-$router->mount('/users', function() use ($router){
-    $router->get('/', function(){
-        include './controllers/users.php';
-    });
-    $router->get('/(\w+)/(\d+)', function($action,$id) {
-        $_POST['action']=req($action);
-        $_POST['userid']=req($id);
-    });
-    include './controllers/users.php';
-});
-// Stations
-$router->mount('/stations', function() use ($router){
-    $router->post('/export/(\d+)/(\d+)', function($station_code, $userid){
-        // exporto datos de estacion
-        $_POST['action']='export_data';
-        $_POST['station_code']=$station_code;
-        $_POST['userid']=$userid;
-    });
-    $router->post('/config/(\d+)', function($station_code){
-        // guardo la configuracion
-        $_POST['action']='save_config';
-        $_POST['station_code']=$station_code;
-    });
-    include './controllers/stations.php';
-});
-// Informe de sondas detenidas
-$router->mount('/reports', function() use ($router){
-    
-    $router->get('/', function(){
-        
-    });
-    $router->post('/', function(){
-        
-    });
-    include './controllers/reports.php';
 });
 
-$router->run();
+$router->dispatch();
 ?>

@@ -30,16 +30,6 @@ $router->set404(function(){
 // *****************************************************************************
 // ruta principal / main
 // *****************************************************************************
-/*
-$router->get('/', function(){
-    include './controllers/main.php';
-});
-$router->get('/login', function(){
-    include './controllers/main.php';
-});
-$router->run();
- * 
- */
 if(User::getLoginSession())
 {
     // *************************************************
@@ -127,7 +117,7 @@ if(!User::getLoginSession())
         $q_usuario = req("usuario");
         $q_password = req("password");
         // verifico el usuario
-        if(User::verify_user($q_usuario, $q_password))
+        if(Login::verify_user($q_usuario, $q_password))
         {
             // bien
         }else

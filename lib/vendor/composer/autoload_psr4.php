@@ -6,7 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'kartik\\plugins\\fileinput\\' => array($vendorDir . '/kartik-v/bootstrap-fileinput'),
-    'MaxMind\\' => array($vendorDir . '/maxmind/web-service-common/src'),
-    'GeoIp2\\' => array($vendorDir . '/geoip2/geoip2/src'),
+    'Klein\\' => array($vendorDir . '/klein/klein/src/Klein'),
 );
