@@ -155,16 +155,13 @@ class Login
                 FROM    `" . SESSION_NAME . "users` 
                 WHERE   `username`='{$usuario}' AND 
                         (`usertype`='imetos' OR `usertype`='sistema') LIMIT 1";
-        echo "query--->{$query}<br>";
+        //echo "query--->{$query}<br>";
         if(sql_select($query, $results))
         {
-            echo "bien 2<br>";
             if($registro=$results->fetch(PDO::FETCH_ASSOC))
             {
-                echo "bien 3<br>";
                 if(!AUTENTICAR)
                 {
-                    echo "bien 4<br>";
                     // sin autenticar
                     $_SESSION['user_login_session']=true;
                     $_SESSION['userid']=$registro['id'];
@@ -174,16 +171,13 @@ class Login
                     return true;
                 }else
                 {
-                    echo "bien 5<br>";
                     if($registro['is_admin']==0)
                     {
                         // es usuario imetos y verifico el login en iMetos
-                        echo "bien 6<br>";
                         $iMetos=new JSON_IMETOS($usuario,$password);
                         if(!$iMetos->get_error() OR !AUTENTICAR)
                         {
                             // bien
-                            echo "bien 7<br>";
                             $_SESSION['user_login_session']=true;
                             $_SESSION['userid']=$registro['id'];
                             $_SESSION['user_active']=$registro['username'];
@@ -194,7 +188,6 @@ class Login
                     }else
                     {
                         // es tipo de usuario sistema
-                        echo "bien 8<br>";
                         $_SESSION['user_login_session']=true;
                         $_SESSION['userid']=$registro['id'];
                         $_SESSION['user_active']=$registro['username'];

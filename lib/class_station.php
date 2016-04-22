@@ -1242,7 +1242,7 @@ class Station
             }
             echo "      <div class=\"container\">
                             <hr class=\"\">
-                            <form class=\"form-horizontal\" role=\"form\" method=\"post\" action=\"/stations/config/{$station->getStationCode()}\">
+                            <form class=\"form-horizontal\" role=\"form\" method=\"post\" action=\"/stations/config/{$station->getStationCode()}/{$user->getId()}\">
                                 <div class=\"row\">
                                     <input type=\"hidden\" id=\"userid\" name=\"userid\" value=\"{$user->getId()}\">
                                     <input type=\"hidden\" id=\"f_station_code\" name=\"f_station_code\" value=\"{$station->getStationCode()}\">
@@ -1427,3 +1427,4 @@ class Station
         echo "  </div><!-- cierre div estaciones -->";
     }
 }
+?>

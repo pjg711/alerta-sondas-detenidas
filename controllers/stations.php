@@ -2,7 +2,27 @@
 if(Login::getLoginSession())
 {
     dump($_POST);
-    exit;
+    /*
+    Array
+    (
+        [userid] => 4
+        [f_station_code] => 164
+        [enable] => on
+        [sensor_17921_771] => seleccionado
+        [sensor_17921_770] => seleccionado
+        [periodo] => periodo
+        [fecha_inicial] => 10/05/2015
+        [fecha_final] => 11/05/2016
+        [periodo_dias] => 30
+        [tipo_archivo] => csv
+        [separador] => tab
+        [encabezado] => si
+        [archivo] => prueba11.csv
+        [save_config] => 
+        [action] => config
+    ) 
+     * 
+     */   
     if(!isset($_POST['action'])) exit;
     if(isset($_POST['userid']))
     {
@@ -14,7 +34,7 @@ if(Login::getLoginSession())
     }
     switch($_POST['action'])
     {
-        case 'export_data':
+        case 'export':
             if($id_log=Station::export_data($userid,$station_code))
             {
                 //mensaje("Se exportó con exito el archivo id->{$id_log}","Exportar datos");

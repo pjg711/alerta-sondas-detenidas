@@ -571,7 +571,7 @@ class User
                             </div>
                             <div class=\"row\">
                                 <div class=\"col-md-12\">
-                                    <form name=\"user_edit\" method=\"post\" action=\"/users/{$enform}\">
+                                    <form name=\"user_edit\" method=\"post\" action=\"/users/{$enform}/0/{$user->getId()}\">
                                         <input type=\"hidden\" name=\"userid\" value=\"{$user->getId()}\">";
         if($user->getEnableFTP())
         {

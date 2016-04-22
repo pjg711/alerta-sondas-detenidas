@@ -1,7 +1,4 @@
 <?php
-echo "<pre>";
-print_r($_SESSION);
-echo "</pre>";
 if(Login::getLoginSession())
 {
     //echo "pase por login true main.php<br>";
@@ -51,10 +48,6 @@ if(Login::getLoginSession())
         if(Login::verify_user($q_usuario, $q_password))
         {
             // bien
-            echo "bien<br>";
-            dump($_SESSION);
-            //redireccionar('/');
-            //header('Location: /');
             redireccionar('/');
         }else
         {

@@ -24,11 +24,11 @@ $router = new \Klein\Klein();
 Page::header();
 // API Klein https://github.com/klein/klein.php/wiki/Api
 //controllers
-$router->respond('/[:controller]?/[:action]?', function ($request, $response) {
-    echo "pase por aca<br>";
+$router->respond('POST','/[:controller]?/[:action]?/[:station_code]?/[:userid]?', function ($request, $response)
+{
     if(isset($request->action)) $_POST['action']=$request->action;
-    if($request->param('station_code')) $_POST['station_code']=$request->param('station_code');
-    if($request->param('userid')) $_POST['userid']=$request->param('userid');
+    if(isset($request->station_code)) $_POST['station_code']=$request->station_code;
+    if(isset($request->userid)) $_POST['userid']=$request->userid;
     // users
     if($request->controller=="users")
     {
@@ -37,7 +37,6 @@ $router->respond('/[:controller]?/[:action]?', function ($request, $response) {
     // stations
     if($request->controller=="stations")
     {
-        echo "pase por aca<br>";
         include './controllers/stations.php';
     }
     // reports
@@ -46,7 +45,6 @@ $router->respond('/[:controller]?/[:action]?', function ($request, $response) {
         include './controllers/reports.php';        
     }
 });
-
 //sign off
 $router->respond('GET', '/sign_off', function () {
     Login::SignOff();
