@@ -15,7 +15,7 @@ if(Login::getLoginSession())
                 mensaje("ERROR. No se pudo guardar el nuevo usuario","","error");
             }
             break;
-        case 'update':
+        case 'edit':
             if(User::update())
             {
                 mensaje("El usuario se actualiz\u00F3 con \u00E9xito","Editar usuario");

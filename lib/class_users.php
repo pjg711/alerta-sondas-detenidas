@@ -243,9 +243,11 @@ class User
                             <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>
                             <h4 class=\"modal-title\">Agregar usuario</h4>
                         </div>
-                        <div class=\"modal-body\">";
-                            User::formulario_nuevo_usuario();
-        echo "          </div>
+                        <div class=\"modal-body\">
+                            <form name=\"user_new\" method=\"post\" action=\"/users/new\">";
+                                User::formulario_nuevo_usuario();
+        echo "              </form>
+                        </div>
                         <div class=\"modal-footer\">
                             <button type=\"submit\" name=\"config_admin\" class=\"btn btn-default\"><i class=\"fa fa-floppy-o\" aria-hidden=\"true\"></i>&nbsp;Guardar usuario</button>&nbsp;
                             <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\"><i class=\"fa fa-times\" aria-hidden=\"true\"></i>&nbsp;Close</button>
@@ -518,25 +520,16 @@ class User
                     </tr>
                     <tr>
                         <td colspan=\"6\">
-                            <div id=\"conf_usuario_{$user->getId()}\" style=\"display:none\">";
-                //formulario edicion de usuario
+                            <div id=\"conf_usuario_{$user->getId()}\" style=\"display:none\">
+                                <form name=\"user_edit\" method=\"post\" action=\"/users/edit/{$user->getId()}\">";
                 User::formulario_editar_usuario($user);
-                echo "                          <div class=\"panel panel-default\">
-                                                    <div class=\"panel-body\">
-                                                        <div class=\"row\">
-                                                            <div class=\"col-md-8\"></div>
-                                                            <div class=\"col-md-4\">
-                                                                <div class=\"form-group\">
-                                                                    <button type=\"submit\" name=\"save_user\" class=\"btn btn-default\"><i class=\"fa fa-floppy-o\" aria-hidden=\"true\"></i>&nbsp;Guardar usuario</button>&nbsp;
-                                                                    <button type=\"button\" name=\"close\" class=\"btn btn-default\" onClick=\"javascript:mostrar_ocultar('conf_usuario_{$user->getId()}');\"><i class=\"fa fa-times\" aria-hidden=\"true\"></i>&nbsp;Cerrar</button>&nbsp;
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class=\"form-group\">
-                                                        </div>
-                                                    </div>
-                                                </div>";    
-                
+                echo "              <div class=\"panel-body\" style=\"text-align:right\">
+                                        <div class=\"form-group\">
+                                            <button type=\"submit\" name=\"save_user\" class=\"btn btn-default\"><i class=\"fa fa-floppy-o\" aria-hidden=\"true\"></i>&nbsp;Guardar usuario</button>&nbsp;
+                                            <button type=\"button\" name=\"close\" class=\"btn btn-default\" onClick=\"javascript:mostrar_ocultar('conf_usuario_{$user->getId()}');\"><i class=\"fa fa-times\" aria-hidden=\"true\"></i>&nbsp;Cerrar</button>&nbsp;
+                                        </div>
+                                    </div>
+                                </form>";    
                 echo "      </div>
                             <div class=\"conf_exporta\" id=\"conf_exporta_{$user->getId()}\" style=\"display:none\">";
                 // si esta habilitado muestra info de estaciones
@@ -566,79 +559,75 @@ class User
         $label="label-enabled";
         echo "  <div class=\"container\">
                     <div class=\"col-md-12\">
-                        <form name=\"user_edit\" method=\"post\" action=\"/users/new\">
-                            <div class=\"panel panel-default col-md-11\">
-                                <div class=\"panel-heading\" style=\"text-align:center\">
-                                    <h4 class=\"\">Datos de cuenta Fieldclimate</h4>
+                        <div class=\"panel panel-default col-md-11\">
+                            <div class=\"panel-heading\" style=\"text-align:center\">
+                                <h4 class=\"\">Datos de cuenta Fieldclimate</h4>
+                            </div>
+                            <div class=\"panel-body\">
+                                <div class=\"form-group\">
+                                    <label for=\"{$label}\">Usuario iMetos:&nbsp;</label><input type=\"text\" name=\"username_imetos\" value=\"\" size=\"80\" maxlength=\"255\">
                                 </div>
-                                <div class=\"panel-body\">
+                                <div class=\"form-group\">
+                                    <label for=\"{$label}\">Mails para el env&iacute;o de informes de exportaci&oacute;n:&nbsp;</label>
+                                    <label for=\"{$label}\"><h6 class=\"\">(para varios mails sep&aacute;relos por coma)</h6></label><br>
+                                    <textarea name=\"mails\" rows=\"3\" cols=\"120\"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class=\"panel panel-default col-md-11\">
+                            <div class=\"panel-heading\" style=\"text-align:center\">
+                                <h4 class=\"\">Datos para la conexión a la base de datos iMetos</h4>
+                            </div>
+                            <div class=\"panel-body\">
+                                <div class=\"form-group\">
+                                    <label for=\"{$label}\">Usuario Mysql:&nbsp;</label><input type=\"text\" name=\"usuario_mysql\" value=\"\" size=\"80\" maxlength=\"255\">
+                                </div>
+                                <div class=\"form-group\">
+                                    <label for=\"{$label}\">Password Mysql:&nbsp;</label><input type=\"text\" name=\"password_mysql\" value=\"\" size=\"80\" maxlength=\"255\">
+                                </div>
+                                <div class=\"form-group\">
+                                    <label for=\"{$label}\">Base de datos Mysql:&nbsp;</label><input type=\"text\" name=\"base_datos_mysql\" value=\"\" size=\"80\" maxlength=\"255\">
+                                </div>
+                                <div class=\"form-group\">
+                                    <label for=\"{$label}\">Servidor Mysql:&nbsp;</label><input type=\"text\" name=\"servidor_mysql\" value=\"\" size=\"80\" maxlength=\"255\">
+                                </div>
+                            </div>
+                        </div>
+                        <div class=\"panel panel-default col-md-11\">
+                            <div class=\"panel-heading\" style=\"text-align:center\">
+                                <h4 class=\"\">Datos FTP para el informe de alerta</h4>
+                            </div>
+                            <div class=\"panel-body\">
+                                <div class=\"form-group\">
+                                    <label for=\"{$label}\">Usuario FTP:&nbsp;</label><input type=\"text\" name=\"username_ftp\" value=\"\" size=\"80\" maxlength=\"255\">
+                                </div>
+                                <div class=\"form-group\">
+                                    <label for=\"{$label}\">Password FTP:&nbsp;</label><input type=\"password\" name=\"password_ftp\" value=\"\" size=\"80\" maxlength=\"255\">
+                                </div>
+                                <div class=\"form-group\">
+                                    <label for=\"{$label}\">Servidor FTP:&nbsp;</label><input type=\"text\" name=\"server_ftp\" value=\"\" size=\"80\" maxlength=\"1000\">
+                                </div>
+                                <div class=\"form-group\">
+                                    <label for=\"{$label}\">Directorio remoto:&nbsp;</label><input type=\"text\" name=\"remotedir\" value=\"\" size=\"80\" maxlength=\"1000\">
+                                </div>
+                                <div class=\"form-group\">
+                                    <label for=\"{$label}\">Mails para el env&iacute;o de alertas:&nbsp;</label>
+                                    <label for=\"{$label}\"><h6 class=\"\">(para varios mails sep&aacute;relos por coma)</h6></label><br>
+                                    <textarea name=\"mails_ftp\" rows=\"3\" cols=\"80\"></textarea>
+                                </div>
+                                <div class=\"col-md-11\" style=\"text-align:right\">
                                     <div class=\"form-group\">
-                                        <label for=\"{$label}\">Usuario iMetos:&nbsp;</label><input type=\"text\" name=\"username_imetos\" value=\"\" size=\"80\" maxlength=\"255\">
-                                    </div>
-                                    <div class=\"form-group\">
-                                        <label for=\"{$label}\">Mails para el env&iacute;o de informes de exportaci&oacute;n:&nbsp;</label>
-                                        <label for=\"{$label}\"><h6 class=\"\">(para varios mails sep&aacute;relos por coma)</h6></label><br>
-                                        <textarea name=\"mails\" rows=\"3\" cols=\"120\"></textarea>
+                                        <button type=\"submit\" name=\"check_connection\" class=\"btn btn-default\"><i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i>&nbsp;Verificar conexi&oacute;n</button>
                                     </div>
                                 </div>
                             </div>
-                            <div class=\"panel panel-default col-md-11\">
-                                <div class=\"panel-heading\" style=\"text-align:center\">
-                                    <h4 class=\"\">Datos para la conexión a la base de datos iMetos</h4>
-                                </div>
-                                <div class=\"panel-body\">
-                                    <div class=\"form-group\">
-                                        <label for=\"{$label}\">Usuario Mysql:&nbsp;</label><input type=\"text\" name=\"usuario_mysql\" value=\"\" size=\"80\" maxlength=\"255\">
-                                    </div>
-                                    <div class=\"form-group\">
-                                        <label for=\"{$label}\">Password Mysql:&nbsp;</label><input type=\"text\" name=\"password_mysql\" value=\"\" size=\"80\" maxlength=\"255\">
-                                    </div>
-                                    <div class=\"form-group\">
-                                        <label for=\"{$label}\">Base de datos Mysql:&nbsp;</label><input type=\"text\" name=\"base_datos_mysql\" value=\"\" size=\"80\" maxlength=\"255\">
-                                    </div>
-                                    <div class=\"form-group\">
-                                        <label for=\"{$label}\">Servidor Mysql:&nbsp;</label><input type=\"text\" name=\"servidor_mysql\" value=\"\" size=\"80\" maxlength=\"255\">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class=\"panel panel-default col-md-11\">
-                                <div class=\"panel-heading\" style=\"text-align:center\">
-                                    <h4 class=\"\">Datos FTP para el informe de alerta</h4>
-                                </div>
-                                <div class=\"panel-body\">
-                                    <div class=\"form-group\">
-                                        <label for=\"{$label}\">Usuario FTP:&nbsp;</label><input type=\"text\" name=\"username_ftp\" value=\"\" size=\"80\" maxlength=\"255\">
-                                    </div>
-                                    <div class=\"form-group\">
-                                        <label for=\"{$label}\">Password FTP:&nbsp;</label><input type=\"password\" name=\"password_ftp\" value=\"\" size=\"80\" maxlength=\"255\">
-                                    </div>
-                                    <div class=\"form-group\">
-                                        <label for=\"{$label}\">Servidor FTP:&nbsp;</label><input type=\"text\" name=\"server_ftp\" value=\"\" size=\"80\" maxlength=\"1000\">
-                                    </div>
-                                    <div class=\"form-group\">
-                                        <label for=\"{$label}\">Directorio remoto:&nbsp;</label><input type=\"text\" name=\"remotedir\" value=\"\" size=\"80\" maxlength=\"1000\">
-                                    </div>
-                                    <div class=\"form-group\">
-                                        <label for=\"{$label}\">Mails para el env&iacute;o de alertas:&nbsp;</label>
-                                        <label for=\"{$label}\"><h6 class=\"\">(para varios mails sep&aacute;relos por coma)</h6></label><br>
-                                        <textarea name=\"mails_ftp\" rows=\"3\" cols=\"80\"></textarea>
-                                    </div>
-                                    <div class=\"col-md-8\"></div>
-                                    <div class=\"col-md-4\">
-                                        <div class=\"form-group\">
-                                            <button type=\"submit\" name=\"check_connection\" class=\"btn btn-default\"><i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i>&nbsp;Verificar conexi&oacute;n</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>";
-        
     }
     /**
      * 
-     * @param type $q_user
+     * @param User $user
      */
     private static function formulario_editar_usuario(User $user)
     {
@@ -650,90 +639,88 @@ class User
                             </div>
                             <div class=\"row\">
                                 <div class=\"col-md-12\">
-                                    <form name=\"user_edit\" method=\"post\" action=\"/users/edit\">
-                                        <input type=\"hidden\" name=\"userid\" value=\"{$user->getId()}\">";
+                                    <input type=\"hidden\" name=\"userid\" value=\"{$user->getId()}\">";
         if($user->getEnableFTP())
         {
-            echo "                      <input type=\"hidden\" name=\"id_ftp\" value=\"{$user->getIdFTP()}\">";
+            echo "                  <input type=\"hidden\" name=\"id_ftp\" value=\"{$user->getIdFTP()}\">";
         }
         if($user->getEnableMySQL())
         {
-            echo "                      <input type=\"hidden\" name=\"id_mysql\" value=\"{$user->getIdMySQL()}\">";
+            echo "                  <input type=\"hidden\" name=\"id_mysql\" value=\"{$user->getIdMySQL()}\">";
         }
         $label="label-enabled";
-        echo "                              <div class=\"panel panel-default\">
-                                                <div class=\"panel-heading\" style=\"text-align:center\">
-                                                    <h3 class=\"\">Datos de cuenta Fieldclimate</h3>
-                                                </div>
-                                                <div class=\"panel-body\">
-                                                    <div class=\"form-group\">
-                                                        <label for=\"{$label}\">Usuario iMetos:&nbsp;</label><input type=\"text\" name=\"username_imetos\" value=\"{$user->getUsername()}\" size=\"80\" maxlength=\"255\">
-                                                    </div>
-                                                    <div class=\"form-group\">
-                                                        <label for=\"{$label}\">Mails para el env&iacute;o de informes de exportaci&oacute;n:&nbsp;</label>
-                                                        <label for=\"{$label}\"><h6 class=\"\">(para varios mails sep&aacute;relos por coma)</h6></label><br>
-                                                        <textarea name=\"mails\" rows=\"3\" cols=\"120\">{$user->getEmails()}</textarea>
-                                                    </div>
-                                                </div>
-                                            </div>";
+        echo "                      <div class=\"panel panel-default\">
+                                        <div class=\"panel-heading\" style=\"text-align:center\">
+                                            <h3 class=\"\">Datos de cuenta Fieldclimate</h3>
+                                        </div>
+                                        <div class=\"panel-body\">
+                                            <div class=\"form-group\">
+                                                <label for=\"{$label}\">Usuario iMetos:&nbsp;</label><input type=\"text\" name=\"username_imetos\" value=\"{$user->getUsername()}\" size=\"80\" maxlength=\"255\">
+                                            </div>
+                                            <div class=\"form-group\">
+                                                <label for=\"{$label}\">Mails para el env&iacute;o de informes de exportaci&oacute;n:&nbsp;</label>
+                                                <label for=\"{$label}\"><h6 class=\"\">(para varios mails sep&aacute;relos por coma)</h6></label><br>
+                                                <textarea name=\"mails\" rows=\"3\" cols=\"120\">{$user->getEmails()}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>";
         // agrego usuario mysql
         if($user->getEnableMySQL())
         {
-            echo "                          <div class=\"panel panel-default\">
-                                                <div class=\"panel-heading\" style=\"text-align:center\">
-                                                    <h3 class=\"\">Datos para la conexión a la base de datos iMetos</h3>
-                                                </div>
-                                                <div class=\"panel-body\">
-                                                    <div class=\"form-group\">
-                                                        <label for=\"{$label}\">Usuario Mysql:&nbsp;</label><input type=\"text\" name=\"usuario_mysql\" value=\"{$user->getUserMySQL()}\" size=\"80\" maxlength=\"255\">
-                                                    </div>
-                                                    <div class=\"form-group\">
-                                                        <label for=\"{$label}\">Password Mysql:&nbsp;</label><input type=\"text\" name=\"password_mysql\" value=\"{$user->getPasswMySQL()}\" size=\"80\" maxlength=\"255\">
-                                                    </div>
-                                                    <div class=\"form-group\">
-                                                        <label for=\"{$label}\">Base de datos Mysql:&nbsp;</label><input type=\"text\" name=\"base_datos_mysql\" value=\"{$user->getDatabaseMySQL()}\" size=\"80\" maxlength=\"255\">
-                                                    </div>
-                                                    <div class=\"form-group\">
-                                                        <label for=\"{$label}\">Servidor Mysql:&nbsp;</label><input type=\"text\" name=\"servidor_mysql\" value=\"{$user->getServerMySQL()}\" size=\"80\" maxlength=\"255\">
-                                                    </div>
-                                                </div>
-                                            </div>";
+            echo "                  <div class=\"panel panel-default\">
+                                        <div class=\"panel-heading\" style=\"text-align:center\">
+                                            <h3 class=\"\">Datos para la conexión a la base de datos iMetos</h3>
+                                        </div>
+                                        <div class=\"panel-body\">
+                                            <div class=\"form-group\">
+                                                <label for=\"{$label}\">Usuario Mysql:&nbsp;</label><input type=\"text\" name=\"usuario_mysql\" value=\"{$user->getUserMySQL()}\" size=\"80\" maxlength=\"255\">
+                                            </div>
+                                            <div class=\"form-group\">
+                                                <label for=\"{$label}\">Password Mysql:&nbsp;</label><input type=\"text\" name=\"password_mysql\" value=\"{$user->getPasswMySQL()}\" size=\"80\" maxlength=\"255\">
+                                            </div>
+                                            <div class=\"form-group\">
+                                                <label for=\"{$label}\">Base de datos Mysql:&nbsp;</label><input type=\"text\" name=\"base_datos_mysql\" value=\"{$user->getDatabaseMySQL()}\" size=\"80\" maxlength=\"255\">
+                                            </div>
+                                            <div class=\"form-group\">
+                                                <label for=\"{$label}\">Servidor Mysql:&nbsp;</label><input type=\"text\" name=\"servidor_mysql\" value=\"{$user->getServerMySQL()}\" size=\"80\" maxlength=\"255\">
+                                            </div>
+                                        </div>
+                                    </div>";
         }
         if($user->getEnableFTP())
         {
-            echo "                          <div class=\"panel panel-default\">
-                                                <div class=\"panel-heading\" style=\"text-align:center\">
-                                                    <h3 class=\"\">Datos FTP para el informe de alerta</h3>
+            echo "                  <div class=\"panel panel-default\">
+                                        <div class=\"panel-heading\" style=\"text-align:center\">
+                                            <h3 class=\"\">Datos FTP para el informe de alerta</h3>
+                                        </div>
+                                        <div class=\"panel-body\">
+                                            <div class=\"form-group\">
+                                                <label for=\"{$label}\">Usuario FTP:&nbsp;</label><input type=\"text\" name=\"username_ftp\" value=\"{$user->getUserFTP()}\" size=\"80\" maxlength=\"255\">
+                                            </div>
+                                            <div class=\"form-group\">
+                                                <label for=\"{$label}\">Password FTP:&nbsp;</label><input type=\"password\" name=\"password_ftp\" value=\"{$user->getPasswFTP()}\" size=\"80\" maxlength=\"255\">
+                                            </div>
+                                            <div class=\"form-group\">
+                                                <label for=\"{$label}\">Servidor FTP:&nbsp;</label><input type=\"text\" name=\"server_ftp\" value=\"{$user->getServerFTP()}\" size=\"80\" maxlength=\"1000\">
+                                            </div>
+                                            <div class=\"form-group\">
+                                                <label for=\"{$label}\">Directorio remoto:&nbsp;</label><input type=\"text\" name=\"remotedir\" value=\"{$user->getRemoteDirFTP()}\" size=\"80\" maxlength=\"1000\">
+                                            </div>
+                                            <div class=\"form-group\">
+                                                <label for=\"{$label}\">Mails para el env&iacute;o de alertas:&nbsp;</label>
+                                                <label for=\"{$label}\"><h6 class=\"\">(para varios mails sep&aacute;relos por coma)</h6></label><br>
+                                                <textarea name=\"mails_ftp\" rows=\"3\" cols=\"80\">{$user->getEmailsFTP()}</textarea>
+                                            </div>
+                                            <div class=\"col-md-8\"></div>
+                                            <div class=\"col-md-4\">
+                                                <div class=\"form-group\">
+                                                    <button type=\"submit\" name=\"check_connection\" class=\"btn btn-default\"><i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i>&nbsp;Verificar conexi&oacute;n</button>
                                                 </div>
-                                                <div class=\"panel-body\">
-                                                    <div class=\"form-group\">
-                                                        <label for=\"{$label}\">Usuario FTP:&nbsp;</label><input type=\"text\" name=\"username_ftp\" value=\"{$user->getUserFTP()}\" size=\"80\" maxlength=\"255\">
-                                                    </div>
-                                                    <div class=\"form-group\">
-                                                        <label for=\"{$label}\">Password FTP:&nbsp;</label><input type=\"password\" name=\"password_ftp\" value=\"{$user->getPasswFTP()}\" size=\"80\" maxlength=\"255\">
-                                                    </div>
-                                                    <div class=\"form-group\">
-                                                        <label for=\"{$label}\">Servidor FTP:&nbsp;</label><input type=\"text\" name=\"server_ftp\" value=\"{$user->getServerFTP()}\" size=\"80\" maxlength=\"1000\">
-                                                    </div>
-                                                    <div class=\"form-group\">
-                                                        <label for=\"{$label}\">Directorio remoto:&nbsp;</label><input type=\"text\" name=\"remotedir\" value=\"{$user->getRemoteDirFTP()}\" size=\"80\" maxlength=\"1000\">
-                                                    </div>
-                                                    <div class=\"form-group\">
-                                                        <label for=\"{$label}\">Mails para el env&iacute;o de alertas:&nbsp;</label>
-                                                        <label for=\"{$label}\"><h6 class=\"\">(para varios mails sep&aacute;relos por coma)</h6></label><br>
-                                                        <textarea name=\"mails_ftp\" rows=\"3\" cols=\"80\">{$user->getEmailsFTP()}</textarea>
-                                                    </div>
-                                                    <div class=\"col-md-8\"></div>
-                                                    <div class=\"col-md-4\">
-                                                        <div class=\"form-group\">
-                                                            <button type=\"submit\" name=\"check_connection\" class=\"btn btn-default\"><i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i>&nbsp;Verificar conexi&oacute;n</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>";
+                                            </div>
+                                        </div>
+                                    </div>";
         }
-        echo "                      </form>
-                                    <br><br><br>
+        echo "                      <br><br><br>
                                 </div><!-- fin de col-md-12 -->
                             </div><!-- fin de row -->
                         </div><!-- fin de container -->";

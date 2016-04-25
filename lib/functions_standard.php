@@ -37,14 +37,12 @@
 
 function get_file_extension($string)
 {
-
     if (preg_match("#\.#", $string)) {
         $pos = strrpos($string, ".");
         $extension = substr($string, $pos + 1);
     } else {
         $extension = "";
     }
-
     return $extension;
 }
 
@@ -1738,7 +1736,6 @@ function mps_speed_convertion($data, $new_unit)
  * @param type $enca
  * @param type $tipo
  */
-//function mensaje($texto,$enca="",$tipo="success",$redireccionar="")
 function mensaje($texto,$enca="",$tipo="success")
 {
     if($tipo=="") $tipo="success";
@@ -1750,13 +1747,7 @@ function mensaje($texto,$enca="",$tipo="success")
     {
         echo "toastr.{$tipo}(\"".$texto."\",\"".$enca."\");";
     }
-    /*
-    if(!empty($redireccionar))
-    {
-        echo "window.location=\"".$redireccionar."\";";
-    }
-     * 
-     */
+    echo "  setTimeout(function(){ location.replace('/'); }, 2000);";
     echo "</script>";
 }
 /**

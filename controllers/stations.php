@@ -1,7 +1,7 @@
 <?php
 if(Login::getLoginSession())
 {
-    dump($_POST);
+    //dump($_POST);
     /*
     Array
     (
@@ -17,10 +17,11 @@ if(Login::getLoginSession())
         [tipo_archivo] => csv
         [separador] => tab
         [encabezado] => si
-        [archivo] => prueba11.csv
+        [archivo] => prueba10.csv
         [save_config] => 
         [action] => config
-    ) 
+        [station_code] => 164
+    )
      * 
      */   
     if(!isset($_POST['action'])) exit;
@@ -37,7 +38,6 @@ if(Login::getLoginSession())
         case 'export':
             if($id_log=Station::export_data($userid,$station_code))
             {
-                //mensaje("Se exportó con exito el archivo id->{$id_log}","Exportar datos");
                 $archivo=Log::search($id_log);
                 $enlace = $archivo[0]->getInfo();
                 $enlace2 = $archivo[0]->getFile();
@@ -46,8 +46,6 @@ if(Login::getLoginSession())
                 header ("Content-Type: application/force-download");
                 header ("Content-Length: ".filesize($enlace));
                 readfile($enlace);
-                //
-                //mensaje("Se exportó con exito los datos al archivo {$enlace2}","Exportar datos");
             }else
             {
                 echo "ocurrio algun error<br>";
